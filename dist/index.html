@@ -15,17 +15,14 @@
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.js"></script>
-<script>
-requirejs.config({
-  paths: {
-    'react': 'https://unpkg.com/react@15.3.2/dist/react',
-    'react-dom': 'https://unpkg.com/react-dom@15.3.2/dist/react-dom'
-  }
-});
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/preact/8.2.9/preact.js"></script>
 <script src="bundle.js"></script>
 <script>
   "use strict";
+
+  define("preact", [], function () {
+    return window.preact;
+  });
 
   requirejs(["init"], function () {});
 </script>

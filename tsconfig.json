@@ -20,8 +20,9 @@
         "module": "amd",
         "outFile": "dist/bundle.js",
 
+        "moduleResolution": "node",
         "jsx": "react",
-        "moduleResolution": "node"
+        "jsxFactory": "h"
     },
 
     "include": [

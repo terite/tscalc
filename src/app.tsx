@@ -1,4 +1,4 @@
-import * as React from "react";
+import { h, Component } from "preact";
 
 import * as game from "./game"
 
@@ -12,7 +12,7 @@ interface AppState {
 import {HoverableIcon} from "./components/HoverableIcon"
 
 
-export class App extends React.Component<{}, AppState> {
+export class App extends Component<{}, AppState> {
 
     constructor(props: {}) {
         super(props)

@@ -1,0 +1,9 @@
+{
+  "name": "tscalc",
+  "dependencies": {
+    "preact": "^8.2.9"
+  },
+  "devDependencies": {},
+  "author": "David Stensland <me@terite.com>",
+  "license": "MIT"
+}

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { h, Component } from "preact";
 
 import {BaseDisplayable} from "../game"
 
@@ -8,7 +8,7 @@ interface Props {
     obj: BaseDisplayable
 }
 
-export class HoverableIcon extends React.Component<Props, {}> {
+export class HoverableIcon extends Component<Props, {}> {
 
     render() {
         const obj = this.props.obj;
