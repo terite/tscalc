@@ -1,0 +1,31 @@
+{
+    "compilerOptions": {
+        "alwaysStrict": true,
+
+        "noEmitOnError": true,
+        "noImplicitAny": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+
+        "preserveConstEnums": true,
+
+        "strictFunctionTypes": true,
+        "strictPropertyInitialization": true,
+        "strictNullChecks": true,
+
+        "target": "ES6",
+
+        "module": "amd",
+        "outFile": "dist/bundle.js",
+
+        "jsx": "react",
+        "moduleResolution": "node"
+    },
+
+    "include": [
+        "src/*",
+        "src/**/*"
+    ]
+}

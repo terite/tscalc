@@ -1,0 +1,34 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>My Title</title>
+
+  <link rel="stylesheet" href="css.css">
+</head>
+
+<body>
+<div id="app">
+    <h1>Loading...</h1>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.js"></script>
+<script>
+requirejs.config({
+  paths: {
+    'react': 'https://unpkg.com/react@15.3.2/dist/react',
+    'react-dom': 'https://unpkg.com/react-dom@15.3.2/dist/react-dom'
+  }
+});
+</script>
+<script src="bundle.js"></script>
+<script>
+  "use strict";
+
+  requirejs(["init"], function () {});
+</script>
+</body>
+
+</html>
