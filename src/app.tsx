@@ -9,7 +9,8 @@ interface AppState {
 }
 
 
-import {HoverableIcon} from "./components/HoverableIcon"
+// import {HoverableIcon} from "./components/HoverableIcon"
+import {RecipeRow} from "./components/RecipeRow"
 
 
 export class App extends Component<{}, AppState> {
@@ -39,38 +40,10 @@ export class App extends Component<{}, AppState> {
         })
     }
 
-    hideRecipe(recipeName: string) {
-        // debugger
-        // alert("hiding recipe " +  recipeName)
-        // return;
-        let s = new Set(this.state.hiddenRecipes)
-        s.add(recipeName)
-        this.setState({hiddenRecipes: s});
-        console.log("Now hiding recipes", s)
-    }
-
-    formatItems(items: game.Item[]) {
-        const ret = []
-        for (let item of items) {
-            let shown = false
-            for (let recipe of item.madeBy) {
-                if (this.state.hiddenRecipes.has(recipe.name)) {
-                    continue
-                }
-                if (!shown) {
-                    ret.push(<span key={item.name}>{item.niceName()}: </span>)
-                    shown = true
-                }
-                ret.push(<HoverableIcon
-                    key={item.name + recipe.name}
-                    obj={recipe}
-                    onClick={this.hideRecipe.bind(this, recipe.name)} />)
-            }
-            if (shown) {
-                ret.push(<hr />)
-            }
-        }
-        return ret
+    formatRecipes(recipes: game.Recipe[]) {
+        return recipes
+            .filter((r) => r.products.length > 1)
+            .map((r) => <RecipeRow recipe={r} key={r.name} />)
     }
 
     render() {
@@ -87,9 +60,7 @@ export class App extends Component<{}, AppState> {
             console.log("rendering items")
             return (
             <div>
-                <h1>Loaded {this.state.data.items.length} items</h1>
-                <hr />
-                {this.formatItems(this.state.data.items)}
+                {this.formatRecipes(this.state.data.recipes)}
             </div>
             )
         }

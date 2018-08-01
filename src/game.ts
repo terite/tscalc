@@ -225,8 +225,8 @@ export class BaseIngredient {
 
 export class Ingredient extends BaseIngredient {
     amount: Rational
-    minimum_temperature: number | undefined;
-    maximum_temperature: number | undefined;
+    minimum_temperature?: number;
+    maximum_temperature?: number;
 
     constructor(d: JsonData.Ingredient, gd: GameData) {
         super(d, gd)

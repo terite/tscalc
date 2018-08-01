@@ -1,0 +1,19 @@
+
+
+
+Recipe Row
+    immutable
+        recipe
+
+    changeable
+        which assembling machine
+        how many machines
+        module configuration
+        beacon configuration
+
+    derived
+        production
+        consumption
+        power use? later
+        how many belt per input
+        how many belt per output
