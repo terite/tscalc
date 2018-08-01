@@ -32,14 +32,17 @@ export class RecipeRow extends Component<Props, State> {
     }
 
     calcProducts() {
-        const amounts = {}
+        let products = []
         for (let product of this.props.recipe.products) {
-            amounts[product.name]
+            products.push(product)
         }
+        return products
     }
 
-    renderProduct() {
-
+    renderProduct(product: game.Product) {
+        return (<li key={product.name}>
+            {product.amount.toString()} {product.item.niceName()}
+        </li>)
     }
 
     render() {
@@ -51,7 +54,7 @@ export class RecipeRow extends Component<Props, State> {
                     onInput={this.handleMachineChange}
                     type="number" min="0" step="1" />
                 <ul>
-                    this.calcProducts().map((p) => this.renderProduct(p))
+                    {this.calcProducts().map((p) => this.renderProduct(p))}
                 </ul>
             </div>
         )

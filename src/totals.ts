@@ -3,15 +3,15 @@ import * as game from "./game"
 
 export class Totals {
 
-    items = {[name: string]: game.Item}
+    items: {[name: string]: game.Item} = {}
 
     constructor() {
     }
 
-    addProduct(product: game.Product) {
+    // addProduct(product: game.Product) {
 
-    }
+    // }
 
-    addIngredient(ingredient: game.Ingredient) {
-    }
+    // addIngredient(ingredient: game.Ingredient) {
+    // }
 }
