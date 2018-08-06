@@ -1,21 +1,26 @@
 import { h, Component } from "preact";
 
 import * as game from "../game"
+import {Totals} from '../totals'
 
 
 interface Props {
+    gameData: game.GameData
     recipe: game.Recipe
 }
 
 interface State {
-    machines: number
+    numMachines: number
+
+    // TOOD: modules
 }
 
 export class RecipeRow extends Component<Props, State> {
     constructor(props: Props) {
         super(props)
+
         this.state = {
-            machines: 1
+            numMachines: 1,
         }
     }
 
@@ -27,34 +32,36 @@ export class RecipeRow extends Component<Props, State> {
             return
         }
         if (Number.isInteger(num) && num >= 0) {
-            this.setState({machines: num});
+            this.setState({numMachines: num});
         }
     }
 
     calcProducts() {
+        let gd = this.props.gameData
         let products = []
-        for (let product of this.props.recipe.products) {
-            products.push(product)
+        let totals = Totals.fromRecipeRow(this)
+        for (let name in totals.itemAmounts) {
+            let amount = totals.itemAmounts[name]
+            products.push(
+                <li key={name}>
+                    {amount.toString()} {gd.itemMap[name].niceName()}
+                </li>
+            )
         }
-        return products
-    }
 
-    renderProduct(product: game.Product) {
-        return (<li key={product.name}>
-            {product.amount.toString()} {product.item.niceName()}
-        </li>)
+        return products
     }
 
     render() {
         return (
             <div>
-                Recipe <strong>{this.props.recipe.niceName()}</strong> with {this.state.machines} machines!
+                Recipe <strong>{this.props.recipe.niceName()}</strong> with {this.state.numMachines} machines!
                 <input
-                    value={this.state.machines}
+                    value={this.state.numMachines}
                     onInput={this.handleMachineChange}
                     type="number" min="0" step="1" />
                 <ul>
-                    {this.calcProducts().map((p) => this.renderProduct(p))}
+                    {this.calcProducts()}
                 </ul>
             </div>
         )

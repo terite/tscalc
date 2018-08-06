@@ -1,177 +1,11 @@
-type TODO = unknown;
 
 import {Rational} from "./rational"
-import {assert} from "./util"
+import {assert, values} from "./util"
 
-type LocalisedName = {[locale: string]: string}
+import * as schema from "./schema"
 
-namespace JsonData {
+type LocalisedName = schema.LocalisedName
 
-    interface Effectable {
-        // TODO: export empty allowed_effects
-        allowed_effects?: Array<"consumption" | "pollution" | "productivity" | "speed">
-        module_slots: number
-    }
-
-    interface BaseEntity {
-        name: string;
-        localised_name: LocalisedName;
-        icon_col: number;
-        icon_row: number;
-
-        energy_usage?: number;
-        energy_source?: {
-            fuel_category: string
-            type: "burner"
-        }
-    };
-
-    interface AssemblingMachine extends BaseEntity, Effectable {
-        crafting_categories: string[]
-        crafting_speed: number
-        ingredient_count: number
-    }
-
-    interface MiningDrill extends BaseEntity, Effectable {
-        mining_power: number;
-        mining_speed: number;
-        resource_categories: string[];
-    }
-
-    interface OffshorePump extends BaseEntity {
-        fluid: string
-    }
-
-    interface RocketSilo extends AssemblingMachine, Effectable {
-        rocket_parts_required: number;
-    }
-
-    interface TransportBelt extends BaseEntity {
-        belt_speed: number
-    }
-
-    interface BaseItem {
-        name: string;
-        localised_name: LocalisedName;
-        icon_col: number;
-        icon_row: number;
-        group: string;
-        subgroup: string
-        order: string;
-        type: string;
-
-        // rocket_launch_products: Result[]  // TODO: collect
-    }
-
-    interface FuelItem extends BaseItem {
-        fuel_category: string;
-        fuel_value: number;
-    }
-
-    interface ModuleItem extends BaseItem {
-        category: "effectivity" | "productivity" | "speed"
-        effect: {
-            consumption?: {bonus: number}
-            pollution?: {bonus: number}
-            productivity?: {bonus: number}
-            speed?: {bonus: number}
-        }
-        limitation: string[]
-    }
-
-    export type Item = BaseItem | FuelItem | ModuleItem
-
-    export interface Ingredient {
-        name: string
-        amount: number
-        type?: "item" | "fluid" // TODO: always export type
-        minimum_temperature?: number
-        maximum_temperature?: number
-    }
-
-    interface BaseProduct {
-        name: string
-        type?: "item" | "fluid" // TODO: always export type
-        temperature?: number
-        probability?: number
-    }
-
-    interface ProductRange extends BaseProduct {
-        amount_min: number
-        amount_max: number
-    }
-    interface ProductAmount extends BaseProduct {
-        amount: number
-    }
-
-    export type Product = ProductAmount | ProductRange;
-
-    export interface Recipe {
-        name: string;
-        localised_name: LocalisedName;
-        category: string;
-        energy_required: number;
-        group: string;
-        subgroup: string;
-        icon_col: number;
-        icon_row: number;
-        ingredients: Ingredient[];
-        results: Product[]; // TODO: rename results -> products
-        type: "recipe";
-        order: string;
-
-        requester_paste_multiplier?: number // TODO: remove
-        main_product?: string
-    }
-
-    export interface Resource {
-        name: string;
-        localised_name: LocalisedName;
-        icon_col: number;
-        icon_row: number;
-
-        category: string;
-
-        minable: {
-            hardness: number;
-            mining_time: number;
-            mining_particle?: string;  // TODO: remove
-            results: Product[]
-            fluid_amount?: number
-            required_fluid?: string
-        }
-
-    }
-
-    export interface Root {
-        active_mods: {[name: string]: string};
-
-        groups: {[groupName: string]: {
-            order: string
-            subgroups: {[subName: string]: string}
-        }}
-
-
-        fluids: string[];
-        fuel: string[];
-        modules: string[];
-
-        recipes: {[name: string]: Recipe};
-        resource: {[name: string]: Resource};
-        sprites: TODO;
-
-        items: {[name: string]: Item};
-
-        // other entities
-        "assembling-machine": {[name: string]: AssemblingMachine};
-        "furnace": {[name: string]: AssemblingMachine};
-        "mining-drill": {[name: string]: MiningDrill};
-        "offshore-pump": {[name: string]: OffshorePump};
-        "reactor": {[name: string]: BaseEntity};
-        "rocket-silo": {[name: string]: RocketSilo};
-        "transport-belt": {[name: string]: TransportBelt}
-    }
-}
 
 interface IBaseDisplayable {
     name: string;
@@ -198,11 +32,11 @@ export class BaseDisplayable implements IBaseDisplayable {
     }
 }
 
-export class Item extends BaseDisplayable {
+export class BaseItem extends BaseDisplayable {
     usedBy: Recipe[] = [];
     madeBy: Recipe[] = [];
 
-    constructor(d: JsonData.Item) {
+    constructor(d: schema.Item) {
         super(d);
         this.name = d.name;
         this.localised_name = d.localised_name
@@ -211,39 +45,63 @@ export class Item extends BaseDisplayable {
     }
 }
 
-export class BaseIngredient {
-    type: "item" | "fluid";
+export class Item extends BaseItem {
+    // TODO: figure out type
+    type: "item" = "item"
+}
+
+export class Fluid extends BaseItem {
+    default_temperature: number
+    type: "fluid" = "fluid"
+
+    constructor(d: schema.FluidItem) {
+        super(d)
+        this.default_temperature = d.default_temperature
+    }
+}
+
+abstract class BaseIngredient {
     name: string;
-    item: Item;
+    amount: Rational
     
-    constructor(d: JsonData.Ingredient | JsonData.Product, gd: GameData) {
-        this.type = d.type || "item";
-        this.name = d.name;
+    constructor(d: schema.Ingredient) {
+        this.name = d.name
+        this.amount = Rational.fromFloat(d.amount)
+    }
+}
+
+export class ItemIngredient extends BaseIngredient {
+    type: "item" = "item"
+    item: Item
+
+    constructor(d: schema.Ingredient, gd: GameData) {
+        super(d)
         this.item = gd.itemMap[d.name]
     }
 }
 
-export class Ingredient extends BaseIngredient {
-    amount: Rational
-    minimum_temperature?: number;
-    maximum_temperature?: number;
+export class FluidIngredient extends BaseIngredient {
+    type: "fluid" = "fluid"
+    item: Fluid
+    minimum_temperature: number
+    maximum_temperature: number
 
-    constructor(d: JsonData.Ingredient, gd: GameData) {
-        super(d, gd)
-        this.amount = Rational.fromFloat(d.amount)
-        this.minimum_temperature = d.minimum_temperature;
-        this.maximum_temperature = d.maximum_temperature;
+    constructor(d: schema.Ingredient, gd: GameData) {
+        super(d)
+        this.item = gd.fluidMap[d.name]
+        this.minimum_temperature = d.minimum_temperature || -Infinity
+        this.maximum_temperature = d.maximum_temperature || Infinity
     }
 }
 
+export type Ingredient = ItemIngredient | FluidIngredient
 
-export class Product extends BaseIngredient {
-    temperature?: number;
+abstract class BaseProduct {
+    name: string
     amount: Rational
 
-    constructor(d: JsonData.Product, gd: GameData) {
-        super(d, gd)
-        this.temperature = d.temperature
+    constructor(d: schema.Product) {
+        this.name = d.name
 
         let amount;
         if ('amount' in d) {
@@ -261,40 +119,136 @@ export class Product extends BaseIngredient {
     }
 }
 
+export class ItemProduct extends BaseProduct {
+    type: "item" = "item"
+    item: Item
+
+    constructor(d: schema.Product, gd: GameData) {
+        super(d)
+        this.item = gd.itemMap[d.name]
+    }
+}
+
+export class FluidProduct extends BaseProduct {
+    type: "fluid" = "fluid"
+    item: Fluid
+    temperature: number;
+
+    constructor(d: schema.Product, gd: GameData) {
+        super(d)
+        this.item = gd.fluidMap[d.name]
+        if (!this.item) {
+            console.log("no item", d)
+            debugger
+        }
+        this.temperature = d.temperature || this.item.default_temperature || 15
+    }
+}
+
+export type Product = ItemProduct | FluidProduct
+
 export class Recipe extends BaseDisplayable {
     category: string;
     ingredients: Ingredient[];
     products: Product[];
     crafting_time: Rational;
+    default_machine = Entity.AssemblingMachine
 
-    constructor(d: JsonData.Recipe, gd: GameData) {
+    constructor(d: schema.Recipe, gd: GameData) {
         super(d)
         this.name = d.name;
         this.category = d.category;
         this.crafting_time = Rational.fromFloat(d.energy_required);
 
-        this.ingredients = d.ingredients.map((i) => new Ingredient(i, gd));
-        this.products = d.results.map((i) => new Product(i, gd));
+        this.ingredients = d.ingredients.map((ingredient) => {
+            if (ingredient.type == "fluid") {
+                return new FluidIngredient(ingredient, gd); 
+            } else {
+                return new ItemIngredient(ingredient, gd); 
+            }
+        });
 
+        this.products = d.results.map((result) => {
+            if (result.type == "fluid") {
+                return new FluidProduct(result, gd); 
+            } else {
+                return new ItemProduct(result, gd); 
+            }
+        });
+    }
+}
+
+export namespace Entity {
+    abstract class BaseEntity<T> {
+        data: T
+        constructor(data: T) {
+            this.data = data
+        }
+    }
+
+    export class AssemblingMachine extends BaseEntity<schema.AssemblingMachine> {
+        canBuildRecipe(recipe: Recipe) {
+            if (this.data.crafting_categories.indexOf(recipe.category) == -1) {
+                return false
+            }
+            if (recipe.ingredients.length > this.data.ingredient_count) {
+                return false
+            }
+            return true
+        }
     }
 }
 
 export class GameData {
+    raw: schema.Root
+
     items: Item[] = [];
     itemMap: {[name: string]: Item} = {};
+    fluids: Fluid[] = [];
+    fluidMap: {[name: string]: Fluid} = {};
 
     recipes: Recipe[] = [];
     recipeMap: {[name: string]: Recipe} = {};
 
-    constructor(data: JsonData.Root) {
+    entities: {
+        "assembling-machine": Entity.AssemblingMachine[]
+    }
+
+    constructor(data: schema.Root) {
+        this.raw = data
+
+        this.entities = {
+            'assembling-machine': values(data['assembling-machine']).map((m) => new Entity.AssemblingMachine(m))
+        }
+
         for (let itemName in data.items) {
-            const item = new Item(data.items[itemName]);
-            this.items.push(item);
-            this.itemMap[item.name] = item;
+            const thing = data.items[itemName];
+            if ("type" in thing && thing.type == "fluid") {
+                const fluid = new Fluid(thing)
+                this.fluids.push(fluid)
+                this.fluidMap[fluid.name] = fluid
+            } else {
+                const item = new Item(thing);
+                this.items.push(item);
+                this.itemMap[item.name] = item;
+            }
         }
 
         for (let recipeName in data.recipes) {
             const recipe = new Recipe(data.recipes[recipeName], this);
+
+            // Filter to only recipes buildable by knonwn assembling machines
+            let hasMachine = false 
+            for (let machine of this.entities['assembling-machine']) {
+                if (machine.canBuildRecipe(recipe)) {
+                    hasMachine = true
+                    break
+                }
+            }
+            if (!hasMachine) {
+                continue
+            }
+
             this.recipeMap[recipe.name] = recipe;
             this.recipes.push(recipe)
 

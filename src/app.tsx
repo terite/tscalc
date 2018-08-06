@@ -43,7 +43,7 @@ export class App extends Component<{}, AppState> {
     formatRecipes(recipes: game.Recipe[]) {
         return recipes
             .filter((r) => r.products.length > 1)
-            .map((r) => <RecipeRow recipe={r} key={r.name} />)
+            .map((r) => <RecipeRow recipe={r} key={r.name} gameData={this.state.data!}/>)
     }
 
     render() {

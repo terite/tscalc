@@ -52,6 +52,10 @@ export class Rational {
         return result
     }
 
+    negate() {
+        return new Rational(-this.p, this.q);
+    }
+
     add(other: Rational) {
         return new Rational(
             (this.p * other.q) + (this.q * other.p),
@@ -66,7 +70,10 @@ export class Rational {
         )
     }
 
-    mul(other: Rational): Rational {
+    mul(other: Rational | number): Rational {
+        if (typeof other == 'number') {
+            other = Rational.fromFloat(other)
+        }
         return new Rational(this.p * other.p, this.q * other.q)
     }
 
