@@ -56,6 +56,10 @@ export class Rational {
         return new Rational(-this.p, this.q);
     }
 
+    invert() {
+        return new Rational(this.q, this.p);
+    }
+
     add(other: Rational) {
         return new Rational(
             (this.p * other.q) + (this.q * other.p),
@@ -95,6 +99,10 @@ export class Rational {
         return this.p == other.p && this.q == other.q
     }
 
+    isNegative() {
+        return this.p < 0
+    }
+
     isOne() {
         return this.p == 1
     }
@@ -115,7 +123,47 @@ export class Rational {
         if (this.q == 1) {
             return this.p.toString()
         }
-        return this.p.toString() + "/" + this.q.toString()
+        return this.toDecimal(3)
+        // return this.p.toString() + "/" + this.q.toString()
+    }
+
+    toDecimal(maxDigits?: number, roundingFactor?: Rational) {
+        if (maxDigits == null) {
+            maxDigits = 3
+        }
+        if (roundingFactor == null) {
+            roundingFactor = new Rational(5, 10 ** (maxDigits+1))
+        }
+
+        let sign = ""
+        let x:Rational  = this
+        if (x.isNegative()) {
+            sign = "-"
+            x = x.negate()
+        }
+        x = x.add(roundingFactor)
+        let divmod = num_divmod(x.p, x.q)
+        var integerPart = divmod.quotient.toString()
+        var decimalPart = ""
+        var fraction = new Rational(divmod.remainder, x.q)
+        let ten = new Rational(10, 1)
+        while (maxDigits > 0 && !fraction.equal(roundingFactor)) {
+            fraction = fraction.mul(ten)
+            roundingFactor = roundingFactor.mul(ten)
+            let divmod = num_divmod(fraction.p, fraction.q)
+            decimalPart += divmod.quotient.toString()
+            fraction = new Rational(divmod.remainder, fraction.q)
+            maxDigits--
+        }
+        if (fraction.equal(roundingFactor)) {
+            while (decimalPart[decimalPart.length - 1] == "0") {
+                decimalPart = decimalPart.slice(0, decimalPart.length - 1)
+            }
+        }
+        if (decimalPart != "") {
+            return sign + integerPart + "." + decimalPart
+        }
+        return sign + integerPart
     }
 
     //

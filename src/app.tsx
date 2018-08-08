@@ -1,4 +1,4 @@
-import { h, Component } from "preact";
+import * as React from "react"
 
 import * as game from "./game"
 
@@ -9,7 +9,7 @@ interface State {
     group: JSX.Element | null
 }
 
-export class App extends Component<{}, State> {
+export class App extends React.Component<{}, State> {
 
     constructor(props: {}) {
         super(props)

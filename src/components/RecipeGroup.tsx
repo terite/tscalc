@@ -1,8 +1,9 @@
-import { h, Component } from "preact";
+import * as React from "react"
 
 import * as game from "../game"
 import {Totals} from "../totals"
 
+import {Icon} from './Icon'
 import {RecipeRow, Props as RecipeRowProps} from './RecipeRow'
 import {RecipePicker} from './RecipePicker'
 
@@ -15,7 +16,11 @@ type State = {
     rows: RecipeRowProps[]
 }
 
-export class RecipeGroup extends Component<Props, State> {
+type SerializedRow = [
+    string, string, number
+]
+
+export class RecipeGroup extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
 
@@ -24,21 +29,55 @@ export class RecipeGroup extends Component<Props, State> {
         }
     }
 
-    public handlePickRecipe = (recipe: game.Recipe) => {
-        this.addRow(recipe)
+    componentDidMount() {
+        if (document.location.hash.startsWith('#[')) {
+            let hash = decodeURIComponent(document.location.hash.substr(1))
+            let d = JSON.parse(hash)
+            this.deserialize(d)
+        }
     }
 
-    addRow(recipe: game.Recipe) {
-        let row = {
-            gameData: this.props.gameData,
-            onRemove: this.removeRow.bind(this, recipe),
-            onChange: this.changeRow.bind(this),
+    componentDidUpdate() {
+        history.replaceState('', '', `#${JSON.stringify(this.serialize())}`)
+    }
 
+    serialize(): SerializedRow[] {
+        return this.state.rows.map((row):SerializedRow => [
+            row.recipe.name,
+            row.machine.data.name,
+            row.numMachines
+        ])
+    }
+
+    deserialize(state: SerializedRow[]): void {
+        let gd = this.props.gameData
+
+        this.addRows(state.map(([recipe, machine, numMachines]) => ({
+            recipe: gd.recipeMap[recipe],
+            machine: gd.entityMap[machine],
+            numMachines
+        })))
+    }
+
+    public handlePickRecipe = (recipe: game.Recipe) => {
+        this.addRows([{
             recipe: recipe,
             machine: recipe.madeIn[0],
-            numMachines: 1,
-        }
-        this.setState({rows: this.state.rows.concat([row])})
+            numMachines: 1
+        }])
+    }
+
+    addRows(rows: {recipe: game.Recipe, machine: game.Entity.AssemblingMachine, numMachines: number}[]) {
+        let newRows = rows.map((r) => ({
+            gameData: this.props.gameData,
+            onRemove: this.removeRow.bind(this, r.recipe),
+            onChange: this.changeRow.bind(this),
+
+            recipe: r.recipe,
+            machine: r.machine,
+            numMachines: r.numMachines,
+        }))
+        this.setState({rows: this.state.rows.concat(newRows)})
     }
 
     changeRow(newRow: RecipeRowProps) {
@@ -53,8 +92,31 @@ export class RecipeGroup extends Component<Props, State> {
         })})
     }
 
-    renderRow(row: RecipeRowProps) {
-        return <RecipeRow {...row} />
+    renderRow(row: RecipeRowProps, index: number) {
+        return <RecipeRow key={index} {...row} />
+    }
+
+    private renderTotals(totals: Totals) {
+        let reduced = totals.reduce()
+        return (
+        <>
+            <div style={{display: "inline-block"}}>
+                Ingredients:
+                <ul>
+                {reduced.ingredients.map((ing, i) => (
+                    <li key={i}><Icon gameData={this.props.gameData} obj={ing.item} text={ing.niceName()} /></li>
+                ))}
+                </ul>
+            </div>
+            <div style={{display: "inline-block"}}>
+                Products:
+                <ul>
+                {reduced.products.map((prod, i) => (
+                    <li key={i}><Icon gameData={this.props.gameData} obj={prod.item} text={prod.niceName()} /></li>
+                ))}
+                </ul>
+            </div>
+        </>)
     }
 
     render() {
@@ -66,7 +128,6 @@ export class RecipeGroup extends Component<Props, State> {
         for (let row of this.state.rows) {
             totals.addRow(row)
         }
-        let reduced = totals.reduce()
 
         return (
         <div>
@@ -79,15 +140,7 @@ export class RecipeGroup extends Component<Props, State> {
             <div>Have {this.state.rows.length} row(s)</div>
             {this.state.rows.map(this.renderRow)}
             <hr />
-            Ingredients:
-            <ul>
-            {reduced.ingredients.map(i => <li>{i.niceName()}</li>)}
-            </ul>
-            Products:
-            <ul>
-            {reduced.products.map(p => <li>{p.niceName()}</li>)}
-            </ul>
-
+            {this.renderTotals(totals)}
         </div>
         )
     }

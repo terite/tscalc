@@ -43,6 +43,10 @@ export class BaseItem extends BaseDisplayable {
         this.icon_col = d.icon_col;
         this.icon_row = d.icon_row;
     }
+
+    toJSON() {
+        return this.name
+    }
 }
 
 export class Item extends BaseItem {
@@ -230,6 +234,10 @@ export class Recipe extends BaseDisplayable {
         });
     }
 
+    toJSON() {
+        return this.name
+    }
+
     niceName() {
         if (this.products.length > 1) {
             return super.niceName()
@@ -243,7 +251,7 @@ export class Recipe extends BaseDisplayable {
 }
 
 export namespace Entity {
-    abstract class BaseEntity<T extends schema.BaseEntity> {
+    export abstract class BaseEntity<T extends schema.BaseEntity> {
         data: T
         constructor(data: T) {
             this.data = data
@@ -251,6 +259,10 @@ export namespace Entity {
 
         niceName() {
             return this.data.localised_name.en
+        }
+
+        toJSON() {
+            return this.data.name
         }
     }
 
@@ -266,6 +278,8 @@ export namespace Entity {
             return true
         }
     }
+
+    export type Any = AssemblingMachine
 }
 
 export class GameData {
@@ -279,23 +293,27 @@ export class GameData {
     recipes: Recipe[] = [];
     recipeMap: {[name: string]: Recipe} = {};
 
-    entities: {
-        "assembling-machine": Entity.AssemblingMachine[]
-        "furnace": Entity.AssemblingMachine[]
-        "rocket-silo": Entity.AssemblingMachine[]
-    }
+    entityMap: {[name: string]: Entity.Any} = {}
 
-    constructor(data: schema.Root) {
-        this.raw = data
+    constructor(raw: schema.Root) {
+        this.raw = raw
 
-        this.entities = {
-            'assembling-machine': values(data['assembling-machine']).map((m) => new Entity.AssemblingMachine(m)),
-            'furnace': values(data['furnace']).map((m) => new Entity.AssemblingMachine(m)),
-            'rocket-silo': values(data['rocket-silo']).map((m) => new Entity.AssemblingMachine(m)),
+        type Thing<T> = {
+            new (d: T): Entity.Any
         }
 
-        for (let itemName in data.items) {
-            const thing = data.items[itemName];
+        let addOfType = <S extends schema.BaseEntity, C extends Thing<S>>(entities: S[], ctor: C) => {
+            for (let entity of entities) {
+                this.entityMap[entity.name] = new ctor(entity)
+            }
+        }
+
+        addOfType(values(raw['assembling-machine']), Entity.AssemblingMachine)
+        addOfType(values(raw['furnace']), Entity.AssemblingMachine)
+        addOfType(values(raw['rocket-silo']), Entity.AssemblingMachine)
+
+        for (let itemName in raw.items) {
+            const thing = raw.items[itemName];
             if ("type" in thing && thing.type == "fluid") {
                 const fluid = new Fluid(thing)
                 this.fluids.push(fluid)
@@ -307,16 +325,14 @@ export class GameData {
             }
         }
 
-        for (let recipeName in data.recipes) {
-            const recipe = new Recipe(data.recipes[recipeName], this);
+        for (let recipeName in raw.recipes) {
+            const recipe = new Recipe(raw.recipes[recipeName], this);
 
-            let assemblerTypes: Array<keyof GameData['entities']> = ['assembling-machine', 'furnace', 'rocket-silo']
+            for (let entityName in this.entityMap) {
+                let entity = this.entityMap[entityName]
 
-            for (let entityType of assemblerTypes) {
-                for (let entity of this.entities[entityType]) {
-                    if (entity.canBuildRecipe(recipe)) {
-                        recipe.madeIn.push(entity)
-                    }
+                if (('canBuildRecipe' in entity) && entity.canBuildRecipe(recipe)) {
+                    recipe.madeIn.push(entity)
                 }
             }
             if (recipe.madeIn.length == 0) {
@@ -335,5 +351,9 @@ export class GameData {
                 product.item.madeBy.push(recipe);
             }
         }
+    }
+
+    toJSON() {
+        return null
     }
 }

@@ -17,14 +17,15 @@
 
         "target": "ES6",
 
-        "module": "amd",
-        "outFile": "dist/bundle.js",
+        "outDir": "./dist/",
+
+        "module": "commonjs",
+
         "sourceMap": true,
         "inlineSources": true,
 
         "moduleResolution": "node",
-        "jsx": "react",
-        "jsxFactory": "h"
+        "jsx": "react"
     },
 
     "include": [

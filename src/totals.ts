@@ -48,7 +48,10 @@ export class Totals {
     }
 
     addRow(row: RecipeRowProps) {
-        let mult = Rational.one.mul(row.numMachines).mul(row.machine.data.crafting_speed)
+        let mult = Rational.one
+            .mul(row.recipe.crafting_time.invert())
+            .mul(row.numMachines)
+            .mul(row.machine.data.crafting_speed)
 
         row.recipe.ingredients
             .map((ingredient) => {

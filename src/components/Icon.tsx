@@ -1,4 +1,4 @@
-import { h, Component } from "preact";
+import * as React from "react"
 
 import * as game from "../game"
 
@@ -10,9 +10,10 @@ type Props = {
     text?: string
     title?: string
     onClick?(): void
+    style?: React.CSSProperties
 }
 
-export class Icon extends Component<Props, {}> {
+export class Icon extends React.Component<Props, {}> {
 
     render() {
         const gd = this.props.gameData
@@ -25,7 +26,8 @@ export class Icon extends Component<Props, {}> {
             backgroundImage: `url(sprite-sheet-${gd.raw.sprites.hash}.png)`,
             backgroundPosition: `${x}px ${y}px`,
             width: "32px",
-            height: "32px"
+            height: "32px",
+            ...this.props.style
         };
         let icon = (<div
             title={this.props.title}
@@ -36,7 +38,7 @@ export class Icon extends Component<Props, {}> {
 
         if (this.props.text) {
             return (
-                <div style="line-height: 32px">
+                <div style={{lineHeight: "32px"}}>
                     {icon}{this.props.text}
                 </div>
             )

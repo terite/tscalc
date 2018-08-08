@@ -1,4 +1,4 @@
-import { h, Component } from "preact";
+import * as React from "react"
 
 import * as game from "../game"
 
@@ -15,9 +15,17 @@ type State = {
     focused: boolean
 }
 
-export class RecipePicker extends Component<Props, State> {
+export class RecipePicker extends React.Component<Props, State> {
 
-    public handleQueryInput = (event: Event) => {
+    constructor(props: Props) {
+        super(props)
+        this.state = {
+            query: "",
+            focused: false
+        }
+    }
+
+    public handleQueryInput = (event: React.FormEvent<HTMLInputElement>) => {
         let target = event.target as HTMLInputElement
         this.setState({query: target.value})
     }
@@ -50,6 +58,7 @@ export class RecipePicker extends Component<Props, State> {
             })
             .slice(0, 10)
             .map((r) => <RecipeCell
+                key={r.name}
                 recipe={r}
                 gameData={this.props.gameData}
                 onClick={this.handleRecipeClick}/>)
@@ -58,7 +67,7 @@ export class RecipePicker extends Component<Props, State> {
         <div>
             <input
                 value={this.state.query}
-                onInput={this.handleQueryInput}
+                onChange={this.handleQueryInput}
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}
             />

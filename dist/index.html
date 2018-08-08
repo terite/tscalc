@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
@@ -7,7 +7,6 @@
   <title>My Title</title>
 
   <link href="https://fonts.googleapis.com/css?family=Titillium+Web:400,600,700" rel="stylesheet">
-  <link rel="stylesheet" href="css.css">
 </head>
 
 <body>
@@ -15,18 +14,7 @@
     <h1>Loading...</h1>
 </div>
 
-<script src="vendor/require-2.3.5.js"></script>
-<script src="vendor/preact-8.2.9.js"></script>
 <script src="bundle.js"></script>
-<script>
-  "use strict";
-
-  define("preact", [], function () {
-    return window.preact;
-  });
-
-  requirejs(["init"], function () {});
-</script>
 </body>
 
 </html>
