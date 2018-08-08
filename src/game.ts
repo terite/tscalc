@@ -78,6 +78,10 @@ export class ItemIngredient extends BaseIngredient {
         super(d)
         this.item = gd.itemMap[d.name]
     }
+
+    niceName() {
+        return `${this.amount.toString()} × ${this.item.niceName() }`
+    }
 }
 
 export class FluidIngredient extends BaseIngredient {
@@ -89,8 +93,30 @@ export class FluidIngredient extends BaseIngredient {
     constructor(d: schema.Ingredient, gd: GameData) {
         super(d)
         this.item = gd.fluidMap[d.name]
+        // TODO: convert super high floats to infinities
         this.minimum_temperature = d.minimum_temperature || -Infinity
         this.maximum_temperature = d.maximum_temperature || Infinity
+
+        if (this.maximum_temperature >= 1.797e+308) {
+            this.maximum_temperature = Infinity
+        }
+        if (this.minimum_temperature <= -1.797e+308) {
+            this.minimum_temperature = -Infinity
+        }
+    }
+
+    niceName() {
+        const min = this.minimum_temperature
+        const max = this.maximum_temperature
+        let range = ""
+        if (min != -Infinity && max != Infinity) {
+            range = ` (${min}° – ${max}°)`
+        } else if (max != Infinity) {
+            range = ` (≤ ${max}°)`
+        } else if (min != -Infinity) {
+            range = ` (≥ ${max}°)`
+        }
+        return `${this.amount.toString()} × ${this.item.niceName() }${range}`
     }
 }
 
@@ -127,6 +153,16 @@ export class ItemProduct extends BaseProduct {
         super(d)
         this.item = gd.itemMap[d.name]
     }
+
+    niceName() {
+        return `${this.amount.toString()} × ${this.item.niceName()}`
+    }
+
+    satisfies(ingredient: Ingredient) {
+        return (
+            ingredient.type == "item" &&
+            ingredient.item == this.item)
+    }
 }
 
 export class FluidProduct extends BaseProduct {
@@ -141,7 +177,23 @@ export class FluidProduct extends BaseProduct {
             console.log("no item", d)
             debugger
         }
-        this.temperature = d.temperature || this.item.default_temperature || 15
+        this.temperature = d.temperature || this.item.default_temperature
+    }
+
+    niceName() {
+        let temp = ""
+        if (this.temperature != this.item.default_temperature) {
+            temp = ` (${this.temperature}°)`
+        }
+        return `${this.amount.toString()} × ${this.item.niceName()}${temp}`
+    }
+
+    satisfies(ingredient: Ingredient) {
+        return (
+            ingredient.type == "fluid" &&
+            ingredient.item == this.item &&
+            ingredient.maximum_temperature >= this.temperature &&
+            ingredient.minimum_temperature <= this.temperature)
     }
 }
 
@@ -152,7 +204,8 @@ export class Recipe extends BaseDisplayable {
     ingredients: Ingredient[];
     products: Product[];
     crafting_time: Rational;
-    default_machine = Entity.AssemblingMachine
+
+    madeIn: Entity.AssemblingMachine[] = []
 
     constructor(d: schema.Recipe, gd: GameData) {
         super(d)
@@ -168,7 +221,7 @@ export class Recipe extends BaseDisplayable {
             }
         });
 
-        this.products = d.results.map((result) => {
+        this.products = d.products.map((result) => {
             if (result.type == "fluid") {
                 return new FluidProduct(result, gd); 
             } else {
@@ -176,18 +229,34 @@ export class Recipe extends BaseDisplayable {
             }
         });
     }
+
+    niceName() {
+        if (this.products.length > 1) {
+            return super.niceName()
+        } else if (this.products[0].amount.equal(Rational.one)) {
+            return this.products[0].item.niceName()
+        } else {
+            return this.products[0].niceName()
+        }
+
+    }
 }
 
 export namespace Entity {
-    abstract class BaseEntity<T> {
+    abstract class BaseEntity<T extends schema.BaseEntity> {
         data: T
         constructor(data: T) {
             this.data = data
+        }
+
+        niceName() {
+            return this.data.localised_name.en
         }
     }
 
     export class AssemblingMachine extends BaseEntity<schema.AssemblingMachine> {
         canBuildRecipe(recipe: Recipe) {
+            // TODO: this needs to account for entity fluid boxes
             if (this.data.crafting_categories.indexOf(recipe.category) == -1) {
                 return false
             }
@@ -212,13 +281,17 @@ export class GameData {
 
     entities: {
         "assembling-machine": Entity.AssemblingMachine[]
+        "furnace": Entity.AssemblingMachine[]
+        "rocket-silo": Entity.AssemblingMachine[]
     }
 
     constructor(data: schema.Root) {
         this.raw = data
 
         this.entities = {
-            'assembling-machine': values(data['assembling-machine']).map((m) => new Entity.AssemblingMachine(m))
+            'assembling-machine': values(data['assembling-machine']).map((m) => new Entity.AssemblingMachine(m)),
+            'furnace': values(data['furnace']).map((m) => new Entity.AssemblingMachine(m)),
+            'rocket-silo': values(data['rocket-silo']).map((m) => new Entity.AssemblingMachine(m)),
         }
 
         for (let itemName in data.items) {
@@ -237,15 +310,19 @@ export class GameData {
         for (let recipeName in data.recipes) {
             const recipe = new Recipe(data.recipes[recipeName], this);
 
-            // Filter to only recipes buildable by knonwn assembling machines
-            let hasMachine = false 
             for (let machine of this.entities['assembling-machine']) {
                 if (machine.canBuildRecipe(recipe)) {
-                    hasMachine = true
-                    break
+                    recipe.madeIn.push(machine)
                 }
             }
-            if (!hasMachine) {
+            for (let furnace of this.entities['furnace']) {
+                if (furnace.canBuildRecipe(recipe)) {
+                    recipe.madeIn.push(furnace)
+                }
+            }
+            if (recipe.madeIn.length == 0) {
+                // Filter to only recipes buildable by knonwn assembling machines
+                console.log("Ignoring uncraftable recipe", recipe.name, recipe)
                 continue
             }
 

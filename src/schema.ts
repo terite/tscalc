@@ -1,11 +1,8 @@
-type TODO = unknown;
-
 export type LocalisedName = {[locale: string]: string}
 
 
 interface Effectable {
-    // TODO: export empty allowed_effects
-    allowed_effects?: Array<"consumption" | "pollution" | "productivity" | "speed">
+    allowed_effects: Array<"consumption" | "pollution" | "productivity" | "speed">
     module_slots: number
 }
 
@@ -38,7 +35,7 @@ export interface OffshorePump extends BaseEntity {
     fluid: string
 }
 
-export interface RocketSilo extends AssemblingMachine, Effectable {
+export interface RocketSilo extends AssemblingMachine {
     rocket_parts_required: number;
 }
 
@@ -46,7 +43,7 @@ export interface TransportBelt extends BaseEntity {
     belt_speed: number
 }
 
-interface BaseItem {
+interface BaseItemOrFluid {
     name: string;
     localised_name: LocalisedName;
     icon_col: number;
@@ -54,11 +51,13 @@ interface BaseItem {
     group: string;
     subgroup: string
     order: string;
-
-    // rocket_launch_products: Result[]  // TODO: collect
 }
 
-export interface FluidItem extends BaseItem {
+export interface BaseItem extends BaseItemOrFluid {
+    rocket_launch_products: Product[]
+}
+
+export interface FluidItem extends BaseItemOrFluid {
     type: "fluid";
     default_temperature: number;
 }
@@ -69,6 +68,7 @@ interface FuelItem extends BaseItem {
 }
 
 interface ModuleItem extends BaseItem {
+    type: "module"
     category: "effectivity" | "productivity" | "speed"
     effect: {
         consumption?: {bonus: number}
@@ -76,7 +76,7 @@ interface ModuleItem extends BaseItem {
         productivity?: {bonus: number}
         speed?: {bonus: number}
     }
-    limitation: string[]
+    limitation?: string[]
 }
 
 export type Item = BaseItem | FuelItem | ModuleItem | FluidItem
@@ -84,14 +84,14 @@ export type Item = BaseItem | FuelItem | ModuleItem | FluidItem
 export interface Ingredient {
     name: string
     amount: number
-    type?: "item" | "fluid" // TODO: always export type
+    type?: "item" | "fluid"
     minimum_temperature?: number
     maximum_temperature?: number
 }
 
 interface BaseProduct {
     name: string
-    type?: "item" | "fluid" // TODO: always export type
+    type?: "item" | "fluid"
     temperature?: number
     probability?: number
 }
@@ -116,11 +116,10 @@ export interface Recipe {
     icon_col: number;
     icon_row: number;
     ingredients: Ingredient[];
-    results: Product[]; // TODO: rename results -> products
+    products: Product[];
     type: "recipe";
     order: string;
 
-    requester_paste_multiplier?: number // TODO: remove
     main_product?: string
 }
 
@@ -135,7 +134,6 @@ export interface Resource {
     minable: {
         hardness: number;
         mining_time: number;
-        mining_particle?: string;  // TODO: remove
         results: Product[]
         fluid_amount?: number
         required_fluid?: string
@@ -158,7 +156,15 @@ export interface Root {
 
     recipes: {[name: string]: Recipe};
     resource: {[name: string]: Resource};
-    sprites: TODO;
+
+    sprites: {
+        hash: string
+        extra: {[s:string]: {
+            icon_row: number
+            icon_col: number
+            name?: string
+        }}
+    }
 
     items: {[name: string]: Item};
 

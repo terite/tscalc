@@ -11,3 +11,12 @@ export function values<T>(obj: { [s: string]: T }): T[] {
     }
     return values
 }
+
+
+export function nbsp(input: string) {
+    return input.replace(/ /g, "\u00A0")
+}
+
+export function clone<T>(orig: T): T {
+    return Object.assign( Object.create( Object.getPrototypeOf(orig)), orig)
+}

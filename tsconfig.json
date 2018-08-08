@@ -19,6 +19,8 @@
 
         "module": "amd",
         "outFile": "dist/bundle.js",
+        "sourceMap": true,
+        "inlineSources": true,
 
         "moduleResolution": "node",
         "jsx": "react",

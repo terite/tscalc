@@ -1,30 +1,38 @@
 import { h, Component } from "preact";
 
 import * as game from "../game"
+// import {Totals} from '../totals'
+
+import {Icon} from './Icon'
+
+import {clone} from '../util'
 import {Totals} from '../totals'
 
-
-interface Props {
-    gameData: game.GameData
+type ChangeableProps = {
     recipe: game.Recipe
-}
-
-interface State {
+    machine: game.Entity.AssemblingMachine
     numMachines: number
-
-    // TOOD: modules
+    // modules: game.Entity.Module[]
 }
+
+export type Props = {
+    gameData: game.GameData
+    onRemove(r: game.Recipe): void
+    onChange(r: Props): void
+} & ChangeableProps
+
+type State = {}
 
 export class RecipeRow extends Component<Props, State> {
-    constructor(props: Props) {
-        super(props)
 
-        this.state = {
-            numMachines: 1,
-        }
+    public handleRemoveClick = () => {
+        this.props.onRemove(this.props.recipe)
     }
 
-    public handleMachineChange = (event: Event) => {
+    public handleMachineChange = () => {
+    }
+
+    public handleNumMachinesChange = (event: Event) => {
         const target = event.target as HTMLInputElement;
         const num = Number(target.value);
         if (!Number.isInteger(num)) {
@@ -32,37 +40,76 @@ export class RecipeRow extends Component<Props, State> {
             return
         }
         if (Number.isInteger(num) && num >= 0) {
-            this.setState({numMachines: num});
+            this.applyChange({numMachines: num})
         }
     }
 
-    calcProducts() {
-        let gd = this.props.gameData
-        let products = []
-        let totals = Totals.fromRecipeRow(this)
-        for (let name in totals.itemAmounts) {
-            let amount = totals.itemAmounts[name]
-            products.push(
-                <li key={name}>
-                    {amount.toString()} {gd.itemMap[name].niceName()}
-                </li>
-            )
-        }
+    applyChange(changes: Partial<ChangeableProps>) {
+        let newprops = Object.assign(clone(this.props), changes)
+        this.props.onChange(newprops)
+    }
 
-        return products
+    getOutput() {
+        let t = new Totals()
+        t.addRow(this.props)
+        return {
+            ingredients: t.ingredients,
+            products: t.products
+        }
     }
 
     render() {
+        let recipe = this.props.recipe
+        let output = this.getOutput()
+
+        let ingredients = output.ingredients.map((ingredient) =>
+            <Icon
+                obj={ingredient.item}
+                gameData={this.props.gameData}
+                text={ingredient.niceName()} />
+        )
+        let products = output.products.map((product) =>
+            <Icon
+                obj={product.item}
+                gameData={this.props.gameData}
+                text={product.niceName()} />
+        )
         return (
-            <div>
-                Recipe <strong>{this.props.recipe.niceName()}</strong> with {this.state.numMachines} machines!
-                <input
-                    value={this.state.numMachines}
-                    onInput={this.handleMachineChange}
-                    type="number" min="0" step="1" />
-                <ul>
-                    {this.calcProducts()}
-                </ul>
+            <div className="recipe-row">
+                <div className="recipe-cell">
+                    <div style="line-height: 32px">
+                        <Icon
+                            obj={recipe}
+                            gameData={this.props.gameData} />
+                        {recipe.niceName()} × <input
+                            value={this.props.numMachines}
+                            onInput={this.handleNumMachinesChange}
+                            type="number" min="0" step="1" />
+                        <Icon
+                            obj={this.props.machine.data}
+                            gameData={this.props.gameData}
+                            title={this.props.machine.niceName()}/>
+
+                        <div style="float:right">
+                            <Icon
+                                obj={recipe}
+                                gameData={this.props.gameData}
+                                title="Remove recipe"
+                                onClick={this.handleRemoveClick} />
+                        </div>
+                    </div>
+                    <hr />
+
+                    <div style="display: inline-block">
+                        Ingredients:
+                        {ingredients}
+                    </div>
+
+                    <div style="display: inline-block">
+                        Products:
+                        {products}
+                    </div>
+                </div>
             </div>
         )
     }

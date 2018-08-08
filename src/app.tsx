@@ -2,30 +2,27 @@ import { h, Component } from "preact";
 
 import * as game from "./game"
 
-interface AppState {
-    data?: game.GameData
-    crashMsg?: string,
-    hiddenRecipes: Set<string>
+import {RecipeGroup} from "./components/RecipeGroup"
+
+interface State {
+    crashMsg?: string
+    group: JSX.Element | null
 }
 
-
-// import {HoverableIcon} from "./components/HoverableIcon"
-import {RecipeRow} from "./components/RecipeRow"
-
-
-export class App extends Component<{}, AppState> {
+export class App extends Component<{}, State> {
 
     constructor(props: {}) {
         super(props)
+
         this.state = {
-            hiddenRecipes: new Set()
+            group: null
         }
 
-        fetch("data.json")
+        fetch("seablock.json")
             .then((response) => response.json())
-            .then((json: any) => {
+            .then((raw: any) => {
                 this.setState({
-                    data: new game.GameData(json)
+                    group: <RecipeGroup gameData={new game.GameData(raw)} />
                 });
             })
             .catch(error => {
@@ -40,27 +37,18 @@ export class App extends Component<{}, AppState> {
         })
     }
 
-    formatRecipes(recipes: game.Recipe[]) {
-        return recipes
-            .filter((r) => r.products.length > 1)
-            .map((r) => <RecipeRow recipe={r} key={r.name} gameData={this.state.data!}/>)
-    }
-
     render() {
         if (this.state.crashMsg != null) {
-            console.log("rendering crash")
             return <div>
                 <h1>Crashed!</h1>
                 <span>{this.state.crashMsg}</span>
             </div>
-        } else if (!this.state.data) {
-            console.log("rendering loading")
+        } else if (!this.state.group) {
             return <h1>Loading...</h1>
         } else {
-            console.log("rendering items")
             return (
             <div>
-                {this.formatRecipes(this.state.data.recipes)}
+                {this.state.group}
             </div>
             )
         }

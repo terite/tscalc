@@ -95,6 +95,14 @@ export class Rational {
         return this.p == other.p && this.q == other.q
     }
 
+    isOne() {
+        return this.p == 1
+    }
+
+    isZero() {
+        return this.p == 0
+    }
+
     less(other: Rational) {
         return (this.p * other.q) < (this.q * other.p)
     }

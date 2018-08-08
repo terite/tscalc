@@ -1,0 +1,19 @@
+body {
+    font-family: 'Titillium Web', sans-serif;
+}
+
+
+.recipe-cell {
+    border: 2px solid #ccc;
+    background-color: #555;
+    color: white;
+    padding: 5px;
+
+    /* display: flex; */
+}
+
+.recipe-cell .icon {
+    border: 2px solid #aaa;
+    background-color: #aaa;
+    margin: 1px 10px 1px 1px;
+}
