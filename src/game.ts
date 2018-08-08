@@ -310,14 +310,13 @@ export class GameData {
         for (let recipeName in data.recipes) {
             const recipe = new Recipe(data.recipes[recipeName], this);
 
-            for (let machine of this.entities['assembling-machine']) {
-                if (machine.canBuildRecipe(recipe)) {
-                    recipe.madeIn.push(machine)
-                }
-            }
-            for (let furnace of this.entities['furnace']) {
-                if (furnace.canBuildRecipe(recipe)) {
-                    recipe.madeIn.push(furnace)
+            let assemblerTypes: Array<keyof GameData['entities']> = ['assembling-machine', 'furnace', 'rocket-silo']
+
+            for (let entityType of assemblerTypes) {
+                for (let entity of this.entities[entityType]) {
+                    if (entity.canBuildRecipe(recipe)) {
+                        recipe.madeIn.push(entity)
+                    }
                 }
             }
             if (recipe.madeIn.length == 0) {
