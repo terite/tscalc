@@ -92,30 +92,27 @@ export class RecipeGroup extends React.Component<Props, State> {
         })})
     }
 
-    renderRow(row: RecipeRowProps, index: number) {
-        return <RecipeRow key={index} {...row} />
+    renderRow(row: RecipeRowProps) {
+        return <RecipeRow key={row.recipe.name} {...row} />
     }
 
     private renderTotals(totals: Totals) {
         let reduced = totals.reduce()
         return (
         <>
-            <div style={{display: "inline-block"}}>
+            <div style={{display: "inline-block", float: "left"}}>
                 Ingredients:
-                <ul>
                 {reduced.ingredients.map((ing, i) => (
-                    <li key={i}><Icon gameData={this.props.gameData} obj={ing.item} text={ing.niceName()} /></li>
+                    <Icon key={i} gameData={this.props.gameData} obj={ing.item} text={ing.niceName()} />
                 ))}
-                </ul>
             </div>
             <div style={{display: "inline-block"}}>
                 Products:
-                <ul>
                 {reduced.products.map((prod, i) => (
-                    <li key={i}><Icon gameData={this.props.gameData} obj={prod.item} text={prod.niceName()} /></li>
+                    <Icon key={i} gameData={this.props.gameData} obj={prod.item} text={prod.niceName()} />
                 ))}
-                </ul>
             </div>
+            <div style={{clear: "both"}}></div>
         </>)
     }
 
@@ -137,7 +134,6 @@ export class RecipeGroup extends React.Component<Props, State> {
                 gameData={this.props.gameData}
                 onPickRecipe={this.handlePickRecipe} />
             <hr />
-            <div>Have {this.state.rows.length} row(s)</div>
             {this.state.rows.map(this.renderRow)}
             <hr />
             {this.renderTotals(totals)}
