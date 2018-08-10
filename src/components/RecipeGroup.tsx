@@ -100,13 +100,13 @@ export class RecipeGroup extends React.Component<Props, State> {
         let reduced = totals.reduce()
         return (
         <>
-            <div style={{display: "inline-block", float: "left"}}>
+            <div className="well" style={{display: "inline-block", float: "left"}}>
                 Ingredients:
                 {reduced.ingredients.map((ing, i) => (
                     <Icon key={i} gameData={this.props.gameData} obj={ing.item} text={ing.niceName()} />
                 ))}
             </div>
-            <div style={{display: "inline-block"}}>
+            <div className="well" style={{display: "inline-block"}}>
                 Products:
                 {reduced.products.map((prod, i) => (
                     <Icon key={i} gameData={this.props.gameData} obj={prod.item} text={prod.niceName()} />

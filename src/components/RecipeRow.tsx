@@ -132,7 +132,7 @@ export class RecipeRow extends React.Component<Props, State> {
                     </div>
                     <hr />
 
-                    <div style={{display: "inline-block"}}>
+                    <div style={{display: "inline-block", float: "left"}}>
                         Ingredients:
                         {ingredients}
                     </div>
@@ -141,6 +141,7 @@ export class RecipeRow extends React.Component<Props, State> {
                         Products:
                         {products}
                     </div>
+                    <div style={{clear: "both"}} />
                 </div>
             </div>
         )
