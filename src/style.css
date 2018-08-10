@@ -6,8 +6,7 @@ body {
     margin: 5px;
 }
 
-
-.recipe-cell {
+.well, .recipe-cell {
     border: 2px solid #ccc;
     background-color: #555;
     color: white;

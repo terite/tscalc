@@ -39,22 +39,23 @@ export class RecipeCell extends React.Component<Props, State> {
 
         return (
             <div className="recipe-cell" onClick={this.handleClick}>
-                <div style={{display: "inline-block"}}>
-                    <Icon
-                        obj={recipe}
-                        gameData={this.props.gameData} 
-                        text={recipe.niceName()} />
-                    <Icon
-                        obj={this.props.gameData.raw.sprites.extra["clock"]}
-                        gameData={this.props.gameData} 
-                        text={recipe.crafting_time.toString()} />
+                <Icon
+                    obj={recipe}
+                    gameData={this.props.gameData} 
+                    text={recipe.niceName()} />
+                <Icon
+                    obj={this.props.gameData.raw.sprites.extra["clock"]}
+                    gameData={this.props.gameData} 
+                    text={recipe.crafting_time.toString()} />
+                <div style={{float:"left"}}>
+                    Ingredients:
                     {ingredients}
                 </div>
-
                 <div style={{display: "inline-block"}}>
                     Products:
                     {products}
                 </div>
+                <div style={{clear: "both"}} />
             </div>
         )
     }

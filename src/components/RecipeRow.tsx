@@ -3,6 +3,8 @@ import * as React from "react";
 import * as game from "../game"
 
 import {Icon} from './Icon'
+import {RecipeCell} from './RecipeCell'
+import {MachinePicker} from './MachinePicker'
 
 import {clone} from '../util'
 import {Totals} from '../totals'
@@ -59,6 +61,12 @@ export class RecipeRow extends React.Component<Props, State> {
     }
 
     renderMachines() {
+        return <MachinePicker
+            gameData={this.props.gameData}
+            machines={this.props.recipe.madeIn}
+            selected={this.props.machine}
+            onChange={this.handleMachineChange}
+            />
         return this.props.recipe.madeIn.map((machine) => {
             let style = (machine == this.props.machine) ? {border: "1px solid red"} : {}
 
@@ -72,6 +80,16 @@ export class RecipeRow extends React.Component<Props, State> {
                 onClick={this.handleMachineChange.bind(this, machine)}
                 />
         })
+    }
+
+    renderRecipeIcon() {
+        return <Icon
+            obj={this.props.recipe}
+            gameData={this.props.gameData}
+            tooltip={<RecipeCell 
+                recipe={this.props.recipe}
+                gameData={this.props.gameData} />}
+            />
     }
 
     render() {
@@ -96,9 +114,7 @@ export class RecipeRow extends React.Component<Props, State> {
             <div className="recipe-row">
                 <div className="recipe-cell">
                     <div style={{lineHeight: "32px"}}>
-                        <Icon
-                            obj={recipe}
-                            gameData={this.props.gameData} />
+                        {this.renderRecipeIcon()}
                         {recipe.niceName()} × <input
                             value={this.props.numMachines}
                             onChange={this.handleNumMachinesChange}

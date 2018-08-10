@@ -1,9 +1,11 @@
 import * as React from "react"
 
+import {Tooltip} from './Tooltip'
+
 import * as game from "../game"
 
 
-type Props = {
+type IconProps = {
     gameData: game.GameData
     obj: {icon_row: number, icon_col: number}
 
@@ -11,11 +13,16 @@ type Props = {
     title?: string
     onClick?(): void
     style?: React.CSSProperties
+    tooltip?: JSX.Element
 }
 
-export class Icon extends React.Component<Props, {}> {
+export class Icon extends React.Component<IconProps, {}> {
 
-    render() {
+    divProps: any
+
+    constructor(props: IconProps) {
+        super(props)
+
         const gd = this.props.gameData
         const obj = this.props.obj;
         const x = -obj.icon_col * 32
@@ -29,12 +36,42 @@ export class Icon extends React.Component<Props, {}> {
             height: "32px",
             ...this.props.style
         };
-        let icon = (<div
-            title={this.props.title}
-            className="icon"
-            style={divStyle}
-            onClick={this.props.onClick}>&nbsp;</div>
-        )
+        this.divProps = {
+            title: this.props.title,
+            className: "icon",
+            style: divStyle,
+            onClick: this.props.onClick
+        }
+    }
+
+    render() {
+        let icon
+        if (this.props.tooltip) {
+            icon = (
+                <Tooltip
+                    target={ ({style}) => (
+                        <div style={style}>{this.props.tooltip}</div>
+                    )}
+                    options={{
+                        placement : 'right',
+                        modifiers: {
+                            offset: {
+                                offset: "0, 20"
+                            },
+                            preventOverflow: {
+                                boundariesElement: "window"
+                            }
+                        }
+                    }}>
+                {({controller}) => <div {...this.divProps}
+                        onMouseEnter={controller.show}
+                        onMouseLeave={controller.hide}>&nbsp;</div>
+                }
+                </Tooltip>
+            )
+        } else {
+            icon = <div {...this.divProps}>&nbsp;</div>
+        }
 
         if (this.props.text) {
             return (
