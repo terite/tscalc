@@ -6,7 +6,7 @@ import {RecipeGroup} from "./components/RecipeGroup"
 
 interface State {
     crashMsg?: string
-    group: JSX.Element | null
+    gameData: game.GameData|null
 }
 
 export class App extends React.Component<{}, State> {
@@ -15,15 +15,15 @@ export class App extends React.Component<{}, State> {
         super(props)
 
         this.state = {
-            group: null
+            gameData: null
         }
 
         fetch("seablock.json")
             .then((response) => response.json())
             .then((raw: any) => {
                 this.setState({
-                    group: <RecipeGroup gameData={new game.GameData(raw)} />
-                });
+                    gameData: new game.GameData(raw)
+                })
             })
             .catch(error => {
                 console.error(error);
@@ -43,14 +43,10 @@ export class App extends React.Component<{}, State> {
                 <h1>Crashed!</h1>
                 <span>{this.state.crashMsg}</span>
             </div>
-        } else if (!this.state.group) {
+        } else if (!this.state.gameData) {
             return <h1>Loading...</h1>
         } else {
-            return (
-            <div>
-                {this.state.group}
-            </div>
-            )
+            return <RecipeGroup gameData={this.state.gameData} />
         }
 
     }
