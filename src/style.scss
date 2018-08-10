@@ -1,9 +1,18 @@
+@import "~bootstrap/scss/bootstrap";
+
+
 body {
     font-family: 'Titillium Web', sans-serif;
 }
 
 .recipe-row {
     margin: 5px;
+}
+
+.game-icon {
+    border: 2px solid #aaa;
+    background-color: #aaa;
+    margin: 1px 10px 1px 1px;
 }
 
 .well, .recipe-cell {

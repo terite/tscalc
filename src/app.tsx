@@ -46,7 +46,9 @@ export class App extends React.Component<{}, State> {
         } else if (!this.state.gameData) {
             return <h1>Loading...</h1>
         } else {
-            return <RecipeGroup gameData={this.state.gameData} />
+            return (
+                <RecipeGroup gameData={this.state.gameData} />
+            )
         }
 
     }
