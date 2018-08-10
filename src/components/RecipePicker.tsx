@@ -15,6 +15,8 @@ type State = {
     focused: boolean
 }
 
+const RE_ADVANCED = /((?:produces)|(?:consumes)):([a-z\-]+)/g
+
 export class RecipePicker extends React.Component<Props, State> {
 
     constructor(props: Props) {
@@ -45,17 +47,45 @@ export class RecipePicker extends React.Component<Props, State> {
         }, 100)
     }
 
-    render() {
-        let query = (this.state.query || "").toLowerCase()
-        let matches = this.props.recipes
-            .filter((recipe) => {
-                if (query || this.state.focused) {
-                    return (
-                        recipe.niceName().toLowerCase().includes(query) ||
-                        recipe.name.toLowerCase().includes(query))
+    matcher = () => {
+        let query = this.state.query.trim().toLowerCase()
+        if (!query) {
+            return () => false
+        }
+
+        let conditions = {
+            consumes: [] as string[],
+            produces: [] as string[]
+        }
+
+        type ckey = keyof typeof conditions
+
+        query = query.replace(RE_ADVANCED, (_, key, value) => {
+            conditions[key as ckey].push(value)
+            return ""
+        }).trim()
+
+        return (recipe: game.Recipe) => {
+            for (let name of conditions.consumes) {
+                if (!recipe.ingredients.some(i => i.name == name)) {
+                    return false
                 }
-                return false
-            })
+            }
+            for (let name of conditions.produces) {
+                if (!recipe.products.some(i => i.name == name)) {
+                    return false
+                }
+            }
+
+            return (
+                recipe.niceName().toLowerCase().includes(query) ||
+                recipe.name.toLowerCase().includes(query))
+        }
+    }
+
+    render() {
+        let matches = this.props.recipes
+            .filter(this.matcher())
             .slice(0, 10)
             .map((r) => <RecipeCell
                 key={r.name}
