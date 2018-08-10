@@ -16,7 +16,6 @@ class MachineTooltip extends React.Component<{machine: Machine}, {}> {
 }
 
 interface MachinePickerProps {
-    gameData: game.GameData
     machines: Machine[]
     selected: Machine 
     onChange(m: Machine): void
@@ -38,7 +37,6 @@ export class MachinePicker extends React.Component<MachinePickerProps, MachinePi
     render() {
         return <Icon
             obj={this.props.selected.data}
-            gameData={this.props.gameData}
             tooltip={<MachineTooltip machine={this.props.selected} />}
             />
     }

@@ -4,6 +4,8 @@ import * as game from "./game"
 
 import {RecipeGroup} from "./components/RecipeGroup"
 
+import {GameContext} from './context'
+
 interface State {
     crashMsg?: string
     gameData: game.GameData|null
@@ -57,7 +59,9 @@ export class App extends React.Component<{}, State> {
             return <h1>Loading...</h1>
         } else {
             return (
-                <RecipeGroup gameData={this.state.gameData} />
+                <GameContext.Provider value={this.state.gameData}>
+                    <RecipeGroup gameData={this.state.gameData} />
+                </GameContext.Provider>
             )
         }
 

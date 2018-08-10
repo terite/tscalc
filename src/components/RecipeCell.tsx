@@ -11,10 +11,7 @@ type Props = {
     onClick?(r: game.Recipe): void
 }
 
-type State = {
-}
-
-export class RecipeCell extends React.Component<Props, State> {
+export class RecipeCell extends React.Component<Props, {}> {
     public handleClick = () => {
         this.props.onClick && this.props.onClick(this.props.recipe)
     }
@@ -26,14 +23,12 @@ export class RecipeCell extends React.Component<Props, State> {
             <Icon
                 key={i}
                 obj={ingredient.item}
-                gameData={this.props.gameData}
                 text={ingredient.niceName()} />
         )
         let products = recipe.products.map((product, i) =>
             <Icon
                 key={i}
                 obj={product.item}
-                gameData={this.props.gameData} 
                 text={product.niceName()} />
         )
 
@@ -41,11 +36,9 @@ export class RecipeCell extends React.Component<Props, State> {
             <div className="recipe-cell" onClick={this.handleClick}>
                 <Icon
                     obj={recipe}
-                    gameData={this.props.gameData} 
                     text={recipe.niceName()} />
                 <Icon
                     obj={this.props.gameData.raw.sprites.extra["clock"]}
-                    gameData={this.props.gameData} 
                     text={recipe.crafting_time.toString()} />
                 <div style={{float:"left"}}>
                     Ingredients:

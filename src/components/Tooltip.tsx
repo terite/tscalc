@@ -152,7 +152,6 @@ export class Tooltip extends Component<TooltipProps, TooltipState> {
     }
 
     update = (data: Popper.Data) => {
-        console.log('update', data)
         this.setStyle(data)
         return data; // Important! Return data to popper
     }

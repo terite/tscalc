@@ -62,7 +62,6 @@ export class RecipeRow extends React.Component<Props, State> {
 
     renderMachines() {
         return <MachinePicker
-            gameData={this.props.gameData}
             machines={this.props.recipe.madeIn}
             selected={this.props.machine}
             onChange={this.handleMachineChange}
@@ -75,7 +74,6 @@ export class RecipeRow extends React.Component<Props, State> {
                 style={style}
                 key={machine.data.name}
                 obj={machine.data}
-                gameData={this.props.gameData}
                 title={text} 
                 onClick={this.handleMachineChange.bind(this, machine)}
                 />
@@ -85,7 +83,6 @@ export class RecipeRow extends React.Component<Props, State> {
     renderRecipeIcon() {
         return <Icon
             obj={this.props.recipe}
-            gameData={this.props.gameData}
             tooltip={<RecipeCell 
                 recipe={this.props.recipe}
                 gameData={this.props.gameData} />}
@@ -100,14 +97,12 @@ export class RecipeRow extends React.Component<Props, State> {
             <Icon
                 key={i}
                 obj={ingredient.item}
-                gameData={this.props.gameData}
                 text={ingredient.niceName()} />
         )
         let products = output.products.map((product, i) =>
             <Icon
                 key={i}
                 obj={product.item}
-                gameData={this.props.gameData}
                 text={product.niceName()} />
         )
         return (
@@ -125,7 +120,6 @@ export class RecipeRow extends React.Component<Props, State> {
                         <div style={{float: "right"}}>
                             <Icon
                                 obj={recipe}
-                                gameData={this.props.gameData}
                                 title="Remove recipe"
                                 onClick={this.handleRemoveClick} />
                         </div>
