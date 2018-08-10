@@ -4,11 +4,6 @@ import * as ReactDOM from "react-dom";
 
 import './style.scss';
 
-let node = document.querySelector('#app')!;
-
-while (node.firstChild) {
-    node.removeChild(node.firstChild);
-}
-
+let node = document.querySelector('#root')!;
 import {App} from "./app"
 ReactDOM.render(<App />, node);
