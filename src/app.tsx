@@ -31,6 +31,16 @@ export class App extends React.Component<{}, State> {
             });
     }
 
+    componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+        // Catch errors in any components below and re-render with error message
+        this.crash([
+            "Component Stack:",
+            errorInfo.componentStack,
+            "",
+            error && error.stack
+        ].join("\n"))
+    }
+
     crash(msg: string) {
         this.setState({
             crashMsg: msg
@@ -41,7 +51,7 @@ export class App extends React.Component<{}, State> {
         if (this.state.crashMsg != null) {
             return <div>
                 <h1>Crashed!</h1>
-                <span>{this.state.crashMsg}</span>
+                <pre>{this.state.crashMsg}</pre>
             </div>
         } else if (!this.state.gameData) {
             return <h1>Loading...</h1>
