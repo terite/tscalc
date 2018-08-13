@@ -48,10 +48,29 @@ export class Totals {
     }
 
     addRow(row: RecipeRowProps) {
+        let effects = {
+            speed: Rational.one,
+            productivity: Rational.one,
+            consumption: Rational.one,
+            pollution: Rational.one
+        }
+
+        for (let module of row.modules) {
+            if (!module) continue
+            effects.speed = effects.speed.add(module.effects.speed)
+            effects.productivity = effects.productivity.add(module.effects.productivity)
+            effects.consumption = effects.consumption.add(module.effects.consumption)
+            effects.pollution = effects.pollution.add(module.effects.pollution)
+        }
+
+        console.log("speed", effects.speed.toString())
+        console.log("prod", effects.productivity.toString())
+
         let mult = Rational.one
             .mul(row.recipe.crafting_time.invert())
             .mul(row.numMachines)
             .mul(row.machine.data.crafting_speed)
+            .mul(effects.speed)
 
         row.recipe.ingredients
             .map((ingredient) => {

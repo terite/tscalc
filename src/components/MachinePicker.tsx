@@ -3,17 +3,12 @@ import * as React from 'react'
 import * as game from '../game'
 
 import {Icon} from './Icon'
+import {MachineCard} from './MachineCard'
+import {Dropdown} from './generic'
+
+
 
 type Machine = game.Entity.AssemblingMachine
-
-class MachineTooltip extends React.Component<{machine: Machine}, {}> {
-    render() {
-        return <div className="well">
-            <b>{this.props.machine.niceName()}</b><br />
-            <b>Crafting Speed:</b> {this.props.machine.data.crafting_speed}
-        </div>
-    }
-}
 
 interface MachinePickerProps {
     machines: Machine[]
@@ -21,24 +16,33 @@ interface MachinePickerProps {
     onChange(m: Machine): void
 }
 
-interface MachinePickerState {
-    selected: Machine 
+const renderSelected = (machine: Machine) => {
+    return <Icon
+        obj={machine.data}
+        tooltip={<MachineCard machine={machine} />}
+        />
 }
 
-export class MachinePicker extends React.Component<MachinePickerProps, MachinePickerState> {
+const renderOption = (machine: Machine) => {
+    return <Icon
+        obj={machine.data}
+        tooltip={<MachineCard machine={machine} />}
+        text={machine.niceName()}
+        />
+}
 
-    constructor(props: MachinePickerProps) {
-        super(props)
-        this.state = {
-            selected: this.props.selected
-        }
-    }
+export const MachinePicker = (props: MachinePickerProps) => {
+    const options = props.machines.map(machine => ({
+        key: machine.data.name,
+        option: machine,
+        active: machine == props.selected,
+    }))
 
-    render() {
-        return <Icon
-            obj={this.props.selected.data}
-            tooltip={<MachineTooltip machine={this.props.selected} />}
-            />
-    }
-
+    return <Dropdown
+        options={options}
+        selected={props.selected}
+        onSelect={props.onChange}
+        renderOption={renderOption}
+        renderSelected={renderSelected}
+    />
 }

@@ -1,16 +1,13 @@
 {
     "compilerOptions": {
         "alwaysStrict": true,
-
         "noEmitOnError": true,
         "noImplicitAny": true,
         "noImplicitReturns": true,
         "noImplicitThis": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
-
         "preserveConstEnums": true,
-
         "strictFunctionTypes": true,
         "strictPropertyInitialization": true,
         "strictNullChecks": true,

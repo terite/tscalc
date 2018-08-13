@@ -60,7 +60,9 @@ export class App extends React.Component<{}, State> {
         } else {
             return (
                 <GameContext.Provider value={this.state.gameData}>
-                    <RecipeGroup gameData={this.state.gameData} />
+                    <div className="container">
+                        <RecipeGroup gameData={this.state.gameData} />
+                    </div>
                 </GameContext.Provider>
             )
         }

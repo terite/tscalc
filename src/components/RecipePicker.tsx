@@ -2,7 +2,7 @@ import * as React from "react"
 
 import * as game from "../game"
 
-import {RecipeCell} from './RecipeCell'
+import {RecipeCard} from './RecipeCard'
 
 type Props = {
     gameData: game.GameData
@@ -87,20 +87,23 @@ export class RecipePicker extends React.Component<Props, State> {
         let matches = this.props.recipes
             .filter(this.matcher())
             .slice(0, 10)
-            .map((r) => <RecipeCell
-                key={r.name}
+            .map((r) => <div key={r.name} onClick={() => this.handleRecipeClick(r)}>
+                <RecipeCard
                 recipe={r}
                 gameData={this.props.gameData}
-                onClick={this.handleRecipeClick}/>)
+                onClick={this.handleRecipeClick}/>
+            </div>)
 
         return (
-        <div>
-            <input
+        <div className="recipe-picker">
+            <div>
+            <input className="editable-display"
                 value={this.state.query}
                 onChange={this.handleQueryInput}
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}
             />
+            </div>
             {matches}
         </div>
         )

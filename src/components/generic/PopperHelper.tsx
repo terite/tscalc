@@ -1,5 +1,3 @@
-// NOTE: This component requires React 16 or newer.
-
 // Usage:
 /*
 <Position
@@ -17,9 +15,10 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom';
 import Popper from 'popper.js';
 
-import {debounce, deepEqual} from '../util'
+import {debounce, deepEqual} from '../../util'
 
-let {Component} = React
+const floaterRoot = document.getElementById('floater-root')!;
+const {Component} = React
 
 class Wrapper extends Component<{}, {}> {
     render(){
@@ -27,7 +26,26 @@ class Wrapper extends Component<{}, {}> {
     }
 }
 
-interface TooltipController {
+class FloaterWrapper extends React.Component<{}, {}> {
+    el = document.createElement('div')
+
+    componentDidMount() {
+        floaterRoot.appendChild(this.el);
+    }
+
+    componentWillUnmount() {
+        floaterRoot.removeChild(this.el);
+    }
+
+    render() {
+        return ReactDOM.createPortal(
+            this.props.children,
+            this.el,
+        );
+    }
+}
+
+interface PopperHelperController {
     show(): void
     hide(): void
 }
@@ -40,57 +58,69 @@ interface TargetFn {
 
 interface ChildrenFn {
     (a: {
-        controller: TooltipController
+        controller: PopperHelperController
     }): React.ReactNode
 }
 
-interface TooltipProps {
+interface PopperHelperProps {
     children: ChildrenFn
     target: TargetFn
     options: Popper.PopperOptions
 }
 
-type TooltipState = {
-    showTooltip: boolean
+type PopperHelperState = {
+    showFloater: boolean
     popperStyle: React.CSSProperties
 }
 
 
-export class Tooltip extends Component<TooltipProps, TooltipState> {
+class PopperHelperController {
+    private helper: PopperHelper
+    constructor(helper: PopperHelper) {
+        this.helper = helper
+    }
 
+    get isShown() {
+        return this.helper.state.showFloater
+    }
+
+    set isShown(shown: boolean) {
+        if (shown == this.helper.state.showFloater) {
+            return
+        }
+        this.helper.setState({showFloater: shown})
+    }
+
+    show = () => {
+        this.isShown = true
+    }
+    hide = () => {
+        this.isShown = false
+    }
+    toggle = () => {
+        this.isShown = !this.isShown
+    }
+}
+
+export class PopperHelper extends Component<PopperHelperProps, PopperHelperState> {
     popperInstance?: Popper
-
     parentWrapperEl: React.ReactInstance|null = null
+    controller: PopperHelperController
 
-    controller: TooltipController
-
-    constructor(props: TooltipProps) {
+    constructor(props: PopperHelperProps) {
         super(props)
         this.state = {
-            showTooltip: false,
+            showFloater: false,
             popperStyle: {}
         }
 
-        this.controller = {
-            show: () => {
-                if (this.state.showTooltip) return
-                this.setState({showTooltip: true})
-            },
-            hide: () => {
-                if (!this.state.showTooltip) return
-                this.setState({
-                    showTooltip: false,
-                    popperStyle: {}
-                })
-            }
-        }
+        this.controller = new PopperHelperController(this)
     }
 
     _targetWrapperEl: React.ReactInstance|null = null
     get targetWrapperEl() {
         return this._targetWrapperEl
     }
-
     set targetWrapperEl(val) {
         this._targetWrapperEl = val
         if (val) {
@@ -116,6 +146,7 @@ export class Tooltip extends Component<TooltipProps, TooltipState> {
     }
 
     componentWillUnmount() {
+        this.limitedSetStyle.reset()
         this.popperInstance && this.popperInstance.destroy()
     }
 
@@ -123,13 +154,13 @@ export class Tooltip extends Component<TooltipProps, TooltipState> {
         if (this.popperInstance) {
             console.error('popper already initialized')
         }
-        let targetNode = this.targetNode
+        const targetNode = this.targetNode
         if (!targetNode) {
             console.error('cannot init popper, no target')
             return
         }
 
-        let parentNode = this.parentNode
+        const parentNode = this.parentNode
         if (!parentNode) {
             console.error('cannot init popper, no parent')
             return
@@ -141,6 +172,7 @@ export class Tooltip extends Component<TooltipProps, TooltipState> {
             {
                 ...this.props.options, // Spread the options provided to the component
                 modifiers : {
+                    ...this.props.options.modifiers,
                     applyStyle: {enabled : false},
                     updateStateWithStyle: {
                         enabled : true,
@@ -152,32 +184,34 @@ export class Tooltip extends Component<TooltipProps, TooltipState> {
     }
 
     update = (data: Popper.Data) => {
-        this.setStyle(data)
+        this.limitedSetStyle(data)
         return data; // Important! Return data to popper
     }
 
     setStyle = (data: Popper.Data) => {
-        if ( !data || !data.offsets || !data.offsets.popper ) { return }
-
-        // Typings for popper offsets is bugged
-        const offsets = data.offsets.popper as Popper.Offset & {
-            position: React.CSSProperties['position']
+        if ( !data || !data.offsets || !data.offsets.popper ) {
+            return
         }
 
-        let newStyle = {
-            position: offsets.position,
-            top: `${offsets.top}px`,
-            left: `${offsets.left}px`,
-        }
+        // @types are incorrect for offsets.popper
+        // const offsets = data.offsets.popper as Popper.Offset & {
+        //     position: React.CSSProperties['position']
+        // }
 
-        // let newStyle = data.styles as React.CSSProperties
-        let oldStyle = this.state.popperStyle
+        // const newStyle = {
+        //     position: offsets.position,
+        //     top: `${offsets.top}px`,
+        //     left: `${offsets.left}px`,
+        // }
+
+        let newStyle = data.styles as React.CSSProperties
+        const oldStyle = this.state.popperStyle
         if (!deepEqual(oldStyle, newStyle)) {
             this.setState({popperStyle: newStyle})
         }
     }
 
-    debSetStyle = debounce(10, this.setStyle)
+    limitedSetStyle = debounce(10, this.setStyle)
 
     captureTarget = (el: React.ReactInstance|null) => {
         this.targetWrapperEl = el
@@ -188,15 +222,15 @@ export class Tooltip extends Component<TooltipProps, TooltipState> {
     }
 
     render(){
-        let tooltip: JSX.Element|null = null
-        if (this.state.showTooltip) {
-            tooltip = <Wrapper
+        let floater: JSX.Element|null = null
+        if (this.state.showFloater) {
+            floater = <FloaterWrapper
                 key={1}
                 ref={this.captureTarget}>
                 {this.props.target({
                     style: this.state.popperStyle
                 })}
-            </Wrapper>
+            </FloaterWrapper>
         }
         return <>
             <Wrapper
@@ -207,7 +241,7 @@ export class Tooltip extends Component<TooltipProps, TooltipState> {
                     controller: this.controller
                 })}
             </Wrapper>
-            {tooltip}
+            {floater}
         </>
     }
 }

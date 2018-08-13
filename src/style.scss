@@ -1,8 +1,9 @@
-@import "~bootstrap/scss/bootstrap";
+html, body {
+    height: 100%;
+}
 
+.recipe-group {
 
-body {
-    font-family: 'Titillium Web', sans-serif;
 }
 
 .recipe-row {
@@ -10,20 +11,20 @@ body {
 }
 
 .game-icon {
-    background-color: #aaa;
-    margin: 1px 10px 1px 1px;
+    // background-color: #aaa;
+    margin: 1px;
 }
 
-.well, .recipe-cell {
-    border: 2px solid #ccc;
-    background-color: #555;
-    color: white;
+.well {
+    display: table;
+    border-radius: 5px;
     padding: 5px;
-
-    /* display: flex; */
+    border: 1px solid black;
+    // background-color: #403f40;
 }
 
-.recipe-cell .icon {
-    background-color: #aaa;
-    margin: 1px 10px 1px 1px;
+.recipe-picker {
+    .recipe-tooltip {
+        display: inline-block;
+    }
 }

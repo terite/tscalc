@@ -32,12 +32,14 @@ export class BaseDisplayable implements IBaseDisplayable {
     }
 }
 
-export class BaseItem extends BaseDisplayable {
+abstract class BaseItem<T extends schema.Item> extends BaseDisplayable {
+    raw: T
     usedBy: Recipe[] = [];
     madeBy: Recipe[] = [];
 
-    constructor(d: schema.Item) {
+    constructor(d: T) {
         super(d);
+        this.raw = d
         this.name = d.name;
         this.localised_name = d.localised_name
         this.icon_col = d.icon_col;
@@ -49,12 +51,46 @@ export class BaseItem extends BaseDisplayable {
     }
 }
 
-export class Item extends BaseItem {
-    // TODO: figure out type
-    type: "item" = "item"
+export class Module extends BaseItem<schema.ModuleItem> {
+    type: "module"
+    limitedTo:Set<string>
+    effects: {
+        speed: Rational
+        productivity: Rational
+        consumption: Rational
+        pollution: Rational
+    }
+
+    constructor(d: schema.ModuleItem) {
+        super(d)
+        this.type = d.type
+        this.limitedTo = new Set(d.limitation)
+
+        this.effects = {
+            speed: Rational.fromFloat((d.effect.speed || {bonus: 0}).bonus),
+            productivity: Rational.fromFloat((d.effect.productivity || {bonus: 0}).bonus),
+            consumption: Rational.fromFloat((d.effect.consumption || {bonus: 0}).bonus),
+            pollution: Rational.fromFloat((d.effect.pollution || {bonus: 0}).bonus)
+
+        }
+    }
+
+    canUseWith(recipe: Recipe) {
+        if (this.limitedTo.size == 0) {
+            return true
+        }
+
+        return this.limitedTo.has(recipe.name)
+    }
 }
 
-export class Fluid extends BaseItem {
+class GenericItem extends BaseItem<schema.Item>{
+    type: "generic" = "generic"
+}
+
+export type Item = Module | GenericItem
+
+export class Fluid extends BaseItem<schema.FluidItem> {
     default_temperature: number
     type: "fluid" = "fluid"
 
@@ -67,7 +103,7 @@ export class Fluid extends BaseItem {
 abstract class BaseIngredient {
     name: string;
     amount: Rational
-    
+
     constructor(d: schema.Ingredient) {
         this.name = d.name
         this.amount = Rational.fromFloat(d.amount)
@@ -219,17 +255,17 @@ export class Recipe extends BaseDisplayable {
 
         this.ingredients = d.ingredients.map((ingredient) => {
             if (ingredient.type == "fluid") {
-                return new FluidIngredient(ingredient, gd); 
+                return new FluidIngredient(ingredient, gd);
             } else {
-                return new ItemIngredient(ingredient, gd); 
+                return new ItemIngredient(ingredient, gd);
             }
         });
 
         this.products = d.products.map((result) => {
             if (result.type == "fluid") {
-                return new FluidProduct(result, gd); 
+                return new FluidProduct(result, gd);
             } else {
-                return new ItemProduct(result, gd); 
+                return new ItemProduct(result, gd);
             }
         });
     }
@@ -287,8 +323,12 @@ export class GameData {
 
     items: Item[] = [];
     itemMap: {[name: string]: Item} = {};
+
     fluids: Fluid[] = [];
     fluidMap: {[name: string]: Fluid} = {};
+
+    modules: Module[] = []
+    moduleMap: {[name: string]: Module} = {};
 
     recipes: Recipe[] = [];
     recipeMap: {[name: string]: Recipe} = {};
@@ -296,6 +336,7 @@ export class GameData {
     entityMap: {[name: string]: Entity.Any} = {}
 
     constructor(raw: schema.Root) {
+        console.groupCollapsed('Game data parsing')
         this.raw = raw
 
         type Thing<T> = {
@@ -314,12 +355,18 @@ export class GameData {
 
         for (let itemName in raw.items) {
             const thing = raw.items[itemName];
-            if ("type" in thing && thing.type == "fluid") {
+            if ('type' in thing && thing.type == "fluid") {
                 const fluid = new Fluid(thing)
                 this.fluids.push(fluid)
                 this.fluidMap[fluid.name] = fluid
+            } else if ('type' in thing && thing.type == "module") {
+                const item = new Module(thing);
+                this.items.push(item);
+                this.itemMap[item.name] = item;
+                this.modules.push(item)
+                this.moduleMap[item.name] = item
             } else {
-                const item = new Item(thing);
+                const item = new GenericItem(thing);
                 this.items.push(item);
                 this.itemMap[item.name] = item;
             }
@@ -351,6 +398,7 @@ export class GameData {
                 product.item.madeBy.push(recipe);
             }
         }
+        console.groupEnd()
     }
 
     toJSON() {

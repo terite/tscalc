@@ -2,7 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 
-import './style.scss';
+import './index.scss';
 
 let node = document.querySelector('#root')!;
 import {App} from "./app"

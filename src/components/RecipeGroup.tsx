@@ -17,7 +17,7 @@ type State = {
 }
 
 type SerializedRow = [
-    string, string, number
+    string, string, number, Array<string|null>
 ]
 
 export class RecipeGroup extends React.Component<Props, State> {
@@ -45,17 +45,19 @@ export class RecipeGroup extends React.Component<Props, State> {
         return this.state.rows.map((row):SerializedRow => [
             row.recipe.name,
             row.machine.data.name,
-            row.numMachines
+            row.numMachines,
+            row.modules.map(m => m ? m.name : null)
         ])
     }
 
     deserialize(state: SerializedRow[]): void {
         let gd = this.props.gameData
 
-        this.addRows(state.map(([recipe, machine, numMachines]) => ({
+        this.addRows(state.map(([recipe, machine, numMachines, modules]) => ({
             recipe: gd.recipeMap[recipe],
             machine: gd.entityMap[machine],
-            numMachines
+            numMachines,
+            modules: modules.map(n => n ? gd.moduleMap[n] : null)
         })))
     }
 
@@ -63,30 +65,33 @@ export class RecipeGroup extends React.Component<Props, State> {
         this.addRows([{
             recipe: recipe,
             machine: recipe.madeIn[0],
-            numMachines: 1
+            numMachines: 1,
+            modules: [],
         }])
     }
 
-    addRows(rows: {recipe: game.Recipe, machine: game.Entity.AssemblingMachine, numMachines: number}[]) {
+    addRows(rows: {recipe: game.Recipe, machine: game.Entity.AssemblingMachine, numMachines: number,
+                   modules: Array<game.Module|null>}[]) {
         let newRows = rows.map((r) => ({
             gameData: this.props.gameData,
-            onRemove: this.removeRow.bind(this, r.recipe),
-            onChange: this.changeRow.bind(this),
+            onRemove: () => this.removeRow(r.recipe),
+            onChange: this.changeRow,
 
             recipe: r.recipe,
             machine: r.machine,
             numMachines: r.numMachines,
+            modules: r.modules
         }))
         this.setState({rows: this.state.rows.concat(newRows)})
     }
 
-    changeRow(newRow: RecipeRowProps) {
+    changeRow = (newRow: RecipeRowProps) => {
         this.setState({rows: this.state.rows.map((oldRow) => {
             return oldRow.recipe == newRow.recipe ? newRow : oldRow
         })})
     }
 
-    removeRow(recipe: game.Recipe) {
+    removeRow = (recipe: game.Recipe) => {
         this.setState({rows: this.state.rows.filter((row) => {
             return row.recipe != recipe
         })})
@@ -99,21 +104,23 @@ export class RecipeGroup extends React.Component<Props, State> {
     private renderTotals(totals: Totals) {
         let reduced = totals.reduce()
         return (
-        <>
-            <div className="well" style={{display: "inline-block", float: "left"}}>
-                Ingredients:
-                {reduced.ingredients.map((ing, i) => (
-                    <Icon key={i} obj={ing.item} text={ing.niceName()} />
-                ))}
+            <div className="container">
+                <div className="row">
+                    <div className="well col">
+                        Ingredients:
+                        {reduced.ingredients.map((ing, i) => (
+                            <Icon key={i} obj={ing.item} text={ing.niceName()} />
+                        ))}
+                    </div>
+                    <div className="well col">
+                        Products:
+                        {reduced.products.map((prod, i) => (
+                            <Icon key={i} obj={prod.item} text={prod.niceName()} />
+                        ))}
+                    </div>
+                </div>
             </div>
-            <div className="well" style={{display: "inline-block"}}>
-                Products:
-                {reduced.products.map((prod, i) => (
-                    <Icon key={i} obj={prod.item} text={prod.niceName()} />
-                ))}
-            </div>
-            <div style={{clear: "both"}}></div>
-        </>)
+        )
     }
 
     render() {
@@ -127,7 +134,7 @@ export class RecipeGroup extends React.Component<Props, State> {
         }
 
         return (
-        <div>
+        <div className="recipe-group">
             <h3>Add recipe picker</h3>
             <RecipePicker
                 recipes={availableRecipes}

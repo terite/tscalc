@@ -67,7 +67,7 @@ interface FuelItem extends BaseItem {
     fuel_value: number;
 }
 
-interface ModuleItem extends BaseItem {
+export interface ModuleItem extends BaseItem {
     type: "module"
     category: "effectivity" | "productivity" | "speed"
     effect: {
@@ -76,7 +76,7 @@ interface ModuleItem extends BaseItem {
         productivity?: {bonus: number}
         speed?: {bonus: number}
     }
-    limitation?: string[]
+    limitation: string[]
 }
 
 export type Item = BaseItem | FuelItem | ModuleItem | FluidItem

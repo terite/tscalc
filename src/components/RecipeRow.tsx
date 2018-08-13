@@ -3,8 +3,9 @@ import * as React from "react";
 import * as game from "../game"
 
 import {Icon} from './Icon'
-import {RecipeCell} from './RecipeCell'
+import {RecipeCard} from './RecipeCard'
 import {MachinePicker} from './MachinePicker'
+import {ModulePicker} from './ModulePicker'
 
 import {clone} from '../util'
 import {Totals} from '../totals'
@@ -13,7 +14,7 @@ type ChangeableProps = {
     recipe: game.Recipe
     machine: game.Entity.AssemblingMachine
     numMachines: number
-    // modules: game.Entity.Module[]
+    modules: Array<game.Module|null>
 }
 
 export type Props = {
@@ -31,7 +32,11 @@ export class RecipeRow extends React.Component<Props, State> {
     }
 
     public handleMachineChange = (machine: game.Entity.AssemblingMachine) => {
-        this.applyChange({machine: machine})
+        // TODO: condense modules w/ filter??
+        this.applyChange({
+            machine: machine,
+            modules: this.props.modules.slice(0, machine.data.module_slots)
+        })
     }
 
     public handleNumMachinesChange = (event: React.FormEvent<HTMLInputElement>) => {
@@ -44,6 +49,12 @@ export class RecipeRow extends React.Component<Props, State> {
         if (Number.isInteger(num) && num >= 0) {
             this.applyChange({numMachines: num})
         }
+    }
+
+    public handleSetModule = (index: number, module: game.Module|null) => {
+        const modules = this.props.modules.slice()
+        modules[index] = module
+        this.applyChange({modules: modules})
     }
 
     applyChange(changes: Partial<ChangeableProps>) {
@@ -75,18 +86,28 @@ export class RecipeRow extends React.Component<Props, State> {
                 key={machine.data.name}
                 obj={machine.data}
                 title={text} 
-                onClick={this.handleMachineChange.bind(this, machine)}
+                onClick={() => this.handleMachineChange(machine)}
                 />
         })
     }
 
-    renderRecipeIcon() {
-        return <Icon
-            obj={this.props.recipe}
-            tooltip={<RecipeCell 
+    renderModules() {
+        let numSlots = this.props.machine.data.module_slots
+
+        let slots = []
+        for (let i=0; i < numSlots; i++) {
+            slots.push(this.props.modules[i] || null)
+        }
+
+        return slots.map((module, i) => {
+            return <ModulePicker
+                key={i}
                 recipe={this.props.recipe}
-                gameData={this.props.gameData} />}
-            />
+                gameData={this.props.gameData}
+                selected={module}
+                onChange={(m) => this.handleSetModule(i, m)}
+                />
+        })
     }
 
     render() {
@@ -106,24 +127,37 @@ export class RecipeRow extends React.Component<Props, State> {
                 text={product.niceName()} />
         )
         return (
-            <div className="recipe-row">
-                <div className="recipe-cell">
-                    <div style={{lineHeight: "32px"}}>
-                        {this.renderRecipeIcon()}
-                        {recipe.niceName()} × <input
-                            value={this.props.numMachines}
-                            onChange={this.handleNumMachinesChange}
-                            type="number" min="0" step="1" />
-
-                        {this.renderMachines()}
-
-                        <div style={{float: "right"}}>
-                            <Icon
-                                obj={recipe}
-                                title="Remove recipe"
-                                onClick={this.handleRemoveClick} />
-                        </div>
+            <div className="recipe-row card">
+                <div className="card-header">
+                    <div style={{float: "left"}}>
+                        <Icon
+                            obj={recipe}
+                            text={recipe.niceName()}
+                            tooltip={<RecipeCard 
+                                recipe={recipe}
+                                gameData={this.props.gameData} />}
+                            />
                     </div>
+                    <div style={{float: "right"}}>
+                        <Icon
+                            obj={recipe}
+                            title="Remove recipe"
+                            onClick={this.handleRemoveClick} />
+                    </div>
+                    <div style={{clear: "both"}} />
+                </div>
+                <div className="card-body">
+                    <input
+                        value={this.props.numMachines}
+                        onChange={this.handleNumMachinesChange}
+                        type="number" min="0" step="1" />
+
+                    {this.renderMachines()}
+
+                    <hr />
+
+                    <div>{this.renderModules()}</div>
+
                     <hr />
 
                     <div style={{display: "inline-block", float: "left"}}>

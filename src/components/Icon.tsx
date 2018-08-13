@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import {Tooltip} from './Tooltip'
+import {PopperHelper} from './generic'
 
 import * as game from "../game"
 
@@ -33,7 +33,7 @@ export const Icon = withGame((props: IconProps) => {
     };
     const divProps = {
         title: props.title,
-        className: "icon",
+        className: "game-icon",
         style: divStyle,
         onClick: props.onClick
     }
@@ -41,17 +41,19 @@ export const Icon = withGame((props: IconProps) => {
     let icon
     if (props.tooltip) {
         icon = (
-            <Tooltip
+            <PopperHelper
                 target={ ({style}) => (
-                    <div style={style}>{props.tooltip}</div>
+                    <div style={{...style, zIndex: 1070}}>{props.tooltip}</div>
                 )}
                 options={{
                     placement : 'right',
                     modifiers: {
                         offset: {
+                            enabled: true,
                             offset: "0, 20"
                         },
                         preventOverflow: {
+                            enabled: true,
                             boundariesElement: "window"
                         }
                     }
@@ -60,7 +62,7 @@ export const Icon = withGame((props: IconProps) => {
                     onMouseEnter={controller.show}
                     onMouseLeave={controller.hide}>&nbsp;</div>
             }
-            </Tooltip>
+            </PopperHelper>
         )
     } else {
         icon = <div {...divProps}>&nbsp;</div>
@@ -69,7 +71,8 @@ export const Icon = withGame((props: IconProps) => {
     if (props.text) {
         return (
             <div style={{lineHeight: "32px"}}>
-                {icon}{props.text}
+                {icon}
+                <span style={{marginLeft: "9px"}}>{props.text}</span>
             </div>
         )
     } else {
