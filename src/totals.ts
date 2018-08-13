@@ -63,9 +63,6 @@ export class Totals {
             effects.pollution = effects.pollution.add(module.effects.pollution)
         }
 
-        console.log("speed", effects.speed.toString())
-        console.log("prod", effects.productivity.toString())
-
         let mult = Rational.one
             .mul(row.recipe.crafting_time.invert())
             .mul(row.numMachines)

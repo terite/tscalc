@@ -111,7 +111,7 @@ export class PopperHelper extends Component<PopperHelperProps, PopperHelperState
         super(props)
         this.state = {
             showFloater: false,
-            popperStyle: {}
+            popperStyle: {display: "none"}
         }
 
         this.controller = new PopperHelperController(this)
@@ -141,9 +141,9 @@ export class PopperHelper extends Component<PopperHelperProps, PopperHelperState
         return ReactDOM.findDOMNode(this.parentWrapperEl) as Element | null
     }
 
-    componentDidUpdate(){
-        this.popperInstance && this.popperInstance.update()
-    }
+    // componentDidUpdate(){
+    //     this.popperInstance && this.popperInstance.update()
+    // }
 
     componentWillUnmount() {
         this.limitedSetStyle.reset()
@@ -167,8 +167,8 @@ export class PopperHelper extends Component<PopperHelperProps, PopperHelperState
         }
 
         this.popperInstance = new Popper(
-            parentNode, 
-            targetNode, 
+            parentNode,
+            targetNode,
             {
                 ...this.props.options, // Spread the options provided to the component
                 modifiers : {

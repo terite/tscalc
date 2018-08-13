@@ -5,7 +5,6 @@ import * as game from "../game"
 import {RecipeCard} from './RecipeCard'
 
 type Props = {
-    gameData: game.GameData
     recipes: game.Recipe[]
     onPickRecipe(r: game.Recipe): void
 }
@@ -88,10 +87,7 @@ export class RecipePicker extends React.Component<Props, State> {
             .filter(this.matcher())
             .slice(0, 10)
             .map((r) => <div key={r.name} onClick={() => this.handleRecipeClick(r)}>
-                <RecipeCard
-                recipe={r}
-                gameData={this.props.gameData}
-                onClick={this.handleRecipeClick}/>
+                <RecipeCard recipe={r} onClick={this.handleRecipeClick} />
             </div>)
 
         return (

@@ -18,7 +18,6 @@ type ChangeableProps = {
 }
 
 export type Props = {
-    gameData: game.GameData
     onRemove(r: game.Recipe): void
     onChange(r: Props): void
 } & ChangeableProps
@@ -85,7 +84,7 @@ export class RecipeRow extends React.Component<Props, State> {
                 style={style}
                 key={machine.data.name}
                 obj={machine.data}
-                title={text} 
+                title={text}
                 onClick={() => this.handleMachineChange(machine)}
                 />
         })
@@ -103,7 +102,6 @@ export class RecipeRow extends React.Component<Props, State> {
             return <ModulePicker
                 key={i}
                 recipe={this.props.recipe}
-                gameData={this.props.gameData}
                 selected={module}
                 onChange={(m) => this.handleSetModule(i, m)}
                 />
@@ -133,9 +131,7 @@ export class RecipeRow extends React.Component<Props, State> {
                         <Icon
                             obj={recipe}
                             text={recipe.niceName()}
-                            tooltip={<RecipeCard 
-                                recipe={recipe}
-                                gameData={this.props.gameData} />}
+                            tooltip={<RecipeCard recipe={recipe} />}
                             />
                     </div>
                     <div style={{float: "right"}}>

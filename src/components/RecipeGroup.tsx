@@ -73,7 +73,6 @@ export class RecipeGroup extends React.Component<Props, State> {
     addRows(rows: {recipe: game.Recipe, machine: game.Entity.AssemblingMachine, numMachines: number,
                    modules: Array<game.Module|null>}[]) {
         let newRows = rows.map((r) => ({
-            gameData: this.props.gameData,
             onRemove: () => this.removeRow(r.recipe),
             onChange: this.changeRow,
 
@@ -138,7 +137,6 @@ export class RecipeGroup extends React.Component<Props, State> {
             <h3>Add recipe picker</h3>
             <RecipePicker
                 recipes={availableRecipes}
-                gameData={this.props.gameData}
                 onPickRecipe={this.handlePickRecipe} />
             <hr />
             {this.state.rows.map(this.renderRow)}

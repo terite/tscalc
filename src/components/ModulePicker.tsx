@@ -5,6 +5,7 @@ import {GameData, Module, Recipe} from '../game'
 import {Icon} from './Icon'
 import {ModuleCard} from './ModuleCard'
 import {Dropdown} from './generic'
+import {withGame} from "../context"
 
 
 interface ModulePickerProps {
@@ -14,9 +15,7 @@ interface ModulePickerProps {
     onChange(m: Module|null): void
 }
 
-
-
-export const ModulePicker = (props: ModulePickerProps) => {
+const GameModulePicker = (props: ModulePickerProps) => {
     let icon = props.gameData.raw.sprites.extra.slot_icon_module
     const nomod = new Module({
         type: "module",
@@ -36,20 +35,26 @@ export const ModulePicker = (props: ModulePickerProps) => {
     })
 
     const renderSelected = (module: Module|null) => {
-        module = module || nomod
-        return <Icon
-            obj={module}
-            tooltip={<ModuleCard module={module} />}
-            />
+        if (module) {
+            return <Icon
+                obj={module}
+                tooltip={<ModuleCard module={module} />}
+                />
+        } else {
+            return <Icon obj={nomod} />
+        }
     }
 
     const renderOption = (module: Module|null) => {
-        module = module || nomod
-        return <Icon
-            obj={module}
-            tooltip={<ModuleCard module={module} />}
-            text={module.niceName()}
-            />
+        if (module) {
+            return <Icon
+                obj={module}
+                tooltip={<ModuleCard module={module} />}
+                text={module.niceName()}
+                />
+        } else {
+            return <Icon obj={nomod} text={nomod.niceName()} />
+        }
     }
 
 
@@ -75,3 +80,5 @@ export const ModulePicker = (props: ModulePickerProps) => {
         renderSelected={renderSelected}
     />
 }
+
+export const ModulePicker = withGame(GameModulePicker)
