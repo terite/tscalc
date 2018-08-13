@@ -45,11 +45,6 @@ class FloaterWrapper extends React.Component<{}, {}> {
     }
 }
 
-interface PopperHelperController {
-    show(): void
-    hide(): void
-}
-
 interface TargetFn {
     (a: {
         style: React.CSSProperties

@@ -49,29 +49,6 @@ export class Dropdown<T> extends React.Component<DropdownProps<T>, {}> {
         }
     }
 
-    handleBodyClick = () => {
-        if (!this.controller || !this.controller.isShown) {
-            return
-        }
-        this.controller && this.controller.hide()
-    }
-
-    handleKeyDown = (e: KeyboardEvent) => {
-        if (e.keyCode == 27) {
-            this.controller && this.controller.hide()
-        }
-    }
-
-    componentDidMount() {
-        // document.body.addEventListener('click', this.handleBodyClick)
-        // document.body.addEventListener('keydown', this.handleKeyDown)
-    }
-
-    componentWillUnmount() {
-        // document.body.removeEventListener('click', this.handleBodyClick)
-        // document.body.removeEventListener('keydown', this.handleKeyDown)
-    }
-
     handleSelect = (selected: T) => {
         this.props.onSelect(selected)
         this.controller && this.controller.hide()
