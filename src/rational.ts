@@ -74,7 +74,7 @@ export class Rational {
         )
     }
 
-    mul(other: Rational | number): Rational {
+    mul(other: Rational|number): Rational {
         if (typeof other == 'number') {
             other = Rational.fromFloat(other)
         }
@@ -83,6 +83,19 @@ export class Rational {
 
     div(other: Rational) {
         return new Rational(this.p * other.q, this.q * other.p);
+    }
+
+    clamp(min: Rational|number, max: Rational|number) {
+        if (typeof min == 'number') {
+            min = Rational.fromFloat(min)
+        }
+        if (typeof max == 'number') {
+            max = Rational.fromFloat(max)
+        }
+
+        if (this.less(min)) return min
+        if (max.less(this)) return max
+        return this
     }
 
     //

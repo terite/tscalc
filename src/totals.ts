@@ -49,25 +49,33 @@ export class Totals {
 
     addRow(row: RecipeRowProps) {
         let effects = {
-            speed: Rational.one,
-            productivity: Rational.one,
             consumption: Rational.one,
-            pollution: Rational.one
+            pollution: Rational.one,
+            productivity: Rational.one,
+            speed: Rational.one,
         }
 
         for (let module of row.modules) {
             if (!module) continue
-            effects.speed = effects.speed.add(module.effects.speed)
-            effects.productivity = effects.productivity.add(module.effects.productivity)
             effects.consumption = effects.consumption.add(module.effects.consumption)
             effects.pollution = effects.pollution.add(module.effects.pollution)
+            effects.productivity = effects.productivity.add(module.effects.productivity)
+            effects.speed = effects.speed.add(module.effects.speed)
         }
+        // Allowed -80% to de facto max of signed short int
+        effects.consumption = effects.consumption.clamp(.2, 32767)
+        effects.pollution = effects.pollution.clamp(.2, 32767)
+        effects.speed = effects.speed.clamp(.2, 32767)
+
+        // Special minimum: -0%
+        effects.productivity = effects.productivity.clamp(1, 32767)
 
         let mult = Rational.one
             .mul(row.recipe.crafting_time.invert())
             .mul(row.numMachines)
             .mul(row.machine.data.crafting_speed)
             .mul(effects.speed)
+            .mul(effects.productivity)
 
         row.recipe.ingredients
             .map((ingredient) => {
