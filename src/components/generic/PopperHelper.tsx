@@ -121,8 +121,7 @@ export class PopperHelper extends Component<PopperHelperProps, PopperHelperState
         if (val) {
             this.initPopper()
         } else {
-            this.popperInstance!.disableEventListeners()
-            this.popperInstance = undefined
+            this.cleanupPopper()
         }
     }
 
@@ -142,7 +141,7 @@ export class PopperHelper extends Component<PopperHelperProps, PopperHelperState
 
     componentWillUnmount() {
         this.limitedSetStyle.reset()
-        this.popperInstance && this.popperInstance.destroy()
+        this.cleanupPopper()
     }
 
     initPopper() {
@@ -176,6 +175,14 @@ export class PopperHelper extends Component<PopperHelperProps, PopperHelperState
                 }
             }
         );
+    }
+
+    cleanupPopper() {
+        if (!this.popperInstance) {
+            return
+        }
+        this.popperInstance.disableEventListeners()
+        this.popperInstance = undefined
     }
 
     update = (data: Popper.Data) => {
