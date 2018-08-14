@@ -135,10 +135,9 @@ export class RecipeRow extends React.Component<Props, State> {
                             />
                     </div>
                     <div style={{float: "right"}}>
-                        <Icon
-                            obj={recipe}
-                            title="Remove recipe"
-                            onClick={this.handleRemoveClick} />
+                        <button type="button"
+                            className="btn btn-danger"
+                            onClick={this.handleRemoveClick}>Remove</button>
                     </div>
                     <div style={{clear: "both"}} />
                 </div>
