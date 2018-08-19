@@ -5,14 +5,13 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    // color: #FFE6C0;
+    color: #FFE6C0;
 }
 
-h1 { 
+h1 {
     font-size: 32px;
 }
 
-/*
 input {
     background-color: rgb(142, 142, 142);
     border: 1px solid black;
@@ -30,4 +29,14 @@ input {
         background-color: rgb(240, 218, 180);
     }
 }
-*/
+
+.btn-cancel {
+    background-color: #FE5A5A;
+    color: black;
+    font-weight: bold;
+
+    &:hover {
+        background-color: #FF9B9B;
+    }
+
+}

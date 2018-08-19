@@ -149,7 +149,7 @@ export class RecipeRow extends React.Component<Props, State> {
                     </div>
                     <div style={{float: "right"}}>
                         <button type="button"
-                            className="btn btn-danger"
+                            className="btn btn-cancel"
                             onClick={this.handleRemoveClick}>Remove</button>
                     </div>
                     <div style={{clear: "both"}} />

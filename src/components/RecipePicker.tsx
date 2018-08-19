@@ -94,6 +94,7 @@ export class RecipePicker extends React.Component<Props, State> {
         <div className="recipe-picker">
             <div>
             <input className="editable-display"
+                placeholder="Search for a recipe"
                 value={this.state.query}
                 onChange={this.handleQueryInput}
                 onFocus={this.handleFocus}
