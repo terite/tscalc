@@ -22,9 +22,18 @@ export type Props = {
     onChange(r: Props): void
 } & ChangeableProps
 
-type State = {}
+type State = {
+    numTxt: string
+}
 
 export class RecipeRow extends React.Component<Props, State> {
+
+    constructor(props: Props) {
+        super(props)
+        this.state = {
+            numTxt: props.numMachines.toString()
+        }
+    }
 
     public handleRemoveClick = () => {
         this.props.onRemove(this.props.recipe)
@@ -39,8 +48,12 @@ export class RecipeRow extends React.Component<Props, State> {
     }
 
     public handleNumMachinesChange = (event: React.FormEvent<HTMLInputElement>) => {
-        const target = event.target as HTMLInputElement;
-        const num = Number(target.value);
+        const value = (event.target as HTMLInputElement).value;
+        this.setState({numTxt: value})
+        if (!value.trim()) {
+            return
+        }
+        const num = Number(value);
         if (!Number.isInteger(num)) {
             // TODO: error?
             return
@@ -143,7 +156,7 @@ export class RecipeRow extends React.Component<Props, State> {
                 </div>
                 <div className="card-body">
                     <input
-                        value={this.props.numMachines}
+                        value={this.state.numTxt}
                         onChange={this.handleNumMachinesChange}
                         type="number" min="0" step="1" />
 
