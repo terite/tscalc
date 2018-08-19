@@ -261,7 +261,7 @@ export class Recipe extends BaseDisplayable {
             }
         });
 
-        this.products = d.products.map((result) => {
+        this.products = d.results.map((result) => {
             if (result.type == "fluid") {
                 return new FluidProduct(result, gd);
             } else {

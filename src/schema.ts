@@ -116,7 +116,7 @@ export interface Recipe {
     icon_col: number;
     icon_row: number;
     ingredients: Ingredient[];
-    products: Product[];
+    results: Product[];
     type: "recipe";
     order: string;
 
