@@ -63,6 +63,12 @@ export class RecipeRow extends React.Component<Props, State> {
         }
     }
 
+    public handleSetAllModules = () => {
+        this.applyChange({
+            modules: (new Array(this.props.machine.data.module_slots)).fill(this.props.modules[0])
+        })
+    }
+
     public handleSetModule = (index: number, module: game.Module|null) => {
         const modules = this.props.modules.slice()
         modules[index] = module
@@ -108,17 +114,26 @@ export class RecipeRow extends React.Component<Props, State> {
 
         let slots = []
         for (let i=0; i < numSlots; i++) {
-            slots.push(this.props.modules[i] || null)
+            let module = this.props.modules[i];
+            slots.push(
+                <ModulePicker
+                    key={i}
+                    recipe={this.props.recipe}
+                    selected={module}
+                    onChange={(m) => this.handleSetModule(i, m)}
+                    />
+            )
         }
 
-        return slots.map((module, i) => {
-            return <ModulePicker
-                key={i}
-                recipe={this.props.recipe}
-                selected={module}
-                onChange={(m) => this.handleSetModule(i, m)}
-                />
-        })
+        if (numSlots > 1) {
+            slots.splice(1, 0,
+                <button
+                    onClick={this.handleSetAllModules}
+                    key="applicator"
+                    className="btn">→</button>)
+        }
+
+        return slots
     }
 
     render() {
