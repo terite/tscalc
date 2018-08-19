@@ -64,7 +64,7 @@ export class RecipeGroup extends React.Component<Props, State> {
     public handlePickRecipe = (recipe: game.Recipe) => {
         this.addRows([{
             recipe: recipe,
-            machine: recipe.madeIn[0],
+            machine: recipe.madeIn[recipe.madeIn.length - 1],
             numMachines: 1,
             modules: [],
         }])
