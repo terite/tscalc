@@ -308,9 +308,12 @@ export namespace Entity {
             if (this.data.crafting_categories.indexOf(recipe.category) == -1) {
                 return false
             }
-            if (recipe.ingredients.length > this.data.ingredient_count) {
-                return false
-            }
+
+            // ingredient_count seems to be item specific. this is disabled until
+            // I can figure out how many fluids a machine can support
+            // if (recipe.ingredients.length > this.data.ingredient_count) {
+            //     return false
+            // }
             return true
         }
     }
