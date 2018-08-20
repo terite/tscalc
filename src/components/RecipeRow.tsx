@@ -143,6 +143,7 @@ export class RecipeRow extends React.Component<Props, State> {
         let ingredients = output.ingredients.map((ingredient, i) =>
             <Icon
                 key={i}
+                title={ingredient.name}
                 obj={ingredient.item}
                 text={ingredient.niceName()} />
         )
