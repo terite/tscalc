@@ -62,6 +62,19 @@ export class Totals {
             effects.productivity = effects.productivity.add(module.effects.productivity)
             effects.speed = effects.speed.add(module.effects.speed)
         }
+
+        if (row.beaconModule && row.numBeacons > 0) {
+            // TODO: export and use "distribution_effectivity" from beacon entities
+            // assume the common value of 0.5 for now
+
+            let be = row.beaconModule.effects;
+            let num = Rational.fromInts(row.numBeacons, 2);
+            effects.consumption = effects.consumption.add(be.consumption.mul(num))
+            effects.pollution = effects.pollution.add(be.pollution.mul(num))
+            effects.productivity = effects.productivity.add(be.productivity.mul(num))
+            effects.speed = effects.speed.add(be.speed.mul(num))
+        }
+
         // Allowed -80% to de facto max of signed short int
         effects.consumption = effects.consumption.clamp(.2, 32767)
         effects.pollution = effects.pollution.clamp(.2, 32767)

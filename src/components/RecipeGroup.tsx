@@ -17,7 +17,12 @@ type State = {
 }
 
 type SerializedRow = [
-    string, string, number, Array<string|null>
+    string, // recipe
+    string, // assembling machine
+    number, // num assembling machines
+    Array<string|null>, // modules,
+    string|undefined, // beacon module
+    number|undefined // num beacon modules
 ]
 
 export class RecipeGroup extends React.Component<Props, State> {
@@ -46,18 +51,22 @@ export class RecipeGroup extends React.Component<Props, State> {
             row.recipe.name,
             row.machine.data.name,
             row.numMachines,
-            row.modules.map(m => m ? m.name : null)
+            row.modules.map(m => m ? m.name : null),
+            row.beaconModule ? row.beaconModule.name : undefined,
+            row.numBeacons,
         ])
     }
 
     deserialize(state: SerializedRow[]): void {
         let gd = this.props.gameData
 
-        this.addRows(state.map(([recipe, machine, numMachines, modules]) => ({
+        this.addRows(state.map(([recipe, machine, numMachines, modules, beaconModule, numBeacons]) => ({
             recipe: gd.recipeMap[recipe],
             machine: gd.entityMap[machine],
             numMachines,
-            modules: modules.map(n => n ? gd.moduleMap[n] : null)
+            modules: modules.map(n => n ? gd.moduleMap[n] : null),
+            beaconModule: beaconModule ? gd.moduleMap[beaconModule] : null,
+            numBeacons: numBeacons || 0
         })))
     }
 
@@ -67,11 +76,15 @@ export class RecipeGroup extends React.Component<Props, State> {
             machine: recipe.madeIn[recipe.madeIn.length - 1],
             numMachines: 1,
             modules: [],
+            beaconModule: null,
+            numBeacons: 0,
         }])
     }
 
-    addRows(rows: {recipe: game.Recipe, machine: game.Entity.AssemblingMachine, numMachines: number,
-                   modules: Array<game.Module|null>}[]) {
+    addRows(rows: {recipe: game.Recipe,
+                   machine: game.Entity.AssemblingMachine, numMachines: number,
+                   modules: Array<game.Module|null>,
+                   beaconModule: game.Module|null, numBeacons: number}[]) {
         let newRows = rows.map((r) => ({
             onRemove: () => this.removeRow(r.recipe),
             onChange: this.changeRow,
@@ -79,7 +92,10 @@ export class RecipeGroup extends React.Component<Props, State> {
             recipe: r.recipe,
             machine: r.machine,
             numMachines: r.numMachines,
-            modules: r.modules
+            modules: r.modules,
+
+            beaconModule: r.beaconModule,
+            numBeacons: r.numBeacons,
         }))
         this.setState({rows: this.state.rows.concat(newRows)})
     }

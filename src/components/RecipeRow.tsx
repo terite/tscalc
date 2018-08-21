@@ -15,6 +15,10 @@ type ChangeableProps = {
     machine: game.Entity.AssemblingMachine
     numMachines: number
     modules: Array<game.Module|null>
+
+    beaconModule: game.Module|null,
+    numBeacons: number
+
 }
 
 export type Props = {
@@ -23,7 +27,8 @@ export type Props = {
 } & ChangeableProps
 
 type State = {
-    numTxt: string
+    numMachinesTxt: string
+    numBeaconsTxt: string
 }
 
 type IngredientCardProps = {
@@ -43,7 +48,8 @@ export class RecipeRow extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.state = {
-            numTxt: props.numMachines.toString()
+            numMachinesTxt: props.numMachines.toString(),
+            numBeaconsTxt: props.numBeacons.toString()
         }
     }
 
@@ -61,7 +67,7 @@ export class RecipeRow extends React.Component<Props, State> {
 
     public handleNumMachinesChange = (event: React.FormEvent<HTMLInputElement>) => {
         const value = (event.target as HTMLInputElement).value;
-        this.setState({numTxt: value})
+        this.setState({numMachinesTxt: value})
         if (!value.trim()) {
             return
         }
@@ -75,6 +81,22 @@ export class RecipeRow extends React.Component<Props, State> {
         }
     }
 
+    public handleNumBeaconsChange = (event: React.FormEvent<HTMLInputElement>) => {
+        const value = (event.target as HTMLInputElement).value;
+        this.setState({numBeaconsTxt: value})
+        if (!value.trim()) {
+            return
+        }
+        const num = Number(value);
+        if (!Number.isInteger(num)) {
+            // TODO: error?
+            return
+        }
+        if (Number.isInteger(num) && num >= 0) {
+            this.applyChange({numBeacons: num})
+        }
+    }
+
     public handleSetAllModules = () => {
         this.applyChange({
             modules: (new Array(this.props.machine.data.module_slots)).fill(this.props.modules[0])
@@ -85,6 +107,10 @@ export class RecipeRow extends React.Component<Props, State> {
         const modules = this.props.modules.slice()
         modules[index] = module
         this.applyChange({modules: modules})
+    }
+
+    public handleSetBeaconModule = (module: game.Module|null) => {
+        this.applyChange({beaconModule: module})
     }
 
     applyChange(changes: Partial<ChangeableProps>) {
@@ -148,6 +174,23 @@ export class RecipeRow extends React.Component<Props, State> {
         return slots
     }
 
+    renderBeacons() {
+        return <div>
+            <span>Beacons:</span>
+            <input
+                value={this.state.numBeaconsTxt}
+                onChange={this.handleNumBeaconsChange}
+                type="number" min="0" step="1" />
+
+            <ModulePicker
+                isBeacon={true}
+                recipe={this.props.recipe}
+                selected={this.props.beaconModule}
+                onChange={this.handleSetBeaconModule}
+                />
+        </div>
+    }
+
     render() {
         let recipe = this.props.recipe
         let output = this.getOutput()
@@ -185,7 +228,7 @@ export class RecipeRow extends React.Component<Props, State> {
                 </div>
                 <div className="card-body">
                     <input
-                        value={this.state.numTxt}
+                        value={this.state.numMachinesTxt}
                         onChange={this.handleNumMachinesChange}
                         type="number" min="0" step="1" />
 
@@ -194,6 +237,7 @@ export class RecipeRow extends React.Component<Props, State> {
                     <hr />
 
                     <div>{this.renderModules()}</div>
+                    <div>{this.renderBeacons()}</div>
 
                     <hr />
 

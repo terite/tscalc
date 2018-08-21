@@ -115,6 +115,9 @@ export class Rational {
     isNegative() {
         return this.p < 0
     }
+    isPositive() {
+        return this.p > 0
+    }
 
     isOne() {
         return this.p == 1

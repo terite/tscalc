@@ -11,6 +11,7 @@ import {withGame} from "../context"
 interface ModulePickerProps {
     gameData: GameData
     recipe: Recipe
+    isBeacon?: boolean
     selected: Module|null
     onChange(m: Module|null): void
 }
@@ -59,7 +60,13 @@ const GameModulePicker = (props: ModulePickerProps) => {
 
 
     const options = props.gameData.modules
-        .filter(m => m.canUseWith(props.recipe))
+        .filter(m => {
+            // TODO: what is the actual logic for which modules are allowed in beacons?
+            if (props.isBeacon && m.effects.productivity.isPositive()) {
+                return false
+            }
+            return m.canUseWith(props.recipe)
+        })
         .map(m => ({
             key: m.name,
             option: m as Module|null,
