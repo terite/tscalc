@@ -26,6 +26,18 @@ type State = {
     numTxt: string
 }
 
+type IngredientCardProps = {
+    obj: game.Ingredient | game.Product
+}
+
+const IngredientCard = (props: IngredientCardProps) => (
+    <div className="card">
+        <div className="card-header">
+            {props.obj.item.niceName()} ({props.obj.name})
+        </div>
+    </div>
+)
+
 export class RecipeRow extends React.Component<Props, State> {
 
     constructor(props: Props) {
@@ -143,15 +155,16 @@ export class RecipeRow extends React.Component<Props, State> {
         let ingredients = output.ingredients.map((ingredient, i) =>
             <Icon
                 key={i}
-                title={ingredient.name}
+                tooltip={<IngredientCard obj={ingredient} />}
                 obj={ingredient.item}
-                text={ingredient.niceName()} />
+                text={`${ingredient.amount.toString()} / sec`} />
         )
         let products = output.products.map((product, i) =>
             <Icon
                 key={i}
+                tooltip={<IngredientCard obj={product} />}
                 obj={product.item}
-                text={product.niceName()} />
+                text={`${product.amount.toString()} / sec`} />
         )
         return (
             <div className="recipe-row card">
