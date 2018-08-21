@@ -70,17 +70,18 @@ export class Totals {
         // Special minimum: -0%
         effects.productivity = effects.productivity.clamp(1, 32767)
 
-        let mult = Rational.one
+        let ingredientMult = Rational.one
             .mul(row.recipe.crafting_time.invert())
             .mul(row.numMachines)
             .mul(row.machine.data.crafting_speed)
             .mul(effects.speed)
-            .mul(effects.productivity)
+
+        let productMult = ingredientMult.mul(effects.productivity)
 
         row.recipe.ingredients
             .map((ingredient) => {
                 ingredient = clone(ingredient)
-                ingredient.amount = ingredient.amount.mul(mult)
+                ingredient.amount = ingredient.amount.mul(ingredientMult)
                 return ingredient
             })
             .forEach(this.addIngredient)
@@ -88,7 +89,7 @@ export class Totals {
         row.recipe.products
             .map((product) => {
                 product = clone(product)
-                product.amount = product.amount.mul(mult)
+                product.amount = product.amount.mul(productMult)
                 return product
             })
             .forEach(this.addProduct)
