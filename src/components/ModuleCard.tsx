@@ -1,6 +1,7 @@
 import * as React from 'react'
 
 import {Module} from '../game'
+import {round2} from '../util'
 
 const niceName = {
     consumption: "Energy Consumption",
@@ -10,13 +11,13 @@ const niceName = {
 }
 
 export const ModuleCard = ({module}: {module: Module}) => {
-    
+
     let bonuses = []
     for (let bonusName in module.raw.effect) {
         let bonus = module.raw.effect[bonusName as keyof typeof module.raw.effect]!.bonus
         bonuses.push(
         <div  key={bonusName}>
-            <b>{niceName[bonusName as keyof typeof niceName]}: {bonus * 100}%</b>
+            <b>{niceName[bonusName as keyof typeof niceName]}: {round2(bonus * 100, 2)}%</b>
         </div>)
     }
 
