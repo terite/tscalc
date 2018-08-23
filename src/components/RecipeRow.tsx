@@ -176,7 +176,7 @@ export class RecipeRow extends React.Component<Props, State> {
 
     renderBeacons() {
         return <div>
-            <span>Beacons:</span>
+            <span>Beacon Modules:</span>
             <input
                 value={this.state.numBeaconsTxt}
                 onChange={this.handleNumBeaconsChange}
