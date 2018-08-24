@@ -12,10 +12,10 @@ h1 {
     font-size: 32px;
 }
 
-input {
+.form-control {
     background-color: rgb(142, 142, 142);
-    border: 1px solid black;
-    border-radius: 5px;
+    border: 1px solid rgb(142, 142, 142);
+    // border-radius: 5px;
 
 
     &:hover {
@@ -34,9 +34,29 @@ input {
     background-color: #FE5A5A;
     color: black;
     font-weight: bold;
+    padding-top: 6px;
+    padding-bottom: 6px;
 
     &:hover {
         background-color: #FF9B9B;
     }
 
+}
+
+
+.btn-group {
+  > .btn:first-child {
+    margin-left: 0;
+  }
+
+  // Reset rounded corners
+  > .btn:not(:last-child),
+  > .btn-group:not(:last-child) > .btn {
+    @include border-right-radius(0);
+  }
+
+  > .btn:not(:first-child),
+  > .btn-group:not(:first-child) > .btn {
+    @include border-left-radius(0);
+  }
 }

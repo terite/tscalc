@@ -4,12 +4,25 @@ html, body {
     color: white;
 }
 
+#root > .container {
+    padding-top: 1.5rem;
+}
+
 .card {
     background-color: #403F40;
 }
 
+.recipe-group {
+    hr {
+        border-top: 1px solid black;
+    }
+}
+
 .recipe-row {
-    margin: 5px;
+    // margin: 5px;
+    b {
+        font-weight: 600;
+    }
 }
 
 .game-icon {
@@ -29,4 +42,19 @@ html, body {
     .recipe-tooltip {
         display: inline-block;
     }
+}
+
+.btn-icon-wrapper {
+    .btn {
+        line-height: 32px;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+}
+
+.combined-totals {
+    .container {
+        padding: 0 .25rem;
+    }
+
 }

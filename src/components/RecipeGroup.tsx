@@ -119,19 +119,24 @@ export class RecipeGroup extends React.Component<Props, State> {
     private renderTotals(totals: Totals) {
         let reduced = totals.reduce()
         return (
-            <div className="container">
-                <div className="row">
-                    <div className="well col">
-                        Ingredients:
-                        {reduced.ingredients.map((ing, i) => (
-                            <Icon key={i} obj={ing.item} text={ing.niceName()} />
-                        ))}
-                    </div>
-                    <div className="well col">
-                        Products:
-                        {reduced.products.map((prod, i) => (
-                            <Icon key={i} obj={prod.item} text={prod.niceName()} />
-                        ))}
+            <div className="card combined-totals">
+                <div className="card-header">Combined Totals</div>
+                <div className="card-body">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col">
+                                Ingredients:
+                                {reduced.ingredients.map((ing, i) => (
+                                    <Icon key={i} obj={ing.item} text={ing.niceName()} />
+                                ))}
+                            </div>
+                            <div className="col">
+                                Products:
+                                {reduced.products.map((prod, i) => (
+                                    <Icon key={i} obj={prod.item} text={prod.niceName()} />
+                                ))}
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

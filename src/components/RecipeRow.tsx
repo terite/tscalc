@@ -127,26 +127,6 @@ export class RecipeRow extends React.Component<Props, State> {
         }
     }
 
-    renderMachines() {
-        return <MachinePicker
-            machines={this.props.recipe.madeIn}
-            selected={this.props.machine}
-            onChange={this.handleMachineChange}
-            />
-        return this.props.recipe.madeIn.map((machine) => {
-            let style = (machine == this.props.machine) ? {border: "1px solid red"} : {}
-
-            let text = `${machine.niceName()}\nCrafting Speed: ${machine.data.crafting_speed}`
-            return <Icon
-                style={style}
-                key={machine.data.name}
-                obj={machine.data}
-                title={text}
-                onClick={() => this.handleMachineChange(machine)}
-                />
-        })
-    }
-
     renderModules() {
         let numSlots = this.props.machine.data.module_slots
 
@@ -175,20 +155,49 @@ export class RecipeRow extends React.Component<Props, State> {
     }
 
     renderBeacons() {
-        return <div>
-            <span>Beacon Modules:</span>
-            <input
-                value={this.state.numBeaconsTxt}
-                onChange={this.handleNumBeaconsChange}
-                type="number" min="0" step="1" />
+        return (
+            <div className="btn-toolbar mb-3">
+                <div className="input-group">
+                    <div className="input-group-prepend">
+                        <div className="input-group-text">Beacon Modules</div>
+                    </div>
+                    <input
+                        className="form-control"
+                        value={this.state.numBeaconsTxt}
+                        onChange={this.handleNumBeaconsChange}
+                        type="number" min="0" step="1" />
+                    <div className="input-group-append btn-icon-wrapper">
+                        <ModulePicker
+                            isBeacon={true}
+                            recipe={this.props.recipe}
+                            selected={this.props.beaconModule}
+                            onChange={this.handleSetBeaconModule}
+                            />
+                    </div>
+                </div>
+            </div>
+        )
+    }
 
-            <ModulePicker
-                isBeacon={true}
-                recipe={this.props.recipe}
-                selected={this.props.beaconModule}
-                onChange={this.handleSetBeaconModule}
-                />
-        </div>
+    renderMachines() {
+        return (
+            <div className="btn-toolbar mb-3">
+                <div className="input-group">
+                    <input
+                        className="form-control"
+                        value={this.state.numMachinesTxt}
+                        onChange={this.handleNumMachinesChange}
+                        type="number" min="0" step="1" />
+                    <div className="input-group-append btn-icon-wrapper">
+                        <MachinePicker
+                            machines={this.props.recipe.madeIn}
+                            selected={this.props.machine}
+                            onChange={this.handleMachineChange}
+                            />
+                    </div>
+                </div>
+            </div>
+        )
     }
 
     render() {
@@ -196,21 +205,24 @@ export class RecipeRow extends React.Component<Props, State> {
         let output = this.getOutput()
 
         let ingredients = output.ingredients.map((ingredient, i) =>
-            <Icon
-                key={i}
-                tooltip={<IngredientCard obj={ingredient} />}
-                obj={ingredient.item}
-                text={`${ingredient.amount.toString()} / sec`} />
+            <div className="mb-1" key={i}>
+                <Icon
+                    tooltip={<IngredientCard obj={ingredient} />}
+                    obj={ingredient.item}
+                    text={`${ingredient.amount.toString()} / sec`} />
+            </div>
         )
         let products = output.products.map((product, i) =>
-            <Icon
-                key={i}
-                tooltip={<IngredientCard obj={product} />}
-                obj={product.item}
-                text={`${product.amount.toString()} / sec`} />
+            <div className="mb-1" key={i}>
+                <Icon
+                    key={i}
+                    tooltip={<IngredientCard obj={product} />}
+                    obj={product.item}
+                    text={`${product.amount.toString()} / sec`} />
+            </div>
         )
         return (
-            <div className="recipe-row card">
+            <div className="recipe-row card mb-3">
                 <div className="card-header">
                     <div style={{float: "left"}}>
                         <Icon
@@ -227,33 +239,28 @@ export class RecipeRow extends React.Component<Props, State> {
                     <div style={{clear: "both"}} />
                 </div>
                 <div className="card-body">
-                    <input
-                        value={this.state.numMachinesTxt}
-                        onChange={this.handleNumMachinesChange}
-                        type="number" min="0" step="1" />
-
-                    {this.renderMachines()}
-
-                    <hr />
-
-                    <div>{this.renderModules()}</div>
-                    <div>{this.renderBeacons()}</div>
-
-                    <hr />
-
-                    <div style={{display: "inline-block", float: "left"}}>
-                        Ingredients:
-                        {ingredients}
+                    <div style={{float: "left"}}>
+                        {this.renderMachines()}
+                        <div className="mb-3 btn-group btn-icon-wrapper">
+                            {this.renderModules()}
+                        </div>
+                        {this.renderBeacons()}
                     </div>
 
-                    <div style={{display: "inline-block"}}>
-                        Products:
-                        {products}
+                    <div style={{float: "right"}}>
+                        <div className="mr-3" style={{display: "inline-block", float: "left", minWidth: "150px"}}>
+                            <b>Ingredients:</b>
+                            {ingredients}
+                        </div>
+
+                        <div className="mr-2" style={{display: "inline-block", minWidth: "150px"}}>
+                            <b>Products:</b>
+                            {products}
+                        </div>
                     </div>
                     <div style={{clear: "both"}} />
                 </div>
             </div>
         )
     }
-
 }

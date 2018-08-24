@@ -93,7 +93,7 @@ export class RecipePicker extends React.Component<Props, State> {
         return (
         <div className="recipe-picker">
             <div>
-            <input className="editable-display"
+            <input className="editable-display form-control"
                 placeholder="Search for a recipe"
                 value={this.state.query}
                 onChange={this.handleQueryInput}
