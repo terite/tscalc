@@ -7,24 +7,15 @@ import {RecipeCard} from './RecipeCard'
 import {MachinePicker} from './MachinePicker'
 import {ModulePicker} from './ModulePicker'
 
-import {clone} from '../util'
+// import {clone} from '../util'
 import {Totals} from '../totals'
+import State, {RecipeRowData} from '../state'
 
-type ChangeableProps = {
-    recipe: game.Recipe
-    machine: game.Entity.AssemblingMachine
-    numMachines: number
-    modules: Array<game.Module|null>
 
-    beaconModule: game.Module|null,
-    numBeacons: number
-
+export interface Props extends RecipeRowData {
+    index: number,
+    actions: typeof State.actions
 }
-
-export type Props = {
-    onRemove(r: game.Recipe): void
-    onChange(r: Props): void
-} & ChangeableProps
 
 type State = {
     numMachinesTxt: string
@@ -54,7 +45,7 @@ export class RecipeRow extends React.Component<Props, State> {
     }
 
     public handleRemoveClick = () => {
-        this.props.onRemove(this.props.recipe)
+        this.props.actions.removeRow(this.props.index)
     }
 
     public handleMachineChange = (machine: game.Entity.AssemblingMachine) => {
@@ -113,9 +104,8 @@ export class RecipeRow extends React.Component<Props, State> {
         this.applyChange({beaconModule: module})
     }
 
-    applyChange(changes: Partial<ChangeableProps>) {
-        let newprops = Object.assign(clone(this.props), changes)
-        this.props.onChange(newprops)
+    applyChange(change: Partial<RecipeRowData>) {
+        this.props.actions.updateRow(this.props.index, change)
     }
 
     getOutput() {

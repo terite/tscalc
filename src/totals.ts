@@ -4,7 +4,7 @@ import {clone} from './util'
 
 import {Rational} from "./rational"
 
-import {Props as RecipeRowProps} from "./components/RecipeRow"
+import {RecipeRowData} from './state'
 
 
 export class Totals {
@@ -47,7 +47,7 @@ export class Totals {
         this.products.push(newProd)
     }
 
-    addRow(row: RecipeRowProps) {
+    addRow(row: RecipeRowData) {
         let effects = {
             consumption: Rational.one,
             pollution: Rational.one,

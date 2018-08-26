@@ -2,16 +2,18 @@ import * as React from "react"
 
 import * as game from "./game"
 
-import {RecipeGroup} from "./components/RecipeGroup"
+import {App} from "./components/App"
 
 import {GameContext} from './context'
+import State, {AppState} from './state'
+import * as serialization from './serialization'
 
 interface State {
     crashMsg?: string
     gameData: game.GameData|null
 }
 
-export class App extends React.Component<{}, State> {
+export class AppLoader extends React.Component<{}, State> {
 
     constructor(props: {}) {
         super(props)
@@ -23,14 +25,24 @@ export class App extends React.Component<{}, State> {
         fetch("seablock.json")
             .then((response) => response.json())
             .then((raw: any) => {
-                this.setState({
-                    gameData: new game.GameData(raw)
-                })
+                const gameData = new game.GameData(raw)
+
+                const urlState = serialization.getUrlState(gameData)
+                if (urlState) {
+                    State.actions.replaceState(urlState)
+                }
+
+                this.setState({gameData})
             })
             .catch(error => {
                 console.error(error);
                 this.crash(error);
             });
+    }
+
+    handleStateChange = (state: AppState) => {
+        serialization.setUrlState(state);
+        return "";
     }
 
     componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
@@ -50,22 +62,28 @@ export class App extends React.Component<{}, State> {
     }
 
     render() {
+        console.log('AppLoader.render')
         if (this.state.crashMsg != null) {
             return <div>
                 <h1>Crashed!</h1>
                 <pre>{this.state.crashMsg}</pre>
             </div>
         } else if (!this.state.gameData) {
-            return <h1>Loading...</h1>
-        } else {
             return (
-                <GameContext.Provider value={this.state.gameData}>
-                    <div className="container">
-                        <RecipeGroup gameData={this.state.gameData} />
-                    </div>
-                </GameContext.Provider>
+                <State.Provider>
+                    <h1>Loading...</h1>
+                </State.Provider>
+            )
+        } else {
+            const gameData = this.state.gameData
+            return (
+                <State.Provider>
+                    <State.Consumer>{this.handleStateChange}</State.Consumer>
+                    <GameContext.Provider value={gameData}>
+                        <App />
+                    </GameContext.Provider>
+                </State.Provider>
             )
         }
-
     }
 }

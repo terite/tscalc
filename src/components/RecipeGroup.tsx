@@ -4,116 +4,41 @@ import * as game from "../game"
 import {Totals} from "../totals"
 
 import {Icon} from './Icon'
-import {RecipeRow, Props as RecipeRowProps} from './RecipeRow'
+import {RecipeRow} from './RecipeRow'
 import {RecipePicker} from './RecipePicker'
+
+import {RecipeRowData} from '../state'
+
+import State, {AppState, withBoth} from '../state'
+import {withGame} from '../context'
 
 
 type Props = {
-    gameData: game.GameData
+    gameData: game.GameData,
+    rows: RecipeRowData[],
+    state: AppState
+    actions: typeof State.actions
 }
 
-type State = {
-    rows: RecipeRowProps[]
-}
-
-type SerializedRow = [
-    string, // recipe
-    string, // assembling machine
-    number, // num assembling machines
-    Array<string|null>, // modules,
-    string|undefined, // beacon module
-    number|undefined // num beacon modules
-]
-
-export class RecipeGroup extends React.Component<Props, State> {
-    constructor(props: Props) {
-        super(props)
-
-        this.state = {
-            rows: []
-        }
-    }
-
-    componentDidMount() {
-        if (document.location.hash.startsWith('#[')) {
-            let hash = decodeURIComponent(document.location.hash.substr(1))
-            let d = JSON.parse(hash)
-            this.deserialize(d)
-        }
-    }
-
-    componentDidUpdate() {
-        history.replaceState('', '', `#${JSON.stringify(this.serialize())}`)
-    }
-
-    serialize(): SerializedRow[] {
-        return this.state.rows.map((row):SerializedRow => [
-            row.recipe.name,
-            row.machine.data.name,
-            row.numMachines,
-            row.modules.map(m => m ? m.name : null),
-            row.beaconModule ? row.beaconModule.name : undefined,
-            row.numBeacons,
-        ])
-    }
-
-    deserialize(state: SerializedRow[]): void {
-        let gd = this.props.gameData
-
-        this.addRows(state.map(([recipe, machine, numMachines, modules, beaconModule, numBeacons]) => ({
-            recipe: gd.recipeMap[recipe],
-            machine: gd.entityMap[machine],
-            numMachines,
-            modules: modules.map(n => n ? gd.moduleMap[n] : null),
-            beaconModule: beaconModule ? gd.moduleMap[beaconModule] : null,
-            numBeacons: numBeacons || 0
-        })))
-    }
+class RawRecipeGroup extends React.Component<Props, {}> {
 
     public handlePickRecipe = (recipe: game.Recipe) => {
-        this.addRows([{
+        this.props.actions.addRow({
             recipe: recipe,
             machine: recipe.madeIn[recipe.madeIn.length - 1],
             numMachines: 1,
             modules: [],
             beaconModule: null,
             numBeacons: 0,
-        }])
+        })
     }
 
-    addRows(rows: {recipe: game.Recipe,
-                   machine: game.Entity.AssemblingMachine, numMachines: number,
-                   modules: Array<game.Module|null>,
-                   beaconModule: game.Module|null, numBeacons: number}[]) {
-        let newRows = rows.map((r) => ({
-            onRemove: () => this.removeRow(r.recipe),
-            onChange: this.changeRow,
-
-            recipe: r.recipe,
-            machine: r.machine,
-            numMachines: r.numMachines,
-            modules: r.modules,
-
-            beaconModule: r.beaconModule,
-            numBeacons: r.numBeacons,
-        }))
-        this.setState({rows: this.state.rows.concat(newRows)})
-    }
-
-    changeRow = (newRow: RecipeRowProps) => {
-        this.setState({rows: this.state.rows.map((oldRow) => {
-            return oldRow.recipe == newRow.recipe ? newRow : oldRow
-        })})
-    }
-
-    removeRow = (recipe: game.Recipe) => {
-        this.setState({rows: this.state.rows.filter((row) => {
-            return row.recipe != recipe
-        })})
-    }
-
-    renderRow(row: RecipeRowProps) {
-        return <RecipeRow key={row.recipe.name} {...row} />
+    renderRow = (data: RecipeRowData, index: number) => {
+        return <RecipeRow
+            key={data.recipe.name}
+            index={index}
+            actions={this.props.actions}
+            {...data} />
     }
 
     private renderTotals(totals: Totals) {
@@ -145,11 +70,11 @@ export class RecipeGroup extends React.Component<Props, State> {
 
     render() {
         let availableRecipes = this.props.gameData.recipes.filter((recipe) => {
-            return !this.state.rows.some(row => row.recipe == recipe)
+            return !this.props.rows.some(row => row.recipe == recipe)
         })
 
         let totals = new Totals()
-        for (let row of this.state.rows) {
+        for (let row of this.props.rows) {
             totals.addRow(row)
         }
 
@@ -160,10 +85,12 @@ export class RecipeGroup extends React.Component<Props, State> {
                 recipes={availableRecipes}
                 onPickRecipe={this.handlePickRecipe} />
             <hr />
-            {this.state.rows.map(this.renderRow)}
+            {this.props.rows.map(this.renderRow)}
             <hr />
             {this.renderTotals(totals)}
         </div>
         )
     }
 }
+
+export const RecipeGroup = withGame(withBoth(RawRecipeGroup))
