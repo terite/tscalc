@@ -6,6 +6,7 @@ import {Icon} from './Icon'
 import {RecipeCard} from './RecipeCard'
 import {MachinePicker} from './MachinePicker'
 import {ModulePicker} from './ModulePicker'
+import {IntegerInput} from './generic'
 
 // import {clone} from '../util'
 import {Totals} from '../totals'
@@ -17,11 +18,6 @@ import * as signal from '../signal'
 export interface Props extends RecipeRowData {
     index: number,
     actions: typeof State.actions
-}
-
-type State = {
-    numMachinesTxt: string
-    numBeaconsTxt: string
 }
 
 type IngredientCardProps = {
@@ -36,15 +32,7 @@ const IngredientCard = (props: IngredientCardProps) => (
     </div>
 )
 
-export class RecipeRow extends React.Component<Props, State> {
-
-    constructor(props: Props) {
-        super(props)
-        this.state = {
-            numMachinesTxt: props.numMachines.toString(),
-            numBeaconsTxt: props.numBeacons.toString()
-        }
-    }
+export class RecipeRow extends React.Component<Props, {}> {
 
     public handleRemoveClick = () => {
         this.props.actions.removeRow(this.props.index)
@@ -58,36 +46,12 @@ export class RecipeRow extends React.Component<Props, State> {
         })
     }
 
-    public handleNumMachinesChange = (event: React.FormEvent<HTMLInputElement>) => {
-        const value = (event.target as HTMLInputElement).value;
-        this.setState({numMachinesTxt: value})
-        if (!value.trim()) {
-            return
-        }
-        const num = Number(value);
-        if (!Number.isInteger(num)) {
-            // TODO: error?
-            return
-        }
-        if (Number.isInteger(num) && num >= 0) {
-            this.applyChange({numMachines: num})
-        }
+    public handleNumMachinesChange = (num: number) => {
+        this.applyChange({numMachines: num})
     }
 
-    public handleNumBeaconsChange = (event: React.FormEvent<HTMLInputElement>) => {
-        const value = (event.target as HTMLInputElement).value;
-        this.setState({numBeaconsTxt: value})
-        if (!value.trim()) {
-            return
-        }
-        const num = Number(value);
-        if (!Number.isInteger(num)) {
-            // TODO: error?
-            return
-        }
-        if (Number.isInteger(num) && num >= 0) {
-            this.applyChange({numBeacons: num})
-        }
+    public handleNumBeaconsChange = (num: number) => {
+        this.applyChange({numBeacons: num});
     }
 
     public handleSetAllModules = () => {
@@ -161,11 +125,7 @@ export class RecipeRow extends React.Component<Props, State> {
                     <div className="input-group-prepend">
                         <div className="input-group-text">Beacon Modules</div>
                     </div>
-                    <input
-                        className="form-control"
-                        value={this.state.numBeaconsTxt}
-                        onChange={this.handleNumBeaconsChange}
-                        type="number" min="0" step="1" />
+                    <IntegerInput value={this.props.numBeacons} onChange={this.handleNumBeaconsChange} />
                     <div className="input-group-append btn-icon-wrapper">
                         <ModulePicker
                             isBeacon={true}
@@ -183,11 +143,7 @@ export class RecipeRow extends React.Component<Props, State> {
         return (
             <div className="btn-toolbar mb-3">
                 <div className="input-group">
-                    <input
-                        className="form-control"
-                        value={this.state.numMachinesTxt}
-                        onChange={this.handleNumMachinesChange}
-                        type="number" min="0" step="1" />
+                    <IntegerInput value={this.props.numMachines} onChange={this.handleNumMachinesChange} />
                     <div className="input-group-append btn-icon-wrapper">
                         <MachinePicker
                             machines={this.props.recipe.madeIn}
