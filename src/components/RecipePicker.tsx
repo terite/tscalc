@@ -1,6 +1,7 @@
 import * as React from "react"
 
 import * as game from "../game"
+import * as signal from "../signal"
 
 import {RecipeCard} from './RecipeCard'
 
@@ -24,6 +25,26 @@ export class RecipePicker extends React.Component<Props, State> {
             query: "",
             focused: false
         }
+
+        signal.ingredientClick.addHandler(this.handleIngredientClick)
+        signal.productClick.addHandler(this.handleProductClick)
+    }
+
+    componentWillUnmount() {
+        signal.ingredientClick.removeHandler(this.handleIngredientClick)
+        signal.productClick.removeHandler(this.handleProductClick)
+    }
+
+    public handleIngredientClick = (ingredient: game.Ingredient) => {
+        this.setState({
+            query: `${this.state.query} produces:${ingredient.name}`
+        })
+    }
+
+    public handleProductClick = (product: game.Product) => {
+        this.setState({
+            query: `${this.state.query} consumes:${product.name}`
+        })
     }
 
     public handleQueryInput = (event: React.FormEvent<HTMLInputElement>) => {

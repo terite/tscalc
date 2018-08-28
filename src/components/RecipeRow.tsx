@@ -11,6 +11,8 @@ import {ModulePicker} from './ModulePicker'
 import {Totals} from '../totals'
 import State, {RecipeRowData} from '../state'
 
+import * as signal from '../signal'
+
 
 export interface Props extends RecipeRowData {
     index: number,
@@ -102,6 +104,14 @@ export class RecipeRow extends React.Component<Props, State> {
 
     public handleSetBeaconModule = (module: game.Module|null) => {
         this.applyChange({beaconModule: module})
+    }
+
+    public handleIngredientClick = (ingredient: game.Ingredient) => {
+        signal.ingredientClick.dispatch(ingredient);
+    }
+
+    public handleProductClick = (product: game.Product) => {
+        signal.productClick.dispatch(product);
     }
 
     applyChange(change: Partial<RecipeRowData>) {
@@ -197,6 +207,7 @@ export class RecipeRow extends React.Component<Props, State> {
         let ingredients = output.ingredients.map((ingredient, i) =>
             <div className="mb-1" key={i}>
                 <Icon
+                    onClick={this.handleIngredientClick.bind(null, ingredient)}
                     tooltip={<IngredientCard obj={ingredient} />}
                     obj={ingredient.item}
                     text={`${ingredient.amount.toString()} / sec`} />
@@ -205,7 +216,7 @@ export class RecipeRow extends React.Component<Props, State> {
         let products = output.products.map((product, i) =>
             <div className="mb-1" key={i}>
                 <Icon
-                    key={i}
+                    onClick={this.handleProductClick.bind(null, product)}
                     tooltip={<IngredientCard obj={product} />}
                     obj={product.item}
                     text={`${product.amount.toString()} / sec`} />
