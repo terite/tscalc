@@ -25,8 +25,7 @@
         "jsx": "react"
     },
 
-    "include": [
-        "src/*",
-        "src/**/*"
+    "files": [
+        "src/index.tsx"
     ]
 }
