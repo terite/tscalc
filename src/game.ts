@@ -176,10 +176,14 @@ abstract class BaseProduct {
             amount = Rational.fromInts(d.amount_min + d.amount_max, 2)
         }
 
-        if (d.probability && d.probability != 1) {
-            assert(d.probability > 0)
-            assert(d.probability < 1)
-            amount = amount.mul(Rational.fromFloat(d.probability))
+        if (typeof d.probability == 'number') {
+            if (d.probability == 0) {
+                amount = Rational.zero;
+            } else if (d.probability != 1) {
+                assert(d.probability > 0)
+                assert(d.probability < 1)
+                amount = amount.mul(Rational.fromFloat(d.probability))
+            }
         }
         this.amount = amount;
     }
@@ -388,6 +392,18 @@ export class GameData {
             if (recipe.madeIn.length == 0) {
                 // Filter to only recipes buildable by knonwn assembling machines
                 console.log("Ignoring uncraftable recipe", recipe.name, recipe)
+                continue
+            }
+
+            let hasProducts = false;
+            for (let product of recipe.products) {
+                if (product.amount.isPositive()) {
+                    hasProducts = true;
+                    break
+                }
+            }
+            if (!hasProducts) {
+                console.log("Ignoring void recipe", recipe.name, recipe)
                 continue
             }
 
