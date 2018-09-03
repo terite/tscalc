@@ -14,8 +14,9 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom';
 import Popper from 'popper.js';
+import debounce = require('lodash/debounce')
 
-import {debounce, deepEqual} from '../../util'
+import {deepEqual} from '../../util'
 
 const floaterRoot = document.getElementById('floater-root')!;
 const {Component} = React
@@ -140,7 +141,7 @@ export class PopperHelper extends Component<PopperHelperProps, PopperHelperState
     // }
 
     componentWillUnmount() {
-        this.limitedSetStyle.reset()
+        this.limitedSetStyle.cancel()
         this.cleanupPopper()
     }
 
@@ -213,7 +214,7 @@ export class PopperHelper extends Component<PopperHelperProps, PopperHelperState
         }
     }
 
-    limitedSetStyle = debounce(10, this.setStyle)
+    limitedSetStyle = debounce(this.setStyle, 10)
 
     captureTarget = (el: React.ReactInstance|null) => {
         this.targetWrapperEl = el

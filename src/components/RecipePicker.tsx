@@ -1,9 +1,12 @@
 import * as React from "react"
+import * as Fuse from "fuse.js"
 
 import * as game from "../game"
 import * as signal from "../signal"
 
 import {RecipeCard} from './RecipeCard'
+
+import debounce = require('lodash/debounce')
 
 type Props = {
     recipes: game.Recipe[]
@@ -11,11 +14,26 @@ type Props = {
 }
 
 type State = {
-    query: string
-    focused: boolean
+    query: string,
+    matches: game.Recipe[]
 }
 
-const RE_ADVANCED = /((?:produces)|(?:consumes)):([a-z\-]+)/g
+
+enum KeyTypes {
+    NiceName = "NiceName",
+    Name = "Name"
+}
+
+function getFn(recipe: game.Recipe, key: string) {
+    switch (key as KeyTypes) {
+        case KeyTypes.NiceName:
+            return recipe.niceName()
+        case KeyTypes.Name:
+            return recipe.name;
+    }
+}
+
+const RE_ADVANCED = /((?:produces)|(?:consumes)):([a-z0-9\-]+)/g
 
 export class RecipePicker extends React.Component<Props, State> {
 
@@ -23,7 +41,7 @@ export class RecipePicker extends React.Component<Props, State> {
         super(props)
         this.state = {
             query: "",
-            focused: false
+            matches: []
         }
 
         signal.ingredientClick.addHandler(this.handleIngredientClick)
@@ -31,49 +49,60 @@ export class RecipePicker extends React.Component<Props, State> {
     }
 
     componentWillUnmount() {
+        this.debCalculateMatches.cancel()
         signal.ingredientClick.removeHandler(this.handleIngredientClick)
         signal.productClick.removeHandler(this.handleProductClick)
     }
 
     public handleIngredientClick = (ingredient: game.Ingredient) => {
-        this.setState({
-            query: `${this.state.query} produces:${ingredient.name}`
-        })
+        const term = `produces:${ingredient.name}`;
+        if (!this.state.query.includes(term)) {
+            this.setQuery(`${this.state.query} ${term}`, () => {
+                this.calculateMatches();
+            });
+        }
     }
 
     public handleProductClick = (product: game.Product) => {
-        this.setState({
-            query: `${this.state.query} consumes:${product.name}`
-        })
+        const term = `consumes:${product.name}`;
+        if (!this.state.query.includes(term)) {
+            this.setQuery(`${this.state.query} ${term}`, () => {
+                this.calculateMatches();
+            });
+        }
     }
 
     public handleQueryInput = (event: React.FormEvent<HTMLInputElement>) => {
         let target = event.target as HTMLInputElement
-        this.setState({query: target.value})
+        this.setQuery(target.value)
     }
 
     public handleRecipeClick = (recipe: game.Recipe) => {
         this.props.onPickRecipe(recipe)
-        this.setState({query: ""})
+        this.setQuery("")
     }
 
-    public handleFocus = () => {
-        this.setState({focused: true})
-    }
-    public handleBlur = () => {
-        // delay 100ms to let click events register
-        setTimeout(() => {
-            this.setState({focused: false})
-        }, 100)
+    public setQuery = (query: string, callback?: () => void) => {
+        if (!query.trim()) {
+            this.debCalculateMatches.cancel()
+            this.setState({
+                query: "",
+                matches: []
+            }, callback)
+        } else {
+            this.setState({query: query}, callback)
+            this.debCalculateMatches()
+        }
     }
 
-    matcher = () => {
-        let query = this.state.query.trim().toLowerCase()
+    calculateMatches() {
+        let query = this.state.query.trim().toLowerCase();
         if (!query) {
-            return () => false
+            this.setState({matches: []})
+            return
         }
 
-        let conditions = {
+        const conditions = {
             consumes: [] as string[],
             produces: [] as string[]
         }
@@ -85,45 +114,63 @@ export class RecipePicker extends React.Component<Props, State> {
             return ""
         }).trim()
 
-        return (recipe: game.Recipe) => {
-            for (let name of conditions.consumes) {
-                if (!recipe.ingredients.some(i => i.name == name)) {
-                    return false
+        let recipes = this.props.recipes;
+        if (conditions.consumes.length || conditions.produces.length) {
+            recipes = recipes.filter(recipe => {
+                for (let name of conditions.consumes) {
+                    if (!recipe.ingredients.some(i => i.name == name)) {
+                        return false
+                    }
                 }
-            }
-            for (let name of conditions.produces) {
-                if (!recipe.products.some(i => i.name == name)) {
-                    return false
+                for (let name of conditions.produces) {
+                    if (!recipe.products.some(i => i.name == name)) {
+                        return false
+                    }
                 }
-            }
-
-            return (
-                recipe.niceName().toLowerCase().includes(query) ||
-                recipe.name.toLowerCase().includes(query))
+                return true
+            })
         }
+
+        if (query) {
+            const fuse = new Fuse(recipes, {
+                shouldSort: true,
+                getFn: getFn,
+                keys: [{
+                    name: KeyTypes.NiceName,
+                    weight: 0.7
+                }, {
+                    name: KeyTypes.Name,
+                    weight: 0.2
+                }]
+            });
+            recipes = fuse.search<game.Recipe>(query);
+        }
+
+        this.setState({matches: recipes})
+    }
+
+    debCalculateMatches = debounce(this.calculateMatches.bind(this), 250)
+
+    renderMatches() {
+        return this.state.matches
+             .slice(0, 10)
+             .map((r) => <div key={r.name}>
+                 <RecipeCard recipe={r} onClick={this.handleRecipeClick} />
+             </div>)
     }
 
     render() {
-        let matches = this.props.recipes
-            .filter(this.matcher())
-            .slice(0, 10)
-            .map((r) => <div key={r.name} onClick={() => this.handleRecipeClick(r)}>
-                <RecipeCard recipe={r} onClick={this.handleRecipeClick} />
-            </div>)
-
         return (
-        <div className="recipe-picker">
-            <div>
-            <input className="editable-display form-control"
-                placeholder="Search for a recipe"
-                value={this.state.query}
-                onChange={this.handleQueryInput}
-                onFocus={this.handleFocus}
-                onBlur={this.handleBlur}
-            />
+            <div className="recipe-picker">
+                <div>
+                    <input className="editable-display form-control"
+                        placeholder="Search for a recipe"
+                        value={this.state.query}
+                        onChange={this.handleQueryInput}
+                    />
+                </div>
+                {this.renderMatches()}
             </div>
-            {matches}
-        </div>
         )
     }
 
