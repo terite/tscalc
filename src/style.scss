@@ -42,6 +42,13 @@ html, body {
     .recipe-tooltip {
         display: inline-block;
     }
+
+    .result-name {
+        max-width: 30rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
 
 .btn-icon-wrapper {

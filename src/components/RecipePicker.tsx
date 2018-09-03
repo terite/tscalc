@@ -1,22 +1,13 @@
 import * as React from "react"
 import * as Fuse from "fuse.js"
+import debounce = require('lodash/debounce')
 
 import * as game from "../game"
 import * as signal from "../signal"
 
-import {RecipeCard} from './RecipeCard'
+// import {RecipeCard} from './RecipeCard'
+import {Icon} from './Icon'
 
-import debounce = require('lodash/debounce')
-
-type Props = {
-    recipes: game.Recipe[]
-    onPickRecipe(r: game.Recipe): void
-}
-
-type State = {
-    query: string,
-    matches: game.Recipe[]
-}
 
 
 enum KeyTypes {
@@ -35,7 +26,17 @@ function getFn(recipe: game.Recipe, key: string) {
 
 const RE_ADVANCED = /((?:produces)|(?:consumes)):([a-z0-9\-]+)/g
 
-export class RecipePicker extends React.Component<Props, State> {
+type Props = {
+    recipes: game.Recipe[]
+    onPickRecipe(r: game.Recipe): void
+}
+
+type State = {
+    query: string,
+    matches: game.Recipe[]
+}
+
+export class RecipePicker extends React.PureComponent<Props, State> {
 
     constructor(props: Props) {
         super(props)
@@ -143,20 +144,37 @@ export class RecipePicker extends React.Component<Props, State> {
                     weight: 0.2
                 }]
             });
-            recipes = fuse.search<game.Recipe>(query);
+            recipes = fuse.search(query);
         }
-
         this.setState({matches: recipes})
     }
 
-    debCalculateMatches = debounce(this.calculateMatches.bind(this), 250)
+    debCalculateMatches = debounce(this.calculateMatches.bind(this), 200)
 
     renderMatches() {
-        return this.state.matches
-             .slice(0, 10)
-             .map((r) => <div key={r.name}>
-                 <RecipeCard recipe={r} onClick={this.handleRecipeClick} />
-             </div>)
+        if (!this.state.matches.length) {
+            return ""
+        }
+		let matches = this.state.matches;
+		if (matches.length > 100) {
+			matches = matches.slice(0, 100)
+		}
+        return (
+            <table>
+            <thead>
+                <tr>
+                    <th>Recipe</th>
+                    <th>Time</th>
+                    <th>Ingredients</th>
+                    <th>Products</th>
+                </tr>
+            </thead>
+            <tbody>
+                {matches.map(r => <RecipeMatch recipe={r} key={r.name} />)}
+            </tbody>
+            </table>
+
+        )
     }
 
     render() {
@@ -173,5 +191,48 @@ export class RecipePicker extends React.Component<Props, State> {
             </div>
         )
     }
+}
 
+interface RecipeMatchProps {
+    recipe: game.Recipe
+}
+
+function card(body: React.ReactNode) {
+    return (
+        <div className="card">
+            <div className="card-body">{body}</div>
+        </div>
+    )
+}
+
+class RecipeMatch extends React.PureComponent<RecipeMatchProps, {}> {
+
+    ingredients: JSX.Element[]
+    products: JSX.Element[]
+
+    constructor(props: RecipeMatchProps) {
+        super(props);
+
+        const recipe = this.props.recipe;
+
+        this.ingredients = recipe.ingredients.map((ing, i) => (
+            <Icon key={i} obj={ing.item} tooltip={card(ing.niceName())} />
+        ))
+        this.products = recipe.products.map((prod, i) => (
+            <Icon key={i} obj={prod.item} tooltip={card(prod.niceName())} />
+        ))
+    }
+
+    render() {
+        const recipe = this.props.recipe;
+        return (
+            <tr>
+                <td className="result-name"><Icon obj={recipe} title={recipe.niceName()}/>{recipe.niceName()}</td>
+                <td>{recipe.crafting_time.toString()}</td>
+                <td>{this.ingredients}</td>
+                <td>{this.products}</td>
+            </tr>
+        )
+
+    }
 }
