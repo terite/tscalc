@@ -160,7 +160,7 @@ export class RecipePicker extends React.PureComponent<Props, State> {
 			matches = matches.slice(0, 100)
 		}
         return (
-            <table>
+            <table className="table table-hover">
             <thead>
                 <tr>
                     <th>Recipe</th>
@@ -170,7 +170,7 @@ export class RecipePicker extends React.PureComponent<Props, State> {
                 </tr>
             </thead>
             <tbody>
-                {matches.map(r => <RecipeMatch recipe={r} key={r.name} />)}
+                {matches.map(r => <RecipeMatch recipe={r} key={r.name} onClick={this.handleRecipeClick} />)}
             </tbody>
             </table>
 
@@ -195,6 +195,7 @@ export class RecipePicker extends React.PureComponent<Props, State> {
 
 interface RecipeMatchProps {
     recipe: game.Recipe
+    onClick(recipe: game.Recipe): void
 }
 
 function card(body: React.ReactNode) {
@@ -223,10 +224,14 @@ class RecipeMatch extends React.PureComponent<RecipeMatchProps, {}> {
         ))
     }
 
+    handleClickAdd = () => {
+        this.props.onClick(this.props.recipe)
+    }
+
     render() {
         const recipe = this.props.recipe;
         return (
-            <tr>
+            <tr onClick={this.handleClickAdd}>
                 <td className="result-name"><Icon obj={recipe} title={recipe.niceName()}/>{recipe.niceName()}</td>
                 <td>{recipe.crafting_time.toString()}</td>
                 <td>{this.ingredients}</td>
