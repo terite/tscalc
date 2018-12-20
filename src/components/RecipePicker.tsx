@@ -10,16 +10,13 @@ import {Icon} from './Icon'
 
 
 
-enum KeyTypes {
-    NiceName = "NiceName",
-    Name = "Name"
-}
+type KeyTypes = "niceName" | "name";
 
 function getFn(recipe: game.Recipe, key: string) {
     switch (key as KeyTypes) {
-        case KeyTypes.NiceName:
+        case "niceName":
             return recipe.niceName()
-        case KeyTypes.Name:
+        case "name":
             return recipe.name;
     }
 }
@@ -137,10 +134,10 @@ export class RecipePicker extends React.PureComponent<Props, State> {
                 shouldSort: true,
                 getFn: getFn,
                 keys: [{
-                    name: KeyTypes.NiceName,
+                    name: "niceName",
                     weight: 0.7
                 }, {
-                    name: KeyTypes.Name,
+                    name: "name",
                     weight: 0.2
                 }]
             });
