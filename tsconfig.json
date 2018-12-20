@@ -8,6 +8,7 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "preserveConstEnums": true,
+        "strictBindCallApply": true,
         "strictFunctionTypes": true,
         "strictPropertyInitialization": true,
         "strictNullChecks": true,
