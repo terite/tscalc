@@ -13,7 +13,6 @@ interface Props {
 
 
 function UnwrappedApp(props: Props) {
-    console.log('App.render', props.state)
     return (
         <div className="container">
             <RecipeGroup rows={props.state.rows} />

@@ -62,9 +62,8 @@ export class AppLoader extends React.Component<{}, State> {
     }
 
     render() {
-        console.log('AppLoader.render')
         if (this.state.crashMsg != null) {
-            return <div>
+            return <div className="crashed">
                 <h1>Crashed!</h1>
                 <pre>{this.state.crashMsg}</pre>
             </div>

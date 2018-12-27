@@ -8,6 +8,13 @@ html, body {
     padding-top: 1.5rem;
 }
 
+.crashed {
+    padding: 1rem;
+    pre {
+        color: white;
+    }
+}
+
 .card {
     background-color: #403F40;
 }

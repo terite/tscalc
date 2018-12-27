@@ -218,7 +218,7 @@ export class FluidProduct extends BaseProduct {
         super(d)
         this.item = gd.fluidMap[d.name]
         if (!this.item) {
-            console.log("no item", d)
+            console.error("could not find item", d)
             debugger
         }
         this.temperature = d.temperature || this.item.default_temperature
@@ -391,7 +391,7 @@ export class GameData {
             }
             if (recipe.madeIn.length == 0) {
                 // Filter to only recipes buildable by knonwn assembling machines
-                console.log("Ignoring uncraftable recipe", recipe.name, recipe)
+                console.warn("Ignoring uncraftable recipe", recipe.name, recipe)
                 continue
             }
 
