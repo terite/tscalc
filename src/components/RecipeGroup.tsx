@@ -1,11 +1,10 @@
 import * as React from "react"
 
 import * as game from "../game"
-import {Totals} from "../totals"
 
-import {Icon} from './Icon'
 import {RecipeRow} from './RecipeRow'
 import {RecipePicker} from './RecipePicker'
+import {TotalCard} from './TotalCard'
 
 import {RecipeRowData} from '../state'
 
@@ -41,42 +40,11 @@ class RawRecipeGroup extends React.Component<Props, {}> {
             {...data} />
     }
 
-    private renderTotals(totals: Totals) {
-        let reduced = totals.reduce()
-        return (
-            <div className="card combined-totals">
-                <div className="card-header">Combined Totals</div>
-                <div className="card-body">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col">
-                                Ingredients:
-                                {reduced.ingredients.map((ing, i) => (
-                                    <Icon key={i} obj={ing.item} text={ing.niceName()} />
-                                ))}
-                            </div>
-                            <div className="col">
-                                Products:
-                                {reduced.products.map((prod, i) => (
-                                    <Icon key={i} obj={prod.item} text={prod.niceName()} />
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
-    }
 
     render() {
-        let availableRecipes = this.props.gameData.recipes.filter((recipe) => {
+        const availableRecipes = this.props.gameData.recipes.filter((recipe) => {
             return !this.props.rows.some(row => row.recipe == recipe)
         })
-
-        let totals = new Totals()
-        for (let row of this.props.rows) {
-            totals.addRow(row)
-        }
 
         return (
         <div className="recipe-group">
@@ -87,7 +55,7 @@ class RawRecipeGroup extends React.Component<Props, {}> {
             <hr />
             {this.props.rows.map(this.renderRow)}
             <hr />
-            {this.renderTotals(totals)}
+            <TotalCard rows={this.props.rows} />
         </div>
         )
     }
