@@ -157,8 +157,8 @@ export class RecipeRow extends React.Component<Props, {}> {
     }
 
     render() {
-        let recipe = this.props.recipe
-        let output = this.getOutput()
+        const recipe = this.props.recipe
+        const output = this.getOutput()
 
         let ingredients = output.ingredients.map((ingredient, i) =>
             <div className="mb-1" key={i}>

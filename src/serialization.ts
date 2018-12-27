@@ -7,7 +7,7 @@ type SerializedRow = [
     string, // recipe
     string, // assembling machine
     number, // num assembling machines
-    Array<string|null>, // modules,
+    (string|null)[], // modules,
     string|undefined, // beacon module
     number|undefined // num beacon modules
 ]
