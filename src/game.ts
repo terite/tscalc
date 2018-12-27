@@ -350,7 +350,7 @@ export class GameData {
             new (d: T): Entity.Any
         }
 
-        let addOfType = <S extends schema.BaseEntity, C extends Thing<S>>(entities: S[], ctor: C) => {
+        const addOfType = <S extends schema.BaseEntity, C extends Thing<S>>(entities: S[], ctor: C) => {
             for (let entity of entities) {
                 this.entityMap[entity.name] = new ctor(entity)
             }
@@ -383,7 +383,7 @@ export class GameData {
             const recipe = new Recipe(raw.recipes[recipeName], this);
 
             for (let entityName in this.entityMap) {
-                let entity = this.entityMap[entityName]
+                const entity = this.entityMap[entityName]
 
                 if (('canBuildRecipe' in entity) && entity.canBuildRecipe(recipe)) {
                     recipe.madeIn.push(entity)
@@ -395,13 +395,7 @@ export class GameData {
                 continue
             }
 
-            let hasProducts = false;
-            for (let product of recipe.products) {
-                if (product.amount.isPositive()) {
-                    hasProducts = true;
-                    break
-                }
-            }
+            const hasProducts = recipe.products.some(p => p.amount.isPositive())
             if (!hasProducts) {
                 console.log("Ignoring void recipe", recipe.name, recipe)
                 continue

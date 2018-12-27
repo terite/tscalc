@@ -83,7 +83,7 @@ export class RecipeRow extends React.Component<Props, {}> {
     }
 
     getOutput() {
-        let t = new Totals()
+        const t = new Totals()
         t.addRow(this.props)
         return {
             ingredients: t.ingredients,
@@ -92,11 +92,11 @@ export class RecipeRow extends React.Component<Props, {}> {
     }
 
     renderModules() {
-        let numSlots = this.props.machine.data.module_slots
+        const numSlots = this.props.machine.data.module_slots
 
-        let slots = []
+        const slots = []
         for (let i=0; i < numSlots; i++) {
-            let module = this.props.modules[i];
+            const module = this.props.modules[i];
             slots.push(
                 <ModulePicker
                     key={i}
@@ -160,7 +160,7 @@ export class RecipeRow extends React.Component<Props, {}> {
         const recipe = this.props.recipe
         const output = this.getOutput()
 
-        let ingredients = output.ingredients.map((ingredient, i) =>
+        const ingredients = output.ingredients.map((ingredient, i) =>
             <div className="mb-1" key={i}>
                 <Icon
                     onClick={this.handleIngredientClick.bind(null, ingredient)}
@@ -169,7 +169,7 @@ export class RecipeRow extends React.Component<Props, {}> {
                     text={`${ingredient.amount.toString()} / sec`} />
             </div>
         )
-        let products = output.products.map((product, i) =>
+        const products = output.products.map((product, i) =>
             <div className="mb-1" key={i}>
                 <Icon
                     onClick={this.handleProductClick.bind(null, product)}

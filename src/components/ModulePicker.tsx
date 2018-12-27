@@ -17,7 +17,7 @@ interface ModulePickerProps {
 }
 
 const GameModulePicker = (props: ModulePickerProps) => {
-    let icon = props.gameData.raw.sprites.extra.slot_icon_module
+    const icon = props.gameData.raw.sprites.extra.slot_icon_module
     const nomod = new Module({
         type: "module",
         name: "no_module",

@@ -207,7 +207,7 @@ export class PopperHelper extends Component<PopperHelperProps, PopperHelperState
         //     left: `${offsets.left}px`,
         // }
 
-        let newStyle = data.styles as React.CSSProperties
+        const newStyle = data.styles as React.CSSProperties
         const oldStyle = this.state.popperStyle
         if (!deepEqual(oldStyle, newStyle)) {
             this.setState({popperStyle: newStyle})

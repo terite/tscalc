@@ -95,7 +95,7 @@ export class Dropdown<T> extends React.Component<DropdownProps<T>, {}> {
             {({controller}) => {
                 this.controller = controller
 
-                let classes = ["btn", "btn-secondary"]
+                const classes = ["btn", "btn-secondary"]
                 if (this.canToggle) {
                     classes.push('dropdown-toggle')
                 } else {
