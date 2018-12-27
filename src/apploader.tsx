@@ -74,11 +74,10 @@ export class AppLoader extends React.Component<{}, State> {
                 </State.Provider>
             )
         } else {
-            const gameData = this.state.gameData
             return (
                 <State.Provider>
                     <State.Consumer>{this.handleStateChange}</State.Consumer>
-                    <GameContext.Provider value={gameData}>
+                    <GameContext.Provider value={this.state.gameData}>
                         <App />
                     </GameContext.Provider>
                 </State.Provider>
