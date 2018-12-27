@@ -29,9 +29,6 @@ export class Signal<T> {
     }
 }
 
-
-
-
-
-export const ingredientClick = new Signal<game.Ingredient>();
-export const productClick = new Signal<game.Product>();
+export const addIngredientFilter = new Signal<game.Ingredient>();
+export const addProductFilter = new Signal<game.Product>();
+export const addRecipeRow = new Signal<game.Recipe>();

@@ -1,5 +1,6 @@
 import * as React from "react"
 
+import * as signal from "../signal"
 import * as game from "../game"
 
 import {RecipeRow} from './RecipeRow'
@@ -12,7 +13,7 @@ import State, {AppState, withBoth} from '../state'
 import {withGame} from '../context'
 
 
-type Props = {
+interface Props {
     gameData: game.GameData,
     rows: RecipeRowData[],
     state: AppState
@@ -20,6 +21,15 @@ type Props = {
 }
 
 class RawRecipeGroup extends React.Component<Props, {}> {
+
+    constructor(props: Props) {
+        super(props)
+        signal.addRecipeRow.addHandler(this.handlePickRecipe);
+    }
+
+    componentWillUnmount() {
+        signal.addRecipeRow.removeHandler(this.handlePickRecipe);
+    }
 
     public handlePickRecipe = (recipe: game.Recipe) => {
         this.props.actions.addRow({
@@ -39,7 +49,6 @@ class RawRecipeGroup extends React.Component<Props, {}> {
             actions={this.props.actions}
             {...data} />
     }
-
 
     render() {
         const availableRecipes = this.props.gameData.recipes.filter((recipe) => {

@@ -15,7 +15,7 @@ import State, {RecipeRowData} from '../state'
 import * as signal from '../signal'
 
 
-export interface Props extends RecipeRowData {
+interface Props extends RecipeRowData {
     index: number,
     actions: typeof State.actions
 }
@@ -71,11 +71,19 @@ export class RecipeRow extends React.Component<Props, {}> {
     }
 
     public handleIngredientClick = (ingredient: game.Ingredient) => {
-        signal.ingredientClick.dispatch(ingredient);
+        if (ingredient.item.madeBy.length == 1) {
+            signal.addRecipeRow.dispatch(ingredient.item.madeBy[0]);
+        } else {
+            signal.addIngredientFilter.dispatch(ingredient);
+        }
     }
 
     public handleProductClick = (product: game.Product) => {
-        signal.productClick.dispatch(product);
+        if (product.item.usedBy.length == 1) {
+            signal.addRecipeRow.dispatch(product.item.usedBy[0]);
+        } else {
+            signal.addProductFilter.dispatch(product);
+        }
     }
 
     applyChange(change: Partial<RecipeRowData>) {

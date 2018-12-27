@@ -42,14 +42,14 @@ export class RecipePicker extends React.PureComponent<Props, State> {
             matches: []
         }
 
-        signal.ingredientClick.addHandler(this.handleIngredientClick)
-        signal.productClick.addHandler(this.handleProductClick)
+        signal.addIngredientFilter.addHandler(this.handleIngredientClick)
+        signal.addProductFilter.addHandler(this.handleProductClick)
     }
 
     componentWillUnmount() {
         this.debCalculateMatches.cancel()
-        signal.ingredientClick.removeHandler(this.handleIngredientClick)
-        signal.productClick.removeHandler(this.handleProductClick)
+        signal.addIngredientFilter.removeHandler(this.handleIngredientClick)
+        signal.addProductFilter.removeHandler(this.handleProductClick)
     }
 
     public handleIngredientClick = (ingredient: game.Ingredient) => {

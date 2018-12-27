@@ -24,9 +24,14 @@ export const defaultState: AppState = {
 const State = createDakpan(defaultState)({
     replaceState: (newState: AppState) => () => newState,
 
-    addRow: (row: RecipeRowData) => (state) => ({
-        rows: state.rows.concat([row])
-    }),
+    addRow: (row: RecipeRowData) => (state) => {
+        // ignore adding duplicate rows
+        if (state.rows.some(r => r.recipe.name == row.recipe.name)) {
+            return {}
+        }
+
+        return {rows: state.rows.concat([row])};
+    },
 
     updateRow: (i: number, updates: Partial<RecipeRowData>) => (state) => {
         const rows = Array.from(state.rows)
