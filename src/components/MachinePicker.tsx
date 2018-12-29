@@ -12,7 +12,7 @@ type Machine = game.Entity.AssemblingMachine
 
 interface MachinePickerProps {
     machines: Machine[]
-    selected: Machine 
+    selected: Machine
     onChange(m: Machine): void
 }
 

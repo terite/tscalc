@@ -4,13 +4,12 @@ import * as game from "./game"
 
 import {App} from "./components/App"
 
-import {GameContext} from './context'
 import State, {AppState} from './state'
 import * as serialization from './serialization'
 
 interface State {
     crashMsg?: string
-    gameData: game.GameData|null
+    loading: boolean
 }
 
 export class AppLoader extends React.Component<{}, State> {
@@ -19,20 +18,22 @@ export class AppLoader extends React.Component<{}, State> {
         super(props)
 
         this.state = {
-            gameData: null
+            loading: true
         }
 
         fetch("seablock.json")
             .then((response) => response.json())
             .then((raw: any) => {
                 const gameData = new game.GameData(raw)
+                State.actions.replaceState({gameData})
 
                 const urlState = serialization.getUrlState(gameData)
                 if (urlState) {
                     State.actions.replaceState(urlState)
+                } else {
                 }
 
-                this.setState({gameData})
+                this.setState({loading: false})
             })
             .catch(error => {
                 console.error(error);
@@ -67,7 +68,7 @@ export class AppLoader extends React.Component<{}, State> {
                 <h1>Crashed!</h1>
                 <pre>{this.state.crashMsg}</pre>
             </div>
-        } else if (!this.state.gameData) {
+        } else if (this.state.loading) {
             return (
                 <State.Provider>
                     <h1>Loading...</h1>
@@ -77,9 +78,7 @@ export class AppLoader extends React.Component<{}, State> {
             return (
                 <State.Provider>
                     <State.Consumer>{this.handleStateChange}</State.Consumer>
-                    <GameContext.Provider value={this.state.gameData}>
-                        <App />
-                    </GameContext.Provider>
+                    <App />
                 </State.Provider>
             )
         }

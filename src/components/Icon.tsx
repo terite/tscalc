@@ -4,7 +4,7 @@ import {PopperHelper} from './generic'
 
 import * as game from "../game"
 
-import {withGame} from "../context"
+import {withGame} from "../state"
 
 
 type IconProps = {

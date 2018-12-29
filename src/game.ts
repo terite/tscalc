@@ -219,7 +219,6 @@ export class FluidProduct extends BaseProduct {
         this.item = gd.fluidMap[d.name]
         if (!this.item) {
             console.error("could not find item", d)
-            debugger
         }
         this.temperature = d.temperature || this.item.default_temperature
     }
@@ -325,6 +324,29 @@ export namespace Entity {
     export type Any = AssemblingMachine
 }
 
+
+type CategoryMap = {[category: string]: Entity.AssemblingMachine[]}
+
+const createCategoryMap = (entities: Entity.Any[]) => {
+    const catMap: CategoryMap = {}
+    for (let entity of entities) {
+        if (!(entity instanceof Entity.AssemblingMachine)) {
+        }
+        for (let category of entity.data.crafting_categories) {
+            if (!catMap.hasOwnProperty(category)) {
+                catMap[category] = []
+            }
+            catMap[category].push(entity)
+        }
+    }
+    for (let key in catMap) {
+        if (catMap[key].length == 1) {
+            delete catMap[key]
+        }
+    }
+    return catMap
+}
+
 export class GameData {
     raw: schema.Root
 
@@ -340,7 +362,10 @@ export class GameData {
     recipes: Recipe[] = [];
     recipeMap: {[name: string]: Recipe} = {};
 
+    entities: Entity.Any[] = [];
     entityMap: {[name: string]: Entity.Any} = {}
+
+    categoryMap: CategoryMap;
 
     constructor(raw: schema.Root) {
         console.groupCollapsed('Game data parsing')
@@ -351,8 +376,10 @@ export class GameData {
         }
 
         const addOfType = <S extends schema.BaseEntity, C extends Thing<S>>(entities: S[], ctor: C) => {
-            for (let entity of entities) {
-                this.entityMap[entity.name] = new ctor(entity)
+            for (let edata of entities) {
+                const entity = new ctor(edata)
+                this.entityMap[edata.name] = entity;
+                this.entities.push(entity);
             }
         }
 
@@ -411,10 +438,8 @@ export class GameData {
                 product.item.madeBy.push(recipe);
             }
         }
-        console.groupEnd()
-    }
 
-    toJSON() {
-        return null
+        this.categoryMap = createCategoryMap(this.entities)
+        console.groupEnd()
     }
 }

@@ -2,7 +2,7 @@ export type LocalisedName = {[locale: string]: string}
 
 
 interface Effectable {
-    allowed_effects: Array<"consumption" | "pollution" | "productivity" | "speed">
+    allowed_effects: ("consumption" | "pollution" | "productivity" | "speed")[]
     module_slots: number
 }
 

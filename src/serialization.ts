@@ -1,52 +1,133 @@
 import * as game from './game'
-import {AppState} from './state'
+import {AppState, AppSettingsData} from './state'
+import {getDefaultMachine} from './stateutil'
+import {mapValues} from './util'
 
-type SerializedAppState = SerializedRow[]
+import {inflate, deflate} from 'pako'
 
-type SerializedRow = [
-    string, // recipe
-    string, // assembling machine
-    number, // num assembling machines
-    (string|null)[], // modules,
-    string|undefined, // beacon module
-    number|undefined // num beacon modules
-]
+const USE_COMPRESSION=false
 
-export function getUrlState(gameData: game.GameData) {
-    if (document.location.hash.startsWith('#[')) {
-        const hash = decodeURIComponent(document.location.hash.substr(1))
-        const d = JSON.parse(hash)
-        return deserialize(gameData, d)
-    }
-    return null
+interface SerializedAppState {
+    rows: SerializedRow[]
+    settings: SerializedSettings
 }
 
+interface SerializedSettings {
+    assemblerOverrides: {
+        [category: string]: string
+    }
+}
+
+type SerializedRow = [
+    string, // recipe name, required
+    string|null, // assembling machine, null if default
+    number, // num assembling machines
+    (string|null)[], // modules,
+    string|undefined, // beacon module, if chosen
+    number // num beacon modules
+]
+
 export function setUrlState(state: AppState) {
-    history.replaceState('', '', `#${JSON.stringify(serialize(state))}`)
+    const version = 2
+    let str = JSON.stringify(serialize(state))
+    if (USE_COMPRESSION) {
+        str = btoa(deflate(str, {to: 'string'}));
+    }
+    history.replaceState('', '', `#${version}-${str}`)
 }
 
 function serialize(state: AppState): SerializedAppState {
-    return state.rows.map((row):SerializedRow => [
-        row.recipe.name,
-        row.machine.data.name,
-        row.numMachines,
-        row.modules.map(m => m ? m.name : null),
-        row.beaconModule ? row.beaconModule.name : undefined,
-        row.numBeacons,
-    ])
+    return {
+        rows: state.rows.map((row):SerializedRow => {
+            let machineName: string | null = row.machine.data.name
+            const defaultMachine = getDefaultMachine(row.recipe, state)
+
+            if (defaultMachine.data.name == machineName) {
+                machineName = null
+            }
+
+            return [
+                row.recipe.name,
+                machineName,
+                row.numMachines,
+                row.modules.map(m => m ? m.name : null),
+                row.beaconModule ? row.beaconModule.name : undefined,
+                row.numBeacons,
+            ]
+        }),
+        settings: {
+            assemblerOverrides: mapValues(state.settings.assemblerOverrides, (a) => a.data.name)
+        }
+    }
 }
 
-function deserialize(gameData: game.GameData, state: SerializedAppState): AppState {
-    const gd = gameData
+const reStateUrl = /^#(\d+)?(?:-)?(.+)$/;
 
-    const rows = state.map(([recipe, machine, numMachines, modules, beaconModule, numBeacons]) => ({
-        recipe: gd.recipeMap[recipe],
-        machine: gd.entityMap[machine],
-        numMachines,
-        modules: modules.map(n => n ? gd.moduleMap[n] : null),
-        beaconModule: beaconModule ? gd.moduleMap[beaconModule] : null,
-        numBeacons: numBeacons || 0
-    }))
+export function getUrlState(gameData: game.GameData) {
+    const matches = reStateUrl.exec(document.location.hash);
+    if (!matches) {
+        return null
+    }
+    const version = Number(matches[1] || 1)
 
-    return {rows}
+    let str = decodeURIComponent(matches[2])
+    if (USE_COMPRESSION && version >= 2) {
+        str = inflate(atob(str), { to: 'string' });
+    }
+
+    let data = JSON.parse(str)
+
+    // Fixups
+    switch (version) {
+        case 1:
+            // version 1 didn't have support for settings
+            const settings: AppSettingsData = {
+                assemblerOverrides: {}
+            }
+            data = {
+                rows: data,
+                settings: settings
+            }
+        case 2:
+            // the latest
+            break
+
+        default:
+            throw new Error(`unknown state version: ${version}`)
+    }
+
+    return deserialize(gameData, data)
+}
+
+function deserialize(gameData: game.GameData, serialized: SerializedAppState): AppState {
+    const state: AppState = {
+        gameData: gameData,
+        settings: deserializeSettings(gameData, serialized.settings),
+        rows: []
+    }
+
+    state.rows = serialized.rows.map(([recipeName, machineName, numMachines, modules, beaconModule, numBeacons]) => {
+        const recipe = gameData.recipeMap[recipeName]
+
+        const machine = machineName
+            ? gameData.entityMap[machineName]
+            : getDefaultMachine(recipe, state)
+
+        return {
+            recipe: recipe,
+            machine: machine,
+            numMachines,
+            modules: modules.map(n => n ? gameData.moduleMap[n] : null),
+            beaconModule: beaconModule ? gameData.moduleMap[beaconModule] : null,
+            numBeacons: numBeacons || 0
+        }
+    })
+
+    return state
+}
+
+function deserializeSettings(gameData: game.GameData, serialized: SerializedSettings): AppSettingsData {
+    return {
+        assemblerOverrides: mapValues(serialized.assemblerOverrides, (name) => gameData.entityMap[name])
+    }
 }

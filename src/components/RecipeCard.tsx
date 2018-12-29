@@ -5,7 +5,7 @@ import * as game from "../game"
 
 import {Icon} from './Icon'
 import {MachineCard} from './MachineCard'
-import {withGame} from '../context'
+import {withGame} from '../state'
 
 type Props = {
     gameData: game.GameData

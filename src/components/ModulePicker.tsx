@@ -5,7 +5,7 @@ import {GameData, Module, Recipe} from '../game'
 import {Icon} from './Icon'
 import {ModuleCard} from './ModuleCard'
 import {Dropdown} from './generic'
-import {withGame} from "../context"
+import {withGame} from "../state"
 
 
 interface ModulePickerProps {
@@ -57,7 +57,6 @@ const GameModulePicker = (props: ModulePickerProps) => {
             return <Icon obj={nomod} text={nomod.niceName()} />
         }
     }
-
 
     const options = props.gameData.modules
         .filter(m => {

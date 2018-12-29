@@ -2,12 +2,14 @@
   "name": "tscalc",
   "dependencies": {
     "@types/lodash": "*",
+    "@types/pako": "^1.0.0",
     "@types/react": "^16.7.18",
     "@types/react-dom": "*",
     "bootstrap": "^4.2.1",
     "dakpan": "*",
     "fuse.js": "*",
     "lodash": "*",
+    "pako": "^1.0.7",
     "popper.js": "*",
     "react": "^16.7.0",
     "react-dom": "^16.7.0"

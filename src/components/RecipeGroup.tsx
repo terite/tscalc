@@ -9,8 +9,8 @@ import {TotalCard} from './TotalCard'
 
 import {RecipeRowData} from '../state'
 
-import State, {AppState, withBoth} from '../state'
-import {withGame} from '../context'
+import State, {AppState, withBoth, withGame} from '../state'
+import * as su from '../stateutil'
 
 
 interface Props {
@@ -34,7 +34,7 @@ class RawRecipeGroup extends React.Component<Props, {}> {
     public handlePickRecipe = (recipe: game.Recipe) => {
         this.props.actions.addRow({
             recipe: recipe,
-            machine: recipe.madeIn[recipe.madeIn.length - 1],
+            machine: su.getDefaultMachine(recipe, this.props.state),
             numMachines: 1,
             modules: [],
             beaconModule: null,

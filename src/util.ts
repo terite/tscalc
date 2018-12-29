@@ -4,6 +4,14 @@ export function assert(check: any, message?: string): void {
     }
 }
 
+export function mapValues<T, V>(obj: { [s: string]: T }, fn: (v: T) => V): {[s: string]: V} {
+    let ret: {[key: string]: V} = {}
+    for (let key in obj) {
+        ret[key] = fn(obj[key])
+    }
+    return ret
+}
+
 export function values<T>(obj: { [s: string]: T }): T[] {
     const values = []
     for (let key in obj) {
