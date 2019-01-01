@@ -9,7 +9,6 @@ module.exports = {
     contentBase: './dist',
     port: 8000,
     host: '0.0.0.0',
-    hot: true,
     disableHostCheck: true,
   },
 
@@ -40,10 +39,6 @@ module.exports = {
 
     ]
   },
-
-  plugins: [
-    new webpack.HotModuleReplacementPlugin()
-  ],
 
   resolve: {
     extensions: [ '.tsx', '.ts', '.js', '.d.ts' ],
