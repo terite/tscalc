@@ -339,11 +339,6 @@ const createCategoryMap = (entities: Entity.Any[]) => {
             catMap[category].push(entity)
         }
     }
-    for (let key in catMap) {
-        if (catMap[key].length == 1) {
-            delete catMap[key]
-        }
-    }
     return catMap
 }
 
