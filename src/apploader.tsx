@@ -21,7 +21,7 @@ export class AppLoader extends React.Component<{}, State> {
             loading: true
         }
 
-        fetch("seablock.json")
+        fetch("landblock.json")
             .then((response) => response.json())
             .then((raw: any) => {
                 const gameData = new game.GameData(raw)
