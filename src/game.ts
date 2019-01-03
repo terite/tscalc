@@ -133,7 +133,7 @@ export class FluidIngredient extends BaseIngredient {
     constructor(d: schema.Ingredient, gd: GameData) {
         super(d)
         this.item = gd.fluidMap[d.name]
-        // TODO: convert super high floats to infinities
+
         this.minimum_temperature = d.minimum_temperature || -Infinity
         this.maximum_temperature = d.maximum_temperature || Infinity
 
