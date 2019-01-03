@@ -28,7 +28,7 @@ export class IntegerInput extends React.PureComponent<Props, State> {
             // TODO: error?
             return
         }
-        if (Number.isInteger(num) && num >= 0) {
+        if (num >= 0) {
             this.props.onChange(num)
         }
     }
