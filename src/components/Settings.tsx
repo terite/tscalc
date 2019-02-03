@@ -15,11 +15,16 @@ interface RawSettingsProps {
 class RawSettings extends React.Component<RawSettingsProps, {}> {
 
     render() {
+
+        const categoryNames = Object.entries(this.props.gameData.categoryMap)
+            .filter(entry => entry[1].length > 1)
+            .map(entry => entry[0]);
+
         return (
             <div>
                 <h3>Default Assemblers</h3>
-                {Object.keys(this.props.gameData.categoryMap).map(cat => (
-                    <CategoryRow key={cat} category={cat} />
+                {categoryNames.map(name => (
+                    <CategoryRow key={name} category={name} />
                 ))}
             </div>
         );
