@@ -6,8 +6,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          key: v1-dependency-cache-{{ checksum "package-lockjson" }}
-          key: v1-dependency-cache-
+          keys:
+            - v1-dependency-cache-{{ checksum "package-lockjson" }}
+            - v1-dependency-cache-
       - run:
           name: Setup Dependencies
           command: npm ci
