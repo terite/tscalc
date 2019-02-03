@@ -1,4 +1,5 @@
 import * as React from "react"
+import * as Sentry from '@sentry/browser';
 
 import * as game from "./game"
 
@@ -36,7 +37,6 @@ export class AppLoader extends React.Component<{}, State> {
                 this.setState({loading: false})
             })
             .catch(error => {
-                console.error(error);
                 this.crash(error);
             });
     }
@@ -54,6 +54,13 @@ export class AppLoader extends React.Component<{}, State> {
             "",
             error && error.stack
         ].join("\n"))
+
+        Sentry.withScope((scope) => {
+            Object.keys(errorInfo).forEach(key => {
+                scope.setExtra(key, errorInfo[key as keyof React.ErrorInfo]);
+            });
+            Sentry.captureException(error);
+        });
     }
 
     crash(msg: string) {
