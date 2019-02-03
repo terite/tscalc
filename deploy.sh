@@ -2,8 +2,6 @@
 set -euo pipefail
 bash --version
 
-env
-
 buildhash=$(git rev-parse HEAD)
 origin=$(git config --get remote.origin.url)
 
@@ -16,17 +14,17 @@ if [ -d ".git" ]; then
   rm -Rf .git
 fi
 
-env
+git init
+
 if [[ -v GIT_EMAIL ]]; then
   echo "Setting git email to $GIT_EMAIL"
-  git config --global user.email "$GIT_EMAIL"
+  git config user.email "$GIT_EMAIL"
 fi
 if [[ -v GIT_NAME ]]; then
   echo "Setting git name to $GIT_NAME"
-  git config --global user.email "$GIT_NAME"
+  git config user.name "$GIT_NAME"
 fi
 
-git init
 git add .
 git commit -m "build $buildhash"
 
