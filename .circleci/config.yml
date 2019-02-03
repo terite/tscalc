@@ -3,17 +3,16 @@ jobs:
   build:
     docker:
       - image: circleci/node:11
+
     steps:
       - checkout
       - restore_cache:
           keys:
-            - v1-dependency-cache-{{ checksum "package-lockjson" }}
-            - v1-dependency-cache-
-      - run:
-          name: Setup Dependencies
-          command: npm ci
+            - v1-deps-cache-{{ checksum "package-lock.json" }}
+            - v1-deps-cache-
+      - run: npm ci
       - save_cache:
-          key: v1-dependency-cache-{{ checksum "package-lock.json" }}
+          key: v1-deps-cache-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
       - run:
@@ -22,9 +21,15 @@ jobs:
       - deploy:
         command: |
           if [ "${CIRCLE_BRANCH}" == "master" ]; then
-            echo "deploying!!!'
+            echo "deploying!!!"
             ./deploy.sh
           fi
-    branches:
-      ignore:
-        - gh-pages
+
+workflows:
+  version: 2
+  the-workflow:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore: gh-pages
