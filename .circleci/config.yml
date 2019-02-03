@@ -17,11 +17,6 @@ jobs:
           paths:
             - ~/.npm
       - run: npm run test
-      - deploy:
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              ./deploy.sh
-            fi
 
 workflows:
   version: 2
