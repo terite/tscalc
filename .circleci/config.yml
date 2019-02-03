@@ -17,11 +17,11 @@ jobs:
             - node_modules
       - run: npm run test
       - deploy:
-        command: |
-          if [ "${CIRCLE_BRANCH}" == "master" ]; then
-            echo "deploying!!!"
-            ./deploy.sh
-          fi
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              echo "deploying!!!"
+              ./deploy.sh
+            fi
 
 workflows:
   version: 2
