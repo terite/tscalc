@@ -13,6 +13,13 @@ if [ -d ".git" ]; then
   rm -Rf .git
 fi
 
+if [[ -v GIT_EMAIL ]]; then
+  git config --global user.email "$GIT_EMAIL"
+fi
+if [[ -v GIT_NAME ]]; then
+  git config --global user.email "$GIT_NAME"
+fi
+
 git init
 git add .
 git commit -m "build $buildhash"
