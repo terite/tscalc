@@ -10,5 +10,5 @@ import * as ReactDOM from "react-dom";
 import './index.scss';
 
 const node = document.querySelector('#root')!;
-import {AppLoader} from "./apploader"
+import {AppLoader} from "./components/AppLoader"
 ReactDOM.render(<AppLoader />, node);

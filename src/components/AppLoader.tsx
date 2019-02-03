@@ -1,12 +1,12 @@
 import * as React from "react"
 import * as Sentry from '@sentry/browser';
 
-import * as game from "./game"
+import * as game from "../game"
+import State, {AppState} from '../state'
+import * as serialization from '../serialization'
 
-import {App} from "./components/App"
+import {App} from "./App"
 
-import State, {AppState} from './state'
-import * as serialization from './serialization'
 
 interface State {
     crashMsg?: string
