@@ -1,0 +1,29 @@
+version: '2.1'
+jobs:
+  build:
+    docker:
+      - image: circleci/node:11
+    steps:
+      - checkout
+      - restore_cache:
+          key: v1-dependency-cache-{{ checksum "package-lockjson" }}
+          key: v1-dependency-cache-
+      - run:
+          name: Setup Dependencies
+          command: npm ci
+      - save_cache:
+          key: v1-dependency-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - run:
+          name: Run tests
+          command: npm run test
+      - deploy:
+        command: |
+          if [ "${CIRCLE_BRANCH}" == "master" ]; then
+            echo "deploying!!!'
+            ./deploy.sh
+          fi
+    branches:
+      ignore:
+        - gh-pages
