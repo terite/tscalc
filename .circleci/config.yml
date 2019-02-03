@@ -10,6 +10,7 @@ jobs:
           keys:
             - v3-deps-cache-{{ checksum "package-lock.json" }}
             - v3-deps-cache-
+      - run: env
       - run: npm ci
       - save_cache:
           key: v3-deps-cache-{{ checksum "package-lock.json" }}

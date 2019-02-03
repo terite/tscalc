@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+env
+
 buildhash=$(git rev-parse HEAD)
 origin=$(git config --get remote.origin.url)
 
