@@ -15,7 +15,6 @@ interface RawSettingsProps {
 class RawSettings extends React.Component<RawSettingsProps, {}> {
 
     render() {
-
         const categoryNames = Object.entries(this.props.gameData.categoryMap)
             .filter(entry => entry[1].length > 1)
             .map(entry => entry[0]);
