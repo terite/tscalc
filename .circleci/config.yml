@@ -15,9 +15,7 @@ jobs:
           key: v1-deps-cache-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
-      - run:
-          name: Run tests
-          command: npm run test
+      - run: npm run test
       - deploy:
         command: |
           if [ "${CIRCLE_BRANCH}" == "master" ]; then
