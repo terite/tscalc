@@ -29,7 +29,7 @@ git commit -m "build $buildhash"
 
 echo "Pushing to github pages"
 git remote add origin "$origin"
-git push origin master:gh-pages
+git push --force origin master:gh-pages
 
 echo "Cleaning up"
 cd ..
