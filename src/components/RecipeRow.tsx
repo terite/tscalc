@@ -133,7 +133,11 @@ export class RecipeRow extends React.Component<Props, {}> {
                     <div className="input-group-prepend">
                         <div className="input-group-text">Beacon Modules</div>
                     </div>
-                    <IntegerInput value={this.props.numBeacons} onChange={this.handleNumBeaconsChange} />
+                    <IntegerInput
+                        value={this.props.numBeacons}
+                        onChange={this.handleNumBeaconsChange}
+                        positiveOnly={true}
+                        intOnly={true} />
                     <div className="input-group-append btn-icon-wrapper">
                         <ModulePicker
                             isBeacon={true}
@@ -151,7 +155,11 @@ export class RecipeRow extends React.Component<Props, {}> {
         return (
             <div className="btn-toolbar mb-3">
                 <div className="input-group">
-                    <IntegerInput value={this.props.numMachines} onChange={this.handleNumMachinesChange} />
+                    <IntegerInput
+                        value={this.props.numMachines}
+                        onChange={this.handleNumMachinesChange}
+                        positiveOnly={true}
+                        />
                     <div className="input-group-append btn-icon-wrapper">
                         <MachinePicker
                             machines={this.props.recipe.madeIn}

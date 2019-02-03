@@ -2,7 +2,9 @@ import * as React from "react"
 
 interface Props {
     value: number,
-    onChange: (value: number) => unknown
+    onChange: (value: number) => void,
+    intOnly?: boolean,
+    positiveOnly?: boolean,
 }
 
 interface State {
@@ -24,13 +26,13 @@ export class IntegerInput extends React.PureComponent<Props, State> {
             return
         }
         const num = Number(value);
-        if (!Number.isInteger(num)) {
-            // TODO: error?
-            return
+        if (this.props.intOnly && !Number.isInteger(num)) {
+            return;
         }
-        if (num >= 0) {
-            this.props.onChange(num)
+        if (this.props.positiveOnly && num < 0) {
+            return;
         }
+        this.props.onChange(num);
     }
 
     render() {
