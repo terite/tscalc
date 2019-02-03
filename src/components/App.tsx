@@ -9,10 +9,8 @@ interface Props {
     state: AppState
 }
 
-type PageType = "Factory" | "Settings"
-
 interface Page {
-    type: PageType
+    name: string
     render: () => JSX.Element
 }
 
@@ -27,10 +25,10 @@ class RawApp extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         const pages: Page[] = [{
-            type: "Factory",
+            name: "Factory",
             render: this.renderFactory
         }, {
-            type: "Settings",
+            name: "Settings",
             render: this.renderSettings
         }]
 
@@ -53,7 +51,7 @@ class RawApp extends React.Component<Props, State> {
             };
             return (
                 <li className="nav-item" key={i}>
-                    <a href="" className={cls} onClick={handler}>{page.type}</a>
+                    <a href="" className={cls} onClick={handler}>{page.name}</a>
                 </li>
             )
         })
