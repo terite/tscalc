@@ -12,7 +12,8 @@
     "pako": "^1.0.8",
     "popper.js": "^1.14.7",
     "react": "^16.7.0",
-    "react-dom": "^16.7.0"
+    "react-dom": "^16.7.0",
+    "terser": "^3.14.1"
   },
   "devDependencies": {
     "css-loader": "^2.1.0",
