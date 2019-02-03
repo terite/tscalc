@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+bash --version
 
 env
 
@@ -15,11 +16,12 @@ if [ -d ".git" ]; then
   rm -Rf .git
 fi
 
-if [ -n "$GIT_EMAIL" ]; then
+env
+if [[ -v GIT_EMAIL ]]; then
   echo "Setting git email to $GIT_EMAIL"
   git config --global user.email "$GIT_EMAIL"
 fi
-if [ -n "$GIT_NAME" ]; then
+if [[ -v GIT_NAME ]]; then
   echo "Setting git name to $GIT_NAME"
   git config --global user.email "$GIT_NAME"
 fi
