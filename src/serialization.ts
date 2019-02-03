@@ -5,8 +5,6 @@ import {mapValues} from './util'
 
 import {inflate, deflate} from 'pako'
 
-const USE_COMPRESSION=false
-
 interface SerializedAppState {
     rows: SerializedRow[]
     settings: SerializedSettings
@@ -28,11 +26,11 @@ type SerializedRow = [
 ]
 
 export function setUrlState(state: AppState) {
-    const version = 2
+    const version = 3
     let str = JSON.stringify(serialize(state))
-    if (USE_COMPRESSION) {
-        str = btoa(deflate(str, {to: 'string'}));
-    }
+    // compress
+    str = btoa(deflate(str, {to: 'string'}));
+
     history.replaceState('', '', `#${version}-${str}`)
 }
 
@@ -71,11 +69,11 @@ export function getUrlState(gameData: game.GameData) {
     const version = Number(matches[1] || 1)
 
     let str = decodeURIComponent(matches[2])
-    if (USE_COMPRESSION && version >= 2) {
+    if (version > 2) {
         str = inflate(atob(str), { to: 'string' });
     }
 
-    let data = JSON.parse(str)
+    let data = JSON.parse(str) as unknown;
 
     // Fixups
     switch (version) {
@@ -91,12 +89,15 @@ export function getUrlState(gameData: game.GameData) {
         case 2:
             // the latest
             break
+        case 3:
+            // 3 is a compressed version of 2
+            break
 
         default:
             throw new Error(`unknown state version: ${version}`)
     }
 
-    return deserialize(gameData, data)
+    return deserialize(gameData, data as SerializedAppState)
 }
 
 function deserialize(gameData: game.GameData, serialized: SerializedAppState): AppState {
