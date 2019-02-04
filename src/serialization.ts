@@ -25,6 +25,39 @@ type SerializedRow = [
     number // num beacon modules
 ]
 
+export function setLocalStorageState(state: AppState) {
+    localStorage.setItem('appstate', JSON.stringify({
+        version: 1,
+        data: serialize(state)
+    }));
+}
+
+export function getLocalStorageState(gameData: game.GameData): AppState | null {
+    const statestr = localStorage.getItem('appstate');
+    if (!statestr) {
+        return null;
+    }
+    const stateobj = JSON.parse(statestr);
+
+    let version: number | undefined;
+    try {
+        version = stateobj.version;
+    } catch {
+        // error handled by switch
+    }
+    let state: AppState | null = null;
+    switch (version) {
+        case 1:
+            state = deserialize(gameData, stateobj.data);
+            break;
+        default:
+            console.error('unknown stateobj', statestr);
+            return null;
+    }
+
+    return state;
+}
+
 export function setUrlState(state: AppState) {
     const version = 3
     let str = JSON.stringify(serialize(state))

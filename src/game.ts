@@ -419,7 +419,7 @@ export class GameData {
 
             const hasProducts = recipe.products.some(p => p.amount.isPositive())
             if (!hasProducts) {
-                console.log("Ignoring void recipe", recipe.name, recipe)
+                console.debug("Ignoring void recipe", recipe.name, recipe)
                 continue
             }
 

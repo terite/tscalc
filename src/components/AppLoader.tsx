@@ -30,19 +30,34 @@ export class AppLoader extends React.Component<{}, State> {
 
                 const urlState = serialization.getUrlState(gameData)
                 if (urlState) {
+                    // everything comes from url state
                     State.actions.replaceState(urlState)
                 } else {
+                    // Load just settings
+                    const storageState = serialization.getLocalStorageState(gameData);
+                    if (storageState) {
+                        // everything comes from url state
+                        State.actions.replaceState(storageState)
+                    }
                 }
 
                 this.setState({loading: false})
             })
             .catch(error => {
-                this.crash(error);
+                console.error('caught error', error);
+                let errmsg: string;
+                if (error.stack) {
+                    errmsg = `\n${error.stack}`;
+                } else {
+                    errmsg = error.toString();
+                }
+                this.crash(errmsg);
             });
     }
 
     handleStateChange = (state: AppState) => {
         serialization.setUrlState(state);
+        serialization.setLocalStorageState(state);
         return "";
     }
 
@@ -70,7 +85,7 @@ export class AppLoader extends React.Component<{}, State> {
     }
 
     render() {
-        if (this.state.crashMsg != null) {
+        if (typeof this.state.crashMsg !== 'undefined') {
             return <div className="crashed">
                 <h1>Crashed!</h1>
                 <pre>{this.state.crashMsg}</pre>
