@@ -22,7 +22,7 @@ export class AppLoader extends React.Component<{}, State> {
             loading: true
         }
 
-        fetch("landblock.json")
+        fetch("assets/landblock.json")
             .then((response) => response.json())
             .then((raw: any) => {
                 const gameData = new game.GameData(raw)

@@ -9,6 +9,13 @@ import * as ReactDOM from "react-dom";
 
 import './index.scss';
 
-const node = document.querySelector('#root')!;
+const root = document.createElement('div');
+root.id = 'root';
+document.body.appendChild(root);
+
+const floaterRoot = document.createElement('div');
+root.id = 'floater-root';
+document.body.appendChild(floaterRoot);
+
 import {AppLoader} from "./components/AppLoader"
-ReactDOM.render(<AppLoader />, node);
+ReactDOM.render(<AppLoader />, root);

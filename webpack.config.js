@@ -1,9 +1,13 @@
 const path = require('path');
-const webpack = require('webpack')
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
   // devtool: 'inline-source-map',
-  entry: './src/index.tsx',
+  entry: {
+    app: './src/index.tsx',
+  },
 
   devServer: {
     contentBase: './dist',
@@ -43,8 +47,17 @@ module.exports = {
     alias: {
     }
   },
+  plugins: [
+    new CleanWebpackPlugin(['dist'], {
+      exclude: ['assets']
+    }),
+    new HtmlWebpackPlugin({
+      title: 'Factorio calculator by terite'
+    }),
+
+  ],
   output: {
-    filename: 'bundle.js',
+    filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist')
   }
 };

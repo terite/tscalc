@@ -25,7 +25,7 @@ export const Icon = withGame((props: IconProps) => {
 
     const divStyle = {
         display: "inline-block",
-        backgroundImage: `url(sprite-sheet-${gd.raw.sprites.hash}.png)`,
+        backgroundImage: `url(assets/sprite-sheet-${gd.raw.sprites.hash}.png)`,
         backgroundPosition: `${x}px ${y}px`,
         width: "32px",
         height: "32px",
