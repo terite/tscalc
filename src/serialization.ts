@@ -5,10 +5,31 @@ import {mapValues} from './util'
 
 import {inflate, deflate} from 'pako'
 
-interface SerializedAppState {
+interface SerializedAppStateV1 extends Array<SerializedRow> {}
+
+function state1to2(state: SerializedAppStateV1): SerializedAppStateV2 {
+    return {
+        rows: state,
+            settings: {
+                assemblerOverrides: {}
+            }
+    };
+}
+
+interface SerializedAppStateV2 {
     rows: SerializedRow[]
     settings: SerializedSettings
 }
+
+// V3 = v2 but compressed
+function state2to3(state: SerializedAppStateV2): SerializedAppStateV3 {
+    return state;
+}
+
+interface SerializedAppStateV3 extends SerializedAppStateV2 {}
+
+// latest
+interface SerializedAppState extends SerializedAppStateV3 {}
 
 interface SerializedSettings {
     assemblerOverrides: {
@@ -94,43 +115,40 @@ function serialize(state: AppState): SerializedAppState {
 
 const reStateUrl = /^#(\d+)?(?:-)?(.+)$/;
 
+
+
 export function getUrlState(gameData: game.GameData) {
     const matches = reStateUrl.exec(document.location.hash);
     if (!matches) {
-        return null
+        return null;
     }
-    const version = Number(matches[1] || 1)
+    const version = Number(matches[1] || 1);
 
     let str = decodeURIComponent(matches[2])
     if (version > 2) {
         str = inflate(atob(str), { to: 'string' });
     }
 
-    let data = JSON.parse(str) as unknown;
+    let data = JSON.parse(str);
+    let latest: SerializedAppState;
 
     // Fixups
     switch (version) {
         case 1:
-            // version 1 didn't have support for settings
-            const settings: AppSettingsData = {
-                assemblerOverrides: {}
-            }
-            data = {
-                rows: data,
-                settings: settings
-            }
+            data = state1to2(data);
         case 2:
-            // the latest
-            break
+            // version 2 is an uncompressed version of 3
+            data = state2to3(data);
         case 3:
-            // 3 is a compressed version of 2
+            // the latest
+            latest = data;
             break
 
         default:
             throw new Error(`unknown state version: ${version}`)
     }
 
-    return deserialize(gameData, data as SerializedAppState)
+    return deserialize(gameData, latest)
 }
 
 function deserialize(gameData: game.GameData, serialized: SerializedAppState): AppState {
