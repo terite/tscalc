@@ -117,7 +117,46 @@ const State = createDakpan(defaultState)({
                 }
             }
         }
-    }
+    },
+
+    setActiveGroup: (index: number) => (_) => {
+        return { activeGroupIdx: index };
+    },
+
+    addGroup: (name) => (state) => {
+        const groups = state.groups.concat([{
+            name,
+            rows: []
+        }]);
+
+        return {
+            groups,
+            activeGroupIdx: state.groups.length
+        };
+    },
+
+    removeGroup: (index) => (state) => {
+        // Remove group
+        const groups = Array.from(state.groups);
+        groups.splice(index, 1);
+
+        // Add new group if necessary
+        if (!groups.length) {
+            groups.push({
+                name: 'Factory 1',
+                rows: []
+            });
+        }
+
+        // Fix the index if it's outside of bounds
+        const maxIndex = groups.length - 1;
+        const activeGroupIdx = Math.min(state.activeGroupIdx, maxIndex);
+
+        return {
+            groups,
+            activeGroupIdx,
+        }
+    },
 });
 
 export const withState = State.withConsumer((state) => ({state}))

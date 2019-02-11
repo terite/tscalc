@@ -204,7 +204,6 @@ function migrateSerializedState(state: MultiSerializedAppState): SerializedAppSt
 
 function deserialize(gameData: game.GameData, unmigrated: MultiSerializedAppState): AppState {
     const migrated = migrateSerializedState(unmigrated).data;
-    console.log('migrated', migrated);
 
     const state: AppState = {
         gameData: gameData,

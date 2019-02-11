@@ -3,69 +3,94 @@ import * as React from "react"
 import {RecipeGroup} from "./RecipeGroup"
 import {Settings} from "./Settings"
 
-import {AppState, withState} from '../state'
+import State, {AppState, withBoth} from '../state'
 
 interface Props {
-    state: AppState
-}
-
-interface Page {
-    name: string
-    render: () => JSX.Element
+    state: AppState;
+    actions: typeof State.actions;
 }
 
 interface State {
-    pages: Page[]
-    activePage: Page
+    activePage: ActivePage
 }
 
+enum ActivePage {
+    Factory = 'FACTORY',
+    Settings = 'SETTINGS',
+}
+
+function assertNever(x: never): never {
+    throw new Error("Unexpected object: " + x);
+}
 
 class RawApp extends React.Component<Props, State> {
 
     constructor(props: Props) {
-        super(props)
-        const pages: Page[] = [];
-
-        for (const group of this.props.state.groups) {
-            pages.push({
-                name: group.name,
-                render: this.renderFactory
-            });
-        }
-
-        pages.push({
-            name: "Settings",
-            render: this.renderSettings
-        });
+        super(props);
 
         this.state = {
-            pages: pages,
-            activePage: pages[0]
-        }
+            activePage: ActivePage.Factory
+        };
     }
 
+    handleClickSettings: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+        event.preventDefault();
+        this.setState({
+            activePage: ActivePage.Settings
+        });
+    };
+
+    handleClickGroup = (i: number, event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        this.setState({
+            activePage: ActivePage.Factory
+        });
+        this.props.actions.setActiveGroup(i);
+    };
+
+    handleClickAddGroup: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+        event.preventDefault();
+        const defaultName = `Factory ${this.props.state.groups.length + 1}`;
+        const name = prompt('What do you want to name this group?', defaultName);
+        if (!name || !name.trim()) {
+            return;
+        }
+        this.props.actions.addGroup(name);
+    };
+
+    handleClickRemoveGroup = (i: number, event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+        const group = this.props.state.groups[this.props.state.activeGroupIdx];
+        if (confirm(`Are you sure you want to delete ${group.name}`)) {
+            this.props.actions.removeGroup(i);
+        }
+    };
+
     renderNavbar = () => {
-        const items = this.state.pages.map((page, i) => {
-            const cls = page == this.state.activePage
-                ? "nav-link active"
-                : "nav-link";
-            const handler = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-                event.preventDefault()
-                this.setState({
-                    activePage: page
-                });
-            };
+        const settingsActive = this.state.activePage === ActivePage.Settings;
+        const factoryPills = this.props.state.groups.map((group, i) => {
+            const cls = !settingsActive && this.props.state.activeGroupIdx === i
+                ? "btn btn-primary"
+                : "btn btn-secondary";
+
             return (
-                <li className="nav-item" key={i}>
-                    <a href="" className={cls} onClick={handler}>{page.name}</a>
-                </li>
-            )
+                <div className="btn-group mr-2" role="group" key={i}>
+                    <button type="button" className={cls} onClick={this.handleClickGroup.bind(null, i)}>{group.name}</button>
+                    <button type="button" className="btn btn-danger" title="Remove this group" onClick={this.handleClickRemoveGroup.bind(null, i)}>✖</button>
+                </div>
+            );
         })
+        const settingsCls = settingsActive
+            ? "btn btn-primary"
+            : "btn btn-secondary";
+
         return (
             <nav className="navbar">
-                <ul className="nav nav-pills">
-                    {items}
-                </ul>
+                <div className="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                    {factoryPills}
+                    <button type="button" className="btn btn-secondary mr-2" title="Add a factory" onClick={this.handleClickAddGroup}>+</button>
+                    <button type="button" className={settingsCls} onClick={this.handleClickSettings}>Settings</button>
+                </div>
             </nav>
         )
     }
@@ -90,13 +115,22 @@ class RawApp extends React.Component<Props, State> {
     }
 
     render() {
+        let body: JSX.Element;
+        if (this.state.activePage === ActivePage.Factory) {
+            body = this.renderFactory();
+        } else if (this.state.activePage === ActivePage.Settings) {
+            body = this.renderSettings();
+        } else {
+            return assertNever(this.state.activePage);
+        }
+
         return (
             <>
                 {this.renderNavbar()}
-                {this.state.activePage.render()}
+                {body}
             </>
         )
     }
 }
 
-export const App = withState(RawApp);
+export const App = withBoth(RawApp);
