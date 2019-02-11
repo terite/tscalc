@@ -24,13 +24,19 @@ class RawApp extends React.Component<Props, State> {
 
     constructor(props: Props) {
         super(props)
-        const pages: Page[] = [{
-            name: "Factory",
-            render: this.renderFactory
-        }, {
+        const pages: Page[] = [];
+
+        for (const group of this.props.state.groups) {
+            pages.push({
+                name: group.name,
+                render: this.renderFactory
+            });
+        }
+
+        pages.push({
             name: "Settings",
             render: this.renderSettings
-        }]
+        });
 
         this.state = {
             pages: pages,
@@ -65,9 +71,11 @@ class RawApp extends React.Component<Props, State> {
     }
 
     renderFactory = () => {
+        const group = this.props.state.groups[this.props.state.activeGroupIdx];
+
         return (
             <div className="container">
-                <RecipeGroup rows={this.props.state.rows} />
+                <RecipeGroup rows={group.rows} />
             </div>
         )
 
