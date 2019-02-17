@@ -1,0 +1,5 @@
+- repo: https://github.com/prettier/prettier
+  rev: '1.16.4' # Use the sha or tag you want to point at
+  hooks:
+    - id: prettier
+      files: '\.tsx?$'
