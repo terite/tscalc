@@ -19,6 +19,8 @@ class RawSettings extends React.Component<RawSettingsProps, {}> {
             .filter(entry => entry[1].length > 1)
             .map(entry => entry[0]);
 
+        categoryNames.sort((a, b) => a.localeCompare(b));
+
         return (
             <div>
                 <h3>Default Assemblers</h3>
