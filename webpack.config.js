@@ -7,6 +7,7 @@ module.exports = {
   // devtool: 'inline-source-map',
   entry: {
     app: './src/index.tsx',
+    styles: './src/index.scss',
   },
 
   devServer: {

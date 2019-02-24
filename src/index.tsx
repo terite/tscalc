@@ -6,9 +6,6 @@ Sentry.init({
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-
-import './index.scss';
-
 const root = document.createElement('div');
 root.id = 'root';
 document.body.appendChild(root);
