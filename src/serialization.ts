@@ -168,8 +168,9 @@ export function getLocalStorageState(gameData: game.GameData): AppState | null {
 }
 
 export function setUrlState(state: AppState) {
-    const version = 4
-    let str = JSON.stringify(serialize(state).data)
+    const serialized = serialize(state);
+    const version = serialized.version;
+    let str = JSON.stringify(serialized.data)
     // compress
     str = btoa(deflate(str, {to: 'string'}));
 
