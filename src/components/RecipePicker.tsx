@@ -230,7 +230,7 @@ class RecipeMatch extends React.PureComponent<RecipeMatchProps, {}> {
         return (
             <tr onClick={this.handleClickAdd}>
                 <td className="result-name"><Icon obj={recipe} title={recipe.niceName()}/>{recipe.niceName()}</td>
-                <td>{recipe.crafting_time.toString()}</td>
+                <td>{recipe.crafting_time.toDecimal()}</td>
                 <td>{this.ingredients}</td>
                 <td>{this.products}</td>
             </tr>

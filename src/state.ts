@@ -1,13 +1,14 @@
 import { createDakpan } from 'dakpan';
 
 import * as game from './game'
+import { Rational } from './rational'
 import {getDefaultMachine} from './stateutil'
 
 
 export interface RecipeRowData {
     recipe: game.Recipe;
     machine: game.Entity.AssemblingMachine;
-    numMachines: number;
+    numMachines: Rational;
     modules: (game.Module|null)[];
     beaconModule: game.Module|null;
     numBeacons: number;

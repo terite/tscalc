@@ -19,8 +19,9 @@ export class Rational {
     q: number;
 
     constructor(p: number, q: number) {
-        assert(Number.isSafeInteger(p));
-        assert(Number.isSafeInteger(q));
+        assert(Number.isSafeInteger(p), 'Numerator must be an integer');
+        assert(Number.isSafeInteger(q), 'Denominator must be an integer');
+        assert(q !== 0, 'Denominator must not be zero');
 
         if (q < 0) {
             p = -p;
@@ -135,12 +136,14 @@ export class Rational {
         return this.p / this.q
     }
 
-    toString() {
+    // Disabled to force choice between toFraction and toDecimal
+    toString: null
+
+    toFraction() {
         if (this.q == 1) {
             return this.p.toString()
         }
-        return this.toDecimal(3)
-        // return this.p.toString() + "/" + this.q.toString()
+        return this.p.toString() + "/" + this.q.toString()
     }
 
     toDecimal(maxDigits?: number, roundingFactor?: Rational) {
@@ -203,6 +206,16 @@ export class Rational {
     }
     static fromInts(p: number, q: number) {
         return new this(p, q);
+    }
+    static fromString(str: string) {
+        const index = str.indexOf('/');
+        if (index === -1) {
+            return Rational.fromFloat(Number(str));
+        } else {
+            const p = Number(str.slice(0, index))
+            const q = Number(str.slice(index + 1))
+            return Rational.fromInts(p, q);
+        }
     }
 
     static zero = new Rational(0, 1);

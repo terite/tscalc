@@ -1,12 +1,13 @@
 import * as React from "react";
 
 import * as game from "../game"
+import {Rational} from "../rational"
 
 import {Icon} from './Icon'
 import {RecipeCard} from './RecipeCard'
 import {MachinePicker} from './MachinePicker'
 import {ModulePicker} from './ModulePicker'
-import {IntegerInput} from './generic'
+import {IntegerInput, RationalInput} from './generic'
 
 // import {clone} from '../util'
 import {Totals} from '../totals'
@@ -46,7 +47,7 @@ export class RecipeRow extends React.Component<Props, {}> {
         })
     }
 
-    public handleNumMachinesChange = (num: number) => {
+    public handleNumMachinesChange = (num: Rational) => {
         this.applyChange({numMachines: num})
     }
 
@@ -155,7 +156,7 @@ export class RecipeRow extends React.Component<Props, {}> {
         return (
             <div className="btn-toolbar mb-3">
                 <div className="input-group">
-                    <IntegerInput
+                    <RationalInput
                         value={this.props.numMachines}
                         onChange={this.handleNumMachinesChange}
                         positiveOnly={true}
@@ -182,7 +183,7 @@ export class RecipeRow extends React.Component<Props, {}> {
                     onClick={this.handleIngredientClick.bind(null, ingredient)}
                     tooltip={<IngredientCard obj={ingredient} />}
                     obj={ingredient.item}
-                    text={`${ingredient.amount.toString()} / sec`} />
+                    text={`${ingredient.amount.toDecimal()} / sec`} />
             </div>
         )
         const products = output.products.map((product, i) =>
@@ -191,7 +192,7 @@ export class RecipeRow extends React.Component<Props, {}> {
                     onClick={this.handleProductClick.bind(null, product)}
                     tooltip={<IngredientCard obj={product} />}
                     obj={product.item}
-                    text={`${product.amount.toString()} / sec`} />
+                    text={`${product.amount.toDecimal()} / sec`} />
             </div>
         )
         return (

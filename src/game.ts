@@ -120,7 +120,7 @@ export class ItemIngredient extends BaseIngredient {
     }
 
     niceName() {
-        return `${this.amount.toString()} × ${this.item.niceName() }`
+        return `${this.amount.toDecimal()} × ${this.item.niceName() }`
     }
 }
 
@@ -156,7 +156,7 @@ export class FluidIngredient extends BaseIngredient {
         } else if (min != -Infinity) {
             range = ` (≥ ${max}°)`
         }
-        return `${this.amount.toString()} × ${this.item.niceName() }${range}`
+        return `${this.amount.toDecimal()} × ${this.item.niceName() }${range}`
     }
 }
 
@@ -199,7 +199,7 @@ export class ItemProduct extends BaseProduct {
     }
 
     niceName() {
-        return `${this.amount.toString()} × ${this.item.niceName()}`
+        return `${this.amount.toDecimal()} × ${this.item.niceName()}`
     }
 
     satisfies(ingredient: Ingredient) {
@@ -228,7 +228,7 @@ export class FluidProduct extends BaseProduct {
         if (this.temperature != this.item.default_temperature) {
             temp = ` (${this.temperature}°)`
         }
-        return `${this.amount.toString()} × ${this.item.niceName()}${temp}`
+        return `${this.amount.toDecimal()} × ${this.item.niceName()}${temp}`
     }
 
     satisfies(ingredient: Ingredient) {

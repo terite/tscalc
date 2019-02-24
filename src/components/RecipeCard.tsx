@@ -50,7 +50,7 @@ const GameRecipeCard = (props: Props) => {
             <div className="card-body">
                 <Icon
                     obj={props.gameData.raw.sprites.extra["clock"]}
-                    text={recipe.crafting_time.toString()} />
+                    text={recipe.crafting_time.toDecimal()} />
                 <div style={{float:"left"}}>
                     Ingredients:
                     {ingredients}

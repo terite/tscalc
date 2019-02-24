@@ -7,7 +7,7 @@ import * as game from "../game"
 import {withGame} from "../state"
 
 
-type IconProps = {
+interface IconProps {
     gameData: game.GameData
     obj: {icon_row: number, icon_col: number}
 
@@ -15,7 +15,7 @@ type IconProps = {
     title?: string
     onClick?(): void
     style?: React.CSSProperties
-    tooltip?: JSX.Element
+    tooltip?: React.ReactNode
 }
 
 export const Icon = withGame((props: IconProps) => {

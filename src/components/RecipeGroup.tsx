@@ -2,6 +2,8 @@ import * as React from "react"
 
 import * as signal from "../signal"
 import * as game from "../game"
+import {Rational} from "../rational"
+
 
 import {RecipeRow} from './RecipeRow'
 import {RecipePicker} from './RecipePicker'
@@ -35,7 +37,7 @@ class RawRecipeGroup extends React.Component<Props, {}> {
         this.props.actions.addRow({
             recipe: recipe,
             machine: su.getDefaultMachine(recipe, this.props.state),
-            numMachines: 1,
+            numMachines: Rational.one,
             modules: [],
             beaconModule: null,
             numBeacons: 0,
