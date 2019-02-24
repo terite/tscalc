@@ -51,9 +51,13 @@ export class RationalInput extends React.PureComponent<Props, State> {
     };
 
     render() {
+        let className = 'form-control';
+        if (this.state.error) {
+            className += ' is-invalid';
+        }
         return (
             <input
-                className="form-control"
+                className={className}
                 value={this.state.txtValue}
                 onChange={this.handleChange}
                 type="text"
