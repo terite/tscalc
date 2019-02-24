@@ -21,6 +21,7 @@
     "css-loader": "^2.1.0",
     "html-webpack-plugin": "^3.2.0",
     "node-sass": "*",
+    "prettier": "^1.16.4",
     "sass-loader": "*",
     "style-loader": "*",
     "ts-loader": "^5.3.3",

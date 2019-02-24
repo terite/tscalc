@@ -1,19 +1,19 @@
-import * as React from "react"
-import {Icon} from './Icon'
-import {RecipeRowData} from '../state'
-import {Totals} from "../totals"
+import * as React from "react";
+import { Icon } from "./Icon";
+import { RecipeRowData } from "../state";
+import { Totals } from "../totals";
 
 interface Props {
-    rows: RecipeRowData[]
+    rows: RecipeRowData[];
 }
 
 export function TotalCard(props: Props) {
-    const totals = new Totals()
+    const totals = new Totals();
     for (let row of props.rows) {
-        totals.addRow(row)
+        totals.addRow(row);
     }
 
-    const {ingredients, products} = totals.reduce()
+    const { ingredients, products } = totals.reduce();
     if (!ingredients.length && !products.length) {
         return <div />;
     }
@@ -27,18 +27,26 @@ export function TotalCard(props: Props) {
                         <div className="col">
                             Ingredients:
                             {ingredients.map((ing, i) => (
-                                <Icon key={i} obj={ing.item} text={ing.niceName()} />
+                                <Icon
+                                    key={i}
+                                    obj={ing.item}
+                                    text={ing.niceName()}
+                                />
                             ))}
                         </div>
                         <div className="col">
                             Products:
                             {products.map((prod, i) => (
-                                <Icon key={i} obj={prod.item} text={prod.niceName()} />
+                                <Icon
+                                    key={i}
+                                    obj={prod.item}
+                                    text={prod.niceName()}
+                                />
                             ))}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    )
+    );
 }

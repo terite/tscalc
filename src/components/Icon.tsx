@@ -1,27 +1,26 @@
-import * as React from "react"
+import * as React from "react";
 
-import {PopperHelper} from './generic'
+import { PopperHelper } from "./generic";
 
-import * as game from "../game"
+import * as game from "../game";
 
-import {withGame} from "../state"
-
+import { withGame } from "../state";
 
 interface IconProps {
-    gameData: game.GameData
-    obj: {icon_row: number, icon_col: number}
+    gameData: game.GameData;
+    obj: { icon_row: number; icon_col: number };
 
-    text?: string
-    title?: string
-    onClick?(): void
-    style?: React.CSSProperties
-    tooltip?: React.ReactNode
+    text?: string;
+    title?: string;
+    onClick?(): void;
+    style?: React.CSSProperties;
+    tooltip?: React.ReactNode;
 }
 
 export const Icon = withGame((props: IconProps) => {
-    const gd = props.gameData
-    const x = -props.obj.icon_col * 32
-    const y = -props.obj.icon_row * 32
+    const gd = props.gameData;
+    const x = -props.obj.icon_col * 32;
+    const y = -props.obj.icon_row * 32;
 
     const divStyle = {
         display: "inline-block",
@@ -29,53 +28,61 @@ export const Icon = withGame((props: IconProps) => {
         backgroundPosition: `${x}px ${y}px`,
         width: "32px",
         height: "32px",
-        ...props.style
+        ...props.style,
     };
     const divProps = {
         title: props.title,
         className: "game-icon",
         style: divStyle,
-        onClick: props.onClick
-    }
+        onClick: props.onClick,
+    };
 
-    let icon
+    let icon;
     if (props.tooltip) {
         icon = (
             <PopperHelper
-                target={ ({style}) => (
-                    <div style={{...style, zIndex: 1070}}>{props.tooltip}</div>
+                target={({ style }) => (
+                    <div style={{ ...style, zIndex: 1070 }}>
+                        {props.tooltip}
+                    </div>
                 )}
                 options={{
-                    placement : 'right',
+                    placement: "right",
                     modifiers: {
                         offset: {
                             enabled: true,
-                            offset: "0, 20"
+                            offset: "0, 20",
                         },
                         preventOverflow: {
                             enabled: true,
-                            boundariesElement: "window"
-                        }
-                    }
-                }}>
-            {({controller}) => <div {...divProps}
-                    onMouseEnter={controller.show}
-                    onMouseLeave={controller.hide}>&nbsp;</div>
-            }
+                            boundariesElement: "window",
+                        },
+                    },
+                }}
+            >
+                {({ controller }) => (
+                    <div
+                        {...divProps}
+                        onMouseEnter={controller.show}
+                        onMouseLeave={controller.hide}
+                    >
+                        &nbsp;
+                    </div>
+                )}
             </PopperHelper>
-        )
+        );
     } else {
-        icon = <div {...divProps}>&nbsp;</div>
+        icon = <div {...divProps}>&nbsp;</div>;
     }
 
     if (props.text) {
         return (
-            <div style={{lineHeight: "32px"}}>
+            <div style={{ lineHeight: "32px" }}>
                 {icon}
-                <span style={{marginLeft: "9px"}}>{props.text}</span>
+                <span style={{ marginLeft: "9px" }}>{props.text}</span>
             </div>
-        )
+        );
     } else {
-        return icon
+        return icon;
     }
-})
+});
