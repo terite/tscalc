@@ -50,7 +50,6 @@ function getActiveGroup(state: AppState) {
 
 
 function updateGroup(state: AppState, newGroup: Partial<RecipeGroupData>) {
-    // TOOD: this can't work, right?
     const groups = state.groups.map((oldGroup, index) => {
         return index === state.activeGroupIdx
             ? { ...oldGroup, ...newGroup }

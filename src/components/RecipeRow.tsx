@@ -38,10 +38,11 @@ export class RecipeRow extends React.Component<Props, {}> {
     };
 
     public handleMachineChange = (machine: game.Entity.AssemblingMachine) => {
-        // TODO: condense modules w/ filter??
         this.applyChange({
             machine: machine,
-            modules: this.props.modules.slice(0, machine.data.module_slots),
+            modules: this.props.modules
+                .filter(module => module !== null)
+                .slice(0, machine.data.module_slots),
         });
     };
 
