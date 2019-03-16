@@ -19,9 +19,8 @@ import debounce = require("lodash/debounce");
 import { deepEqual } from "../../util";
 
 const floaterRoot = document.getElementById("floater-root")!;
-const { Component } = React;
 
-class Wrapper extends Component<{}, {}> {
+class Wrapper extends React.Component<{}, {}> {
     render() {
         return this.props.children;
     }
@@ -90,7 +89,7 @@ class PopperHelperController {
     };
 }
 
-export class PopperHelper extends Component<
+export class PopperHelper extends React.Component<
     PopperHelperProps,
     PopperHelperState
 > {

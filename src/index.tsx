@@ -11,7 +11,7 @@ root.id = 'root';
 document.body.appendChild(root);
 
 const floaterRoot = document.createElement('div');
-root.id = 'floater-root';
+floaterRoot.id = 'floater-root';
 document.body.appendChild(floaterRoot);
 
 import {ErrorCatcher} from "./components/ErrorCatcher"

@@ -214,28 +214,18 @@ function card(body: React.ReactNode) {
 }
 
 class RecipeMatch extends React.PureComponent<RecipeMatchProps, {}> {
-    ingredients: JSX.Element[];
-    products: JSX.Element[];
-
-    constructor(props: RecipeMatchProps) {
-        super(props);
-
-        const recipe = this.props.recipe;
-
-        this.ingredients = recipe.ingredients.map((ing, i) => (
-            <Icon key={i} obj={ing.item} tooltip={card(ing.niceName())} />
-        ));
-        this.products = recipe.products.map((prod, i) => (
-            <Icon key={i} obj={prod.item} tooltip={card(prod.niceName())} />
-        ));
-    }
-
     handleClickAdd = () => {
         this.props.onClick(this.props.recipe);
     };
 
     render() {
         const recipe = this.props.recipe;
+        const ingredients = recipe.ingredients.map((ing, i) => (
+            <Icon key={i} obj={ing.item} tooltip={card(ing.niceName())} />
+        ));
+        const products = recipe.products.map((prod, i) => (
+            <Icon key={i} obj={prod.item} tooltip={card(prod.niceName())} />
+        ));
         return (
             <tr onClick={this.handleClickAdd}>
                 <td className="result-name">
@@ -243,8 +233,8 @@ class RecipeMatch extends React.PureComponent<RecipeMatchProps, {}> {
                     {recipe.niceName()}
                 </td>
                 <td>{recipe.crafting_time.toDecimal()}</td>
-                <td>{this.ingredients}</td>
-                <td>{this.products}</td>
+                <td>{ingredients}</td>
+                <td>{products}</td>
             </tr>
         );
     }
