@@ -49,8 +49,12 @@ module.exports = {
     }
   },
   plugins: [
-    new CleanWebpackPlugin(['dist'], {
-      exclude: ['assets']
+    new CleanWebpackPlugin({
+      cleanOnceBeforeBuildPatterns: [
+        '**/*',
+        '!assets',
+        '!assets/**',
+      ]
     }),
     new HtmlWebpackPlugin({
       title: 'Factorio calculator by terite'
