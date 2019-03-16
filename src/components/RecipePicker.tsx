@@ -5,7 +5,6 @@ import debounce = require("lodash/debounce");
 import * as game from "../game";
 import * as signal from "../signal";
 
-// import {RecipeCard} from './RecipeCard'
 import { Icon } from "./Icon";
 
 type KeyTypes = "niceName" | "name";
@@ -21,12 +20,12 @@ function getFn(recipe: game.Recipe, key: string) {
 
 const RE_ADVANCED = /((?:produces)|(?:consumes)):([a-z0-9\-]+)/g;
 
-type Props = {
+interface Props {
     recipes: game.Recipe[];
     onPickRecipe(r: game.Recipe): void;
 };
 
-type State = {
+interface State {
     query: string;
     matches: game.Recipe[];
 };

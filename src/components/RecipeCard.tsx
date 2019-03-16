@@ -6,7 +6,7 @@ import { Icon } from "./Icon";
 import { MachineCard } from "./MachineCard";
 import { withGame } from "../state";
 
-type Props = {
+interface Props {
     gameData: game.GameData;
     recipe: game.Recipe;
     onClick?(r: game.Recipe): void;

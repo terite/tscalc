@@ -14,5 +14,10 @@ const floaterRoot = document.createElement('div');
 root.id = 'floater-root';
 document.body.appendChild(floaterRoot);
 
+import {ErrorCatcher} from "./components/ErrorCatcher"
 import {AppLoader} from "./components/AppLoader"
-ReactDOM.render(<AppLoader />, root);
+ReactDOM.render(
+    <ErrorCatcher>
+        <AppLoader />
+    </ErrorCatcher>
+, root);

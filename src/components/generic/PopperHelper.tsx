@@ -57,7 +57,7 @@ interface PopperHelperProps {
     options: Popper.PopperOptions;
 }
 
-type PopperHelperState = {
+interface PopperHelperState {
     showFloater: boolean;
     popperStyle: React.CSSProperties;
 };

@@ -20,7 +20,7 @@ interface Props extends RecipeRowData {
     actions: typeof State.actions;
 }
 
-type IngredientCardProps = {
+interface IngredientCardProps {
     obj: game.Ingredient | game.Product;
 };
 

@@ -97,7 +97,6 @@ function state4to5(state: SerializedAppStateV4): SerializedAppStateV5 {
                             r[3],
                             r[4],
                             r[5],
-
                         ];
                     }),
                 };

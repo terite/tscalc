@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as Sentry from "@sentry/browser";
 
 import * as game from "../game";
 import State, { AppState } from "../state";
@@ -8,7 +7,6 @@ import * as serialization from "../serialization";
 import { App } from "./App";
 
 interface State {
-    crashMsg?: string;
     loading: boolean;
 }
 
@@ -19,40 +17,48 @@ export class AppLoader extends React.Component<{}, State> {
         this.state = {
             loading: true,
         };
+    }
+    async componentDidMount() {
+        try {
+            await this.load()
+        } catch (err) {
+            this.setState(() => { throw err; })
+        }
+    }
 
-        fetch("assets/landblock.json")
-            .then(response => response.json())
-            .then((raw: any) => {
-                const gameData = new game.GameData(raw);
-                State.actions.replaceState({ gameData });
+    async load() {
+        const response = await fetch("assets/landblock.json");
+        if (response.status != 200) {
+            throw new Error(`Could not load game data, got HTTP status ${response.status}`);
+        }
 
-                const urlState = serialization.getUrlState(gameData);
-                if (urlState) {
-                    // everything comes from url state
-                    State.actions.replaceState(urlState);
-                } else {
-                    // Load just settings
-                    const storageState = serialization.getLocalStorageState(
-                        gameData
-                    );
-                    if (storageState) {
-                        // everything comes from url state
-                        State.actions.replaceState(storageState);
-                    }
-                }
+        let parsed;
+        try {
+            parsed = await response.json()
+        } catch (err) {
+            throw new Error(`Could not parse game data: ${err}`);
+        }
 
-                this.setState({ loading: false });
-            })
-            .catch(error => {
-                console.error("caught error", error);
-                let errmsg: string;
-                if (error.stack) {
-                    errmsg = `\n${error.stack}`;
-                } else {
-                    errmsg = error.toString();
-                }
-                this.crash(errmsg);
-            });
+        const gameData = new game.GameData(parsed);
+
+        State.actions.replaceState({ gameData });
+
+        const urlState = serialization.getUrlState(gameData);
+        if (urlState) {
+            // everything comes from url state
+            State.actions.replaceState(urlState);
+        } else {
+            // Load just settings
+            const storageState = serialization.getLocalStorageState(
+                gameData
+            );
+            if (storageState) {
+                // everything comes from url state
+                State.actions.replaceState(storageState);
+            }
+        }
+
+        this.setState({ loading: false });
     }
 
     handleStateChange = (state: AppState) => {
@@ -61,40 +67,8 @@ export class AppLoader extends React.Component<{}, State> {
         return "";
     };
 
-    componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-        // Catch errors in any components below and re-render with error message
-        this.crash(
-            [
-                "Component Stack:",
-                errorInfo.componentStack,
-                "",
-                error && error.stack,
-            ].join("\n")
-        );
-
-        Sentry.withScope(scope => {
-            Object.keys(errorInfo).forEach(key => {
-                scope.setExtra(key, errorInfo[key as keyof React.ErrorInfo]);
-            });
-            Sentry.captureException(error);
-        });
-    }
-
-    crash(msg: string) {
-        this.setState({
-            crashMsg: msg,
-        });
-    }
-
     render() {
-        if (typeof this.state.crashMsg !== "undefined") {
-            return (
-                <div className="crashed">
-                    <h1>Crashed!</h1>
-                    <pre>{this.state.crashMsg}</pre>
-                </div>
-            );
-        } else if (this.state.loading) {
+        if (this.state.loading) {
             return (
                 <State.Provider>
                     <h1>Loading...</h1>
