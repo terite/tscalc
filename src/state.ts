@@ -159,8 +159,6 @@ const State = createDakpan(defaultState)({
     },
 });
 
-export const withState = State.withConsumer((state) => ({state}))
-export const withActions = State.withConsumer((_, actions) => ({actions}))
 export const withBoth = State.withConsumer((state, actions) => ({state, actions}))
 export const withGame = State.withConsumer((state) => ({gameData: state.gameData}))
 

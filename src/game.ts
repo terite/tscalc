@@ -363,7 +363,7 @@ export class GameData {
     categoryMap: CategoryMap;
 
     constructor(raw: schema.Root) {
-        console.groupCollapsed('Game data parsing')
+        console.groupCollapsed('Game data processing')
         this.raw = raw
 
         type Thing<T> = {
@@ -435,6 +435,10 @@ export class GameData {
         }
 
         this.categoryMap = createCategoryMap(this.entities)
+        console.log(`Processed ${this.items.length} items`);
+        console.log(`Processed ${this.fluids.length} fluids`);
+        console.log(`Processed ${this.recipes.length} recipes`);
+        console.log(`Processed ${this.entities.length} entities`);
         console.groupEnd()
     }
 }
