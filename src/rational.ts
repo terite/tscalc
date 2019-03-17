@@ -14,6 +14,8 @@ function num_divmod(a: number, b: number) {
     }
 }
 
+const FLOAT_CONVERT_PRECISION = 10000;
+
 export class Rational {
     p: number;
     q: number;
@@ -194,14 +196,15 @@ export class Rational {
         }
 
         // Sufficient precision for our data?
-        var r = new Rational(Math.round(num * 10000), 10000)
-        // Recognize 1/3 and 2/3 explicitly.
-        var divmod = r.divmod(Rational.one)
-        if (divmod.remainder.equal(_one_third)) {
-            return divmod.quotient.add(Rational.oneThird)
-        } else if (divmod.remainder.equal(_two_thirds)) {
-            return divmod.quotient.add(Rational.twoThirds)
+        const r = new Rational(Math.round(num * FLOAT_CONVERT_PRECISION), FLOAT_CONVERT_PRECISION)
+
+        const divmod = r.divmod(Rational.one)
+        for (const [key, value] of lookups) {
+            if (divmod.remainder.equal(key)) {
+                return divmod.quotient.add(value);
+            }
         }
+
         return r
     }
     static fromInts(p: number, q: number) {
@@ -222,10 +225,25 @@ export class Rational {
     static one = new Rational(1, 1);
     static oneThird = new Rational(1, 3);
     static twoThirds = new Rational(2, 3);
-
 }
 
-// Decimal approximations.
-const _one_third = new Rational(3333, 10000)
-const _two_thirds = new Rational(3333, 5000)
+const lookups: [Rational, Rational][] = [];
 
+for (let q = 2; q < 100; q++) {
+    for (let p = 1; p < q; p++) {
+        const num = (p/q);
+
+        // Is there a better way to quickly filter out non-repeating decimals?
+        if (num.toString().length < 10) {
+            continue
+        }
+
+        // Support computer input, use proper rounding
+        const rounded = new Rational(Math.round(num * FLOAT_CONVERT_PRECISION), FLOAT_CONVERT_PRECISION)
+        lookups.push([rounded, Rational.fromInts(p, q)]);
+
+        // Support human input, who just leave off the end after a while
+        const floored = new Rational(Math.floor(num * FLOAT_CONVERT_PRECISION), FLOAT_CONVERT_PRECISION)
+        lookups.push([floored, Rational.fromInts(p, q)]);
+    }
+}
