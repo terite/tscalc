@@ -17,7 +17,9 @@ document.body.appendChild(floaterRoot);
 import {ErrorCatcher} from "./components/ErrorCatcher"
 import {AppLoader} from "./components/AppLoader"
 ReactDOM.render(
-    <ErrorCatcher>
-        <AppLoader />
-    </ErrorCatcher>
+    <React.StrictMode>
+        <ErrorCatcher>
+            <AppLoader />
+        </ErrorCatcher>
+    </React.StrictMode>
 , root);
