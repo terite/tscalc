@@ -11,13 +11,14 @@ import { IntegerInput, RationalInput } from "./generic";
 
 // import {clone} from '../util'
 import { Totals } from "../totals";
-import State, { RecipeRowData } from "../state";
+import State, { withBoth, RecipeRowData, AppState } from "../state";
 
 import * as signal from "../signal";
 
 interface Props extends RecipeRowData {
     index: number;
     actions: typeof State.actions;
+    state: AppState;
 }
 
 interface IngredientCardProps {
@@ -32,7 +33,7 @@ const IngredientCard = (props: IngredientCardProps) => (
     </div>
 );
 
-export class RecipeRow extends React.Component<Props, {}> {
+class RawRecipeRow extends React.Component<Props, {}> {
     public handleRemoveClick = () => {
         this.props.actions.removeRow(this.props.index);
     };
@@ -72,7 +73,15 @@ export class RecipeRow extends React.Component<Props, {}> {
         this.applyChange({ beaconModule: module });
     };
 
-    public handleIngredientClick = (ingredient: game.Ingredient) => {
+    public handleIngredientClick = (ingredient: game.Ingredient, event: React.MouseEvent) => {
+        if (event.shiftKey) {
+            event.preventDefault();
+            this.props.actions.setRecipeTarget({
+                item: ingredient.item,
+                amount: ingredient.amount,
+            });
+            return;
+        }
         if (ingredient.item.madeBy.length == 1) {
             signal.addRecipeRow.dispatch(ingredient.item.madeBy[0]);
         } else {
@@ -80,13 +89,51 @@ export class RecipeRow extends React.Component<Props, {}> {
         }
     };
 
-    public handleProductClick = (product: game.Product) => {
+    public handleProductClick = (product: game.Product, event: React.MouseEvent) => {
+        if (event.shiftKey) {
+            event.preventDefault();
+            this.props.actions.setRecipeTarget({
+                item: product.item,
+                amount: product.amount,
+            });
+            return;
+        }
         if (product.item.usedBy.length == 1) {
             signal.addRecipeRow.dispatch(product.item.usedBy[0]);
         } else {
             signal.addProductFilter.dispatch(product);
         }
     };
+
+    handleInputGroupClick: React.MouseEventHandler<any> = (event) => {
+        const {recipeTarget} = this.props.state;
+        if (!event.shiftKey || !recipeTarget) {
+            return;
+        }
+        event.preventDefault();
+        const output = this.getOutput();
+
+        let current: game.Ingredient | game.Product | undefined;
+        current = output.ingredients
+            .find(x => {
+                return x.item.name == recipeTarget.item.name;
+            });
+
+        current = current || output.products
+            .find(x => {
+                return x.item.name == recipeTarget.item.name;
+            });
+
+        if (!current) {
+            console.error(`Could not find ${recipeTarget.item.name} in totals`, output);
+            return;
+        }
+
+        const newNum = recipeTarget.amount.div(current.amount).mul(this.props.numMachines);
+        this.applyChange({
+            numMachines: newNum
+        });
+    }
 
     applyChange(change: Partial<RecipeRowData>) {
         this.props.actions.updateRow(this.props.index, change);
@@ -163,8 +210,9 @@ export class RecipeRow extends React.Component<Props, {}> {
     renderMachines() {
         return (
             <div className="btn-toolbar mb-3">
-                <div className="input-group">
+                <div className="input-group" onClick={this.handleInputGroupClick}>
                     <RationalInput
+                        key={this.props.numMachines.toFraction()}
                         value={this.props.numMachines}
                         onChange={this.handleNumMachinesChange}
                         positiveOnly={true}
@@ -265,3 +313,5 @@ export class RecipeRow extends React.Component<Props, {}> {
         );
     }
 }
+
+export const RecipeRow = withBoth(RawRecipeRow);

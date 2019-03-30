@@ -11,7 +11,7 @@ interface Props {
     obj: { icon_row: number; icon_col: number };
 
     title?: string;
-    onClick?(): void;
+    onClick?(event: React.MouseEvent<HTMLDivElement, MouseEvent>): void;
     style?: React.CSSProperties;
     tooltip?: React.ReactNode;
     text?: string;
@@ -36,7 +36,6 @@ class GameIcon extends React.Component<Props, {}> {
             title: props.title,
             className: "game-icon",
             style: divStyle,
-            onClick: props.onClick,
         };
 
         let icon;
@@ -64,6 +63,7 @@ class GameIcon extends React.Component<Props, {}> {
                 >
                     {({ controller }) => (
                         <div
+                            onClick={props.onClick}
                             {...divProps}
                             onMouseEnter={controller.show}
                             onMouseLeave={controller.hide}

@@ -261,9 +261,12 @@ function deserialize(gameData: game.GameData, unmigrated: MultiSerializedAppStat
 
     const state: AppState = {
         gameData: gameData,
+
         settings: deserializeSettings(gameData, migrated.settings),
         groups: [],
+
         activeGroupIdx: 0,
+        recipeTarget: undefined,
     }
 
     state.groups = migrated.groups.map((group) => {

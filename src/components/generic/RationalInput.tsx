@@ -46,7 +46,6 @@ export class RationalInput extends React.PureComponent<Props, State> {
             this.setState({ error: "Number must be positive" });
             return;
         }
-        console.log("rational changed to", rational.toFraction());
         this.props.onChange(rational);
     };
 

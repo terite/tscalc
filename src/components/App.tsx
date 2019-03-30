@@ -32,6 +32,26 @@ class RawApp extends React.Component<Props, State> {
         };
     }
 
+    componentDidMount() {
+        document.addEventListener('keydown', this.handleKeyDown);
+        document.addEventListener('keyup', this.handleKeyUp);
+    }
+    componentWillUnmount() {
+        document.removeEventListener('keydown', this.handleKeyDown);
+        document.removeEventListener('keyup', this.handleKeyUp);
+    }
+
+    handleKeyDown = (event: KeyboardEvent) => {
+        if (event.key == 'Shift') {
+            document.body.classList.add('shift-down');
+        }
+    }
+    handleKeyUp = (event: KeyboardEvent) => {
+        if (event.key == 'Shift') {
+            document.body.classList.remove('shift-down');
+        }
+    }
+
     handleClickSettings: React.MouseEventHandler<HTMLButtonElement> = event => {
         event.preventDefault();
         this.setState({

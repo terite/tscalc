@@ -25,11 +25,22 @@ export interface AppSettingsData {
     };
 }
 
+export interface RecipeTarget {
+    item: game.Item | game.Fluid,
+    amount: Rational,
+}
+
 export interface AppState {
+    // Loaded automatically
     gameData: game.GameData;
+
+    // Preserved via url/localstorage
     groups: RecipeGroupData[];
-    activeGroupIdx: number;
     settings: AppSettingsData;
+
+    // unsaved state
+    activeGroupIdx: number;
+    recipeTarget: RecipeTarget | undefined;
 }
 
 export const defaultState: AppState = {
@@ -38,10 +49,12 @@ export const defaultState: AppState = {
         name: 'Factory 1',
         rows: [],
     }],
-    activeGroupIdx: 0,
     settings: {
         assemblerOverrides: {}
-    }
+    },
+
+    activeGroupIdx: 0,
+    recipeTarget: undefined,
 }
 
 function getActiveGroup(state: AppState) {
@@ -155,6 +168,12 @@ const State = createDakpan(defaultState)({
         return {
             groups,
             activeGroupIdx,
+        }
+    },
+
+    setRecipeTarget: (recipeTarget: RecipeTarget) => () => {
+        return {
+            recipeTarget
         }
     },
 });

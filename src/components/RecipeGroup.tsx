@@ -46,7 +46,6 @@ class RawRecipeGroup extends React.Component<Props, {}> {
             <RecipeRow
                 key={data.recipe.name}
                 index={index}
-                actions={this.props.actions}
                 {...data}
             />
         );
