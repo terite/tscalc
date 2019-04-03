@@ -6,7 +6,10 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 
 module.exports = (env, argv) => {
   const config = {
-    // devtool: 'inline-source-map',
+    devtool: argv.mode === 'development'
+      ? 'inline-source-map'
+      : 'source-map',
+
     entry: {
       app: './src/index.tsx',
       styles: './src/index.scss',

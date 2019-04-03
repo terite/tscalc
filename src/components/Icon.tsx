@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { PopperHelper } from "./generic";
+import { Tooltip } from "./generic";
 
 import * as game from "../game";
 
@@ -17,7 +17,37 @@ interface Props {
     text?: string;
 }
 
-class GameIcon extends React.Component<Props, {}> {
+interface State {
+    showTooltip: boolean;
+}
+
+class GameIcon extends React.Component<Props, State> {
+    iconRef: React.RefObject<HTMLDivElement>;
+
+    constructor(props: Props) {
+        super(props);
+        this.iconRef = React.createRef();
+        this.state = {
+            showTooltip: false,
+        };
+    }
+
+    handleMouseEnter = () => {
+        if (this.props.tooltip && !this.state.showTooltip) {
+            this.setState({
+                showTooltip: true,
+            });
+        }
+    }
+
+    handleMouseLeave = () => {
+        if (this.props.tooltip || this.state.showTooltip) {
+            this.setState({
+                showTooltip: false,
+            });
+        }
+    }
+
     render() {
         const props = this.props;
         const gd = props.gameData;
@@ -32,53 +62,28 @@ class GameIcon extends React.Component<Props, {}> {
             height: "32px",
             ...props.style,
         };
-        const divProps = {
-            title: props.title,
-            className: "game-icon",
-            style: divStyle,
-        };
 
-        let icon;
-        if (props.tooltip) {
+        let icon = <div
+            ref={this.iconRef}
+            onClick={props.onClick}
+            title={props.title}
+            className={"game-icon"}
+            style={divStyle}
+            onMouseEnter={this.handleMouseEnter}
+            onMouseLeave={this.handleMouseLeave}
+        >&nbsp;</div>;
+
+        if (this.state.showTooltip) {
             icon = (
-                <PopperHelper
-                    target={({ style }) => (
-                        <div style={{ ...style, zIndex: 1070 }}>
-                            {props.tooltip}
-                        </div>
-                    )}
-                    options={{
-                        placement: "right",
-                        modifiers: {
-                            offset: {
-                                enabled: true,
-                                offset: "0, 20",
-                            },
-                            preventOverflow: {
-                                enabled: true,
-                                boundariesElement: "window",
-                            },
-                        },
-                    }}
-                >
-                    {({ controller }) => (
-                        <div
-                            onClick={props.onClick}
-                            {...divProps}
-                            onMouseEnter={controller.show}
-                            onMouseLeave={controller.hide}
-                        >
-                            &nbsp;
-                        </div>
-                    )}
-                </PopperHelper>
+                <>
+                    {icon}
+                    <Tooltip children={this.props.tooltip} relativeTo={this.iconRef} />
+                </>
             );
-        } else {
-            icon = <div {...divProps}>&nbsp;</div>;
         }
 
         if (props.text) {
-            return (
+            icon = (
                 <div style={{ lineHeight: "32px" }}>
                     {icon}
                     <span style={{ marginLeft: "9px" }}>{props.text}</span>

@@ -1,6 +1,5 @@
 import * as React from "react";
-
-import { PopperHelper } from "./PopperHelper";
+import Popper from "popper.js";
 
 interface DropdownHeader {
     header: React.ReactNode;
@@ -19,7 +18,7 @@ interface DropdownEntry<T> {
 
 type DropdownOption<T> = DropdownHeader | DropdownDivider | DropdownEntry<T>;
 
-interface DropdownProps<T> {
+interface Props<T> {
     options: DropdownOption<T>[];
     selected: T;
     onSelect(selected: T): void;
@@ -27,31 +26,142 @@ interface DropdownProps<T> {
     renderOption(option: T): React.ReactNode;
     renderSelected(option: T): React.ReactNode;
 }
+interface State {
+    isOpen: boolean;
+}
 
-export class Dropdown<T> extends React.Component<DropdownProps<T>, {}> {
-    controller: PopperHelper["controller"] | null = null;
-    canToggle: boolean;
+export class Dropdown<T> extends React.Component<Props<T>, State> {
+    buttonRef: React.RefObject<any>;
 
-    constructor(props: DropdownProps<T>) {
+    constructor(props: Props<T>) {
         super(props);
-
-        if (props.options.length == 0) {
-            this.canToggle = false;
-        } else if (props.options.length > 1) {
-            this.canToggle = true;
-        } else {
-            const option = props.options[0];
-            this.canToggle = "active" in option && !option.active;
-        }
+        this.state = {
+            isOpen: false,
+        };
+        this.buttonRef = React.createRef();
     }
+
+    handleToggle = () => {
+        this.setState({
+            isOpen: !this.state.isOpen
+        });
+    };
 
     handleSelect = (selected: T) => {
         this.props.onSelect(selected);
-        this.controller && this.controller.hide();
+        if (this.state.isOpen) {
+            this.setState({
+                isOpen: false,
+            });
+        }
     };
 
-    renderDropdown = (style: React.CSSProperties) => {
-        const options = this.props.options.map((option, i) => {
+    render() {
+        const canToggle = this.props.options.some(option => {
+            return ('option' in option) && !option.disabled
+        });
+
+        const classes = ["btn", "btn-secondary"];
+        if (canToggle) {
+            classes.push("dropdown-toggle");
+        } else {
+            classes.push("disabled");
+        }
+
+        let floater: React.ReactNode | null;
+        if (this.state.isOpen) {
+            floater = (
+                <DropdownMenu
+                    parentRef={this.buttonRef}
+                    options={this.props.options}
+                    renderOption={this.props.renderOption}
+                    onSelect={this.handleSelect}
+                />
+            );
+        }
+
+        return (<>
+            <button
+                ref={this.buttonRef}
+                className={classes.join(" ")}
+                type="button"
+                onClick={() => {
+                    canToggle && this.handleToggle()
+                }}
+            >
+                {this.props.renderSelected(this.props.selected)}
+            </button>
+            {floater}
+        </>)
+    }
+}
+
+interface DropdownMenuProps<T> {
+    parentRef: React.RefObject<any>;
+    options: DropdownOption<T>[];
+    renderOption(option: T): React.ReactNode;
+    onSelect(selected: T): void;
+}
+
+interface DropdownMenuState {
+    style: React.CSSProperties;
+}
+
+class DropdownMenu<T> extends React.Component<DropdownMenuProps<T>, DropdownMenuState> {
+    popperInstance: Popper | null = null;
+    menuRef: React.RefObject<HTMLDivElement>;
+
+    constructor(props: DropdownMenuProps<T>) {
+        super(props);
+        this.menuRef = React.createRef();
+        this.state = {
+            style: {}
+        }
+    }
+
+    popperUpdate = (data: Popper.Data) => {
+        this.setState({
+            style: data.styles as React.CSSProperties
+        });
+        return data;
+    }
+
+    componentDidMount() {
+        if (this.popperInstance) {
+            throw new Error('Component mounted twice?');
+        }
+
+        const referenceEl = this.props.parentRef.current;
+        if (!referenceEl) {
+            throw new Error('Cannot mount DropdownMenu without parentRef');
+        }
+
+        const menuEl = this.menuRef.current;
+        if (!menuEl) {
+            throw new Error('Cannot mount DropdownMenu without menuRef');
+        }
+
+        this.popperInstance = new Popper(referenceEl, menuEl, {
+            modifiers: {
+                applyStyle: { enabled: false },
+                updateStateWithStyle: {
+                    enabled: true,
+                    fn: this.popperUpdate,
+                },
+            },
+        });
+    }
+
+    componentWillUnmount() {
+        if (!this.popperInstance) {
+            return;
+        }
+        this.popperInstance.disableEventListeners();
+        this.popperInstance = null;
+    }
+
+    renderOptions = () => {
+        return this.props.options.map((option, i) => {
             if ("header" in option) {
                 return (
                     <h6 className="dropdown-header" key={"ddkey" + i}>
@@ -71,52 +181,20 @@ export class Dropdown<T> extends React.Component<DropdownProps<T>, {}> {
                 <button
                     key={option.key}
                     className={classes.join(" ")}
-                    onClick={() => this.handleSelect(option.option)}
+                    onClick={() => this.props.onSelect(option.option)}
                     type="button"
                 >
                     {this.props.renderOption(option.option)}
                 </button>
             );
         });
-
-        return (
-            <div className="dropdown-menu show" style={style}>
-                {options}
-            </div>
-        );
     };
 
     render() {
         return (
-            <PopperHelper
-                target={({ style }) => this.renderDropdown(style)}
-                options={{
-                    placement: "bottom",
-                }}
-            >
-                {({ controller }) => {
-                    this.controller = controller;
-
-                    const classes = ["btn", "btn-secondary"];
-                    if (this.canToggle) {
-                        classes.push("dropdown-toggle");
-                    } else {
-                        classes.push("disabled");
-                    }
-
-                    return (
-                        <button
-                            className={classes.join(" ")}
-                            type="button"
-                            onClick={() => {
-                                this.canToggle && controller.toggle();
-                            }}
-                        >
-                            {this.props.renderSelected(this.props.selected)}
-                        </button>
-                    );
-                }}
-            </PopperHelper>
+            <div className="dropdown-menu show" style={this.state.style} ref={this.menuRef}>
+                {this.renderOptions()}
+            </div>
         );
     }
 }
