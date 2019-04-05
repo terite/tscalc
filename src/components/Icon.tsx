@@ -2,12 +2,7 @@ import * as React from "react";
 
 import { Tooltip } from "./generic";
 
-import * as game from "../game";
-
-import { withGame } from "../state";
-
 interface Props {
-    gameData: game.GameData;
     obj: { icon_row: number; icon_col: number };
 
     title?: string;
@@ -21,7 +16,7 @@ interface State {
     showTooltip: boolean;
 }
 
-class GameIcon extends React.Component<Props, State> {
+export class Icon extends React.Component<Props, State> {
     iconRef: React.RefObject<HTMLDivElement>;
 
     constructor(props: Props) {
@@ -50,13 +45,11 @@ class GameIcon extends React.Component<Props, State> {
 
     render() {
         const props = this.props;
-        const gd = props.gameData;
         const x = -props.obj.icon_col * 32;
         const y = -props.obj.icon_row * 32;
 
         const divStyle = {
             display: "inline-block",
-            backgroundImage: `url(assets/sprite-sheet-${gd.raw.sprites.hash}.png)`,
             backgroundPosition: `${x}px ${y}px`,
             width: "32px",
             height: "32px",
@@ -67,7 +60,7 @@ class GameIcon extends React.Component<Props, State> {
             ref={this.iconRef}
             onClick={props.onClick}
             title={props.title}
-            className={"game-icon"}
+            className="game-icon"
             style={divStyle}
             onMouseEnter={this.handleMouseEnter}
             onMouseLeave={this.handleMouseLeave}
@@ -94,5 +87,3 @@ class GameIcon extends React.Component<Props, State> {
         return icon;
     }
 }
-
-export const Icon = withGame(GameIcon);

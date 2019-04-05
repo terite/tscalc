@@ -7,15 +7,14 @@ import * as serialization from "../serialization";
 import { App } from "./App";
 
 interface State {
-    loading: boolean;
+    gameData: game.GameData | null;
 }
 
 export class AppLoader extends React.Component<{}, State> {
     constructor(props: {}) {
         super(props);
-
         this.state = {
-            loading: true,
+            gameData: null,
         };
     }
     async componentDidMount() {
@@ -58,7 +57,7 @@ export class AppLoader extends React.Component<{}, State> {
             }
         }
 
-        this.setState({ loading: false });
+        this.setState({ gameData });
     }
 
     handleStateChange = (state: AppState) => {
@@ -68,19 +67,24 @@ export class AppLoader extends React.Component<{}, State> {
     };
 
     render() {
-        if (this.state.loading) {
+        if (!this.state.gameData) {
             return (
                 <State.Provider>
                     <h1>Loading...</h1>
                 </State.Provider>
             );
-        } else {
-            return (
-                <State.Provider>
-                    <State.Consumer>{this.handleStateChange}</State.Consumer>
-                    <App />
-                </State.Provider>
-            );
         }
+        const style = `
+        .game-icon {
+            background-image: url(assets/sprite-sheet-${this.state.gameData.raw.sprites.hash}.png);
+        }
+        `;
+        return (
+            <State.Provider>
+                <style>{style}</style>
+                <State.Consumer>{this.handleStateChange}</State.Consumer>
+                <App />
+            </State.Provider>
+        );
     }
 }
