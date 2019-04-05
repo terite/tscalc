@@ -56,6 +56,14 @@ export class Dropdown<T> extends React.Component<Props<T>, State> {
         }
     };
 
+    handleWantClose = () => {
+        if (this.state.isOpen) {
+            this.setState({
+                isOpen: false,
+            });
+        }
+    };
+
     render() {
         const canToggle = this.props.options.some(option => {
             return ('option' in option) && !option.disabled
@@ -76,6 +84,7 @@ export class Dropdown<T> extends React.Component<Props<T>, State> {
                     options={this.props.options}
                     renderOption={this.props.renderOption}
                     onSelect={this.handleSelect}
+                    onWantClose={this.handleWantClose}
                 />
             );
         }
@@ -101,6 +110,7 @@ interface DropdownMenuProps<T> {
     options: DropdownOption<T>[];
     renderOption(option: T): React.ReactNode;
     onSelect(selected: T): void;
+    onWantClose(): void;
 }
 
 interface DropdownMenuState {
@@ -126,6 +136,21 @@ class DropdownMenu<T> extends React.Component<DropdownMenuProps<T>, DropdownMenu
         return data;
     }
 
+    handleBodyClick = (event: MouseEvent) => {
+        if (!this.menuRef.current) {
+            throw new Error('Click event without menu rendered. This should not happen.');
+        }
+        if (!event.target) {
+            throw new Error('Click event without click target. This should not happen.');
+        }
+        // TODO: why doesnt EventTarget satisfy "Node"
+        const target = event.target as any;
+        if (!this.menuRef.current.contains(target)) {
+            // Click was outside menu
+            this.props.onWantClose();
+        }
+    };
+
     componentDidMount() {
         if (this.popperInstance) {
             throw new Error('Component mounted twice?');
@@ -150,6 +175,8 @@ class DropdownMenu<T> extends React.Component<DropdownMenuProps<T>, DropdownMenu
                 },
             },
         });
+
+        document.body.addEventListener('click', this.handleBodyClick);
     }
 
     componentWillUnmount() {
@@ -158,6 +185,7 @@ class DropdownMenu<T> extends React.Component<DropdownMenuProps<T>, DropdownMenu
         }
         this.popperInstance.disableEventListeners();
         this.popperInstance = null;
+        document.body.removeEventListener('click', this.handleBodyClick);
     }
 
     renderOptions = () => {
