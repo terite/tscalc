@@ -30,6 +30,8 @@ interface State {
     isOpen: boolean;
 }
 
+const ESC_KEYCODE = 27;
+
 export class Dropdown<T> extends React.Component<Props<T>, State> {
     buttonRef: React.RefObject<any>;
 
@@ -151,6 +153,12 @@ class DropdownMenu<T> extends React.Component<DropdownMenuProps<T>, DropdownMenu
         }
     };
 
+    handleKeyEvent = (event: KeyboardEvent) => {
+        if (event.keyCode === ESC_KEYCODE) {
+            this.props.onWantClose();
+        }
+    }
+
     componentDidMount() {
         if (this.popperInstance) {
             throw new Error('Component mounted twice?');
@@ -177,6 +185,7 @@ class DropdownMenu<T> extends React.Component<DropdownMenuProps<T>, DropdownMenu
         });
 
         document.body.addEventListener('click', this.handleBodyClick);
+        document.body.addEventListener('keyup', this.handleKeyEvent);
     }
 
     componentWillUnmount() {
@@ -186,6 +195,7 @@ class DropdownMenu<T> extends React.Component<DropdownMenuProps<T>, DropdownMenu
         this.popperInstance.disableEventListeners();
         this.popperInstance = null;
         document.body.removeEventListener('click', this.handleBodyClick);
+        document.body.removeEventListener('keyup', this.handleKeyEvent);
     }
 
     renderOptions = () => {
