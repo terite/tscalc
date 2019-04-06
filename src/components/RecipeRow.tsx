@@ -266,7 +266,7 @@ class RawRecipeRow extends React.Component<Props, {}> {
                     <div style={{ float: "right" }}>
                         <button
                             type="button"
-                            className="btn btn-cancel"
+                            className="btn btn-danger"
                             onClick={this.handleRemoveClick}
                         >
                             Remove

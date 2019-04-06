@@ -15,7 +15,6 @@ h1 {
 .form-control {
     background-color: rgb(142, 142, 142);
     border: 1px solid rgb(142, 142, 142);
-    // border-radius: 5px;
 
 
     &:hover {
@@ -28,19 +27,6 @@ h1 {
     &:focus {
         background-color: rgb(240, 218, 180);
     }
-}
-
-.btn-cancel {
-    background-color: #FE5A5A;
-    color: black;
-    font-weight: bold;
-    padding-top: 6px;
-    padding-bottom: 6px;
-
-    &:hover {
-        background-color: #FF9B9B;
-    }
-
 }
 
 

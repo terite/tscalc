@@ -58,7 +58,6 @@ class RawRecipeGroup extends React.Component<Props, {}> {
 
         return (
             <div className="recipe-group">
-                <h3>Add recipe picker</h3>
                 <RecipePicker
                     recipes={availableRecipes}
                     onPickRecipe={this.handlePickRecipe}
