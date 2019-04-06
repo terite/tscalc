@@ -72,7 +72,7 @@ module.exports = (env, argv) => {
     }
   };
 
-  if (argv.profile || argv.mode === 'development') {
+  if (argv.profile) {
     config.plugins.push(new BundleAnalyzerPlugin({
       analyzerHost: '0.0.0.0',
     }));
