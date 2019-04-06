@@ -1,6 +1,6 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Tooltip } from "./generic";
+import { Tooltip } from './generic';
 
 interface Props {
     obj: { icon_row: number; icon_col: number };
@@ -33,7 +33,7 @@ export class Icon extends React.PureComponent<Props, State> {
                 showTooltip: true,
             });
         }
-    }
+    };
 
     handleMouseLeave = () => {
         if (this.props.tooltip || this.state.showTooltip) {
@@ -41,44 +41,51 @@ export class Icon extends React.PureComponent<Props, State> {
                 showTooltip: false,
             });
         }
-    }
+    };
 
     render() {
         const x = -this.props.obj.icon_col * 32;
         const y = -this.props.obj.icon_row * 32;
 
         const divStyle = {
-            display: "inline-block",
+            display: 'inline-block',
             backgroundPosition: `${x}px ${y}px`,
-            width: "32px",
-            height: "32px",
+            width: '32px',
+            height: '32px',
             ...this.props.style,
         };
 
-        let icon = <div
-            ref={this.iconRef}
-            onClick={this.props.onClick}
-            title={this.props.title}
-            className="game-icon"
-            style={divStyle}
-            onMouseEnter={this.handleMouseEnter}
-            onMouseLeave={this.handleMouseLeave}
-        >&nbsp;</div>;
+        let icon = (
+            <div
+                ref={this.iconRef}
+                onClick={this.props.onClick}
+                title={this.props.title}
+                className="game-icon"
+                style={divStyle}
+                onMouseEnter={this.handleMouseEnter}
+                onMouseLeave={this.handleMouseLeave}
+            >
+                &nbsp;
+            </div>
+        );
 
         if (this.state.showTooltip) {
             icon = (
                 <>
                     {icon}
-                    <Tooltip children={this.props.tooltip} relativeTo={this.iconRef} />
+                    <Tooltip
+                        children={this.props.tooltip}
+                        relativeTo={this.iconRef}
+                    />
                 </>
             );
         }
 
         if (this.props.text) {
             icon = (
-                <div style={{ lineHeight: "32px" }}>
+                <div style={{ lineHeight: '32px' }}>
                     {icon}
-                    <span style={{ marginLeft: "9px" }}>{this.props.text}</span>
+                    <span style={{ marginLeft: '9px' }}>{this.props.text}</span>
                 </div>
             );
         }

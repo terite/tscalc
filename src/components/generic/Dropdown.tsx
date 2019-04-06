@@ -1,5 +1,5 @@
-import * as React from "react";
-import Popper from "popper.js";
+import * as React from 'react';
+import Popper from 'popper.js';
 
 interface DropdownHeader {
     header: React.ReactNode;
@@ -45,7 +45,7 @@ export class Dropdown<T> extends React.Component<Props<T>, State> {
 
     handleToggle = () => {
         this.setState({
-            isOpen: !this.state.isOpen
+            isOpen: !this.state.isOpen,
         });
     };
 
@@ -67,15 +67,15 @@ export class Dropdown<T> extends React.Component<Props<T>, State> {
     };
 
     render() {
-        const canToggle = this.props.options.some(option => {
-            return ('option' in option) && !option.disabled
+        const canToggle = this.props.options.some((option) => {
+            return 'option' in option && !option.disabled;
         });
 
-        const classes = ["btn", "btn-secondary"];
+        const classes = ['btn', 'btn-secondary'];
         if (canToggle) {
-            classes.push("dropdown-toggle");
+            classes.push('dropdown-toggle');
         } else {
-            classes.push("disabled");
+            classes.push('disabled');
         }
 
         let floater: React.ReactNode | null;
@@ -91,19 +91,21 @@ export class Dropdown<T> extends React.Component<Props<T>, State> {
             );
         }
 
-        return (<>
-            <button
-                ref={this.buttonRef}
-                className={classes.join(" ")}
-                type="button"
-                onClick={() => {
-                    canToggle && this.handleToggle()
-                }}
-            >
-                {this.props.renderSelected(this.props.selected)}
-            </button>
-            {floater}
-        </>)
+        return (
+            <>
+                <button
+                    ref={this.buttonRef}
+                    className={classes.join(' ')}
+                    type="button"
+                    onClick={() => {
+                        canToggle && this.handleToggle();
+                    }}
+                >
+                    {this.props.renderSelected(this.props.selected)}
+                </button>
+                {floater}
+            </>
+        );
     }
 }
 
@@ -119,7 +121,10 @@ interface DropdownMenuState {
     style: React.CSSProperties;
 }
 
-class DropdownMenu<T> extends React.Component<DropdownMenuProps<T>, DropdownMenuState> {
+class DropdownMenu<T> extends React.Component<
+    DropdownMenuProps<T>,
+    DropdownMenuState
+> {
     popperInstance: Popper | null = null;
     menuRef: React.RefObject<HTMLDivElement>;
 
@@ -127,23 +132,27 @@ class DropdownMenu<T> extends React.Component<DropdownMenuProps<T>, DropdownMenu
         super(props);
         this.menuRef = React.createRef();
         this.state = {
-            style: {}
-        }
+            style: {},
+        };
     }
 
     popperUpdate = (data: Popper.Data) => {
         this.setState({
-            style: data.styles as React.CSSProperties
+            style: data.styles as React.CSSProperties,
         });
         return data;
-    }
+    };
 
     handleBodyClick = (event: MouseEvent) => {
         if (!this.menuRef.current) {
-            throw new Error('Click event without menu rendered. This should not happen.');
+            throw new Error(
+                'Click event without menu rendered. This should not happen.'
+            );
         }
         if (!event.target) {
-            throw new Error('Click event without click target. This should not happen.');
+            throw new Error(
+                'Click event without click target. This should not happen.'
+            );
         }
         // TODO: why doesnt EventTarget satisfy "Node"
         const target = event.target as any;
@@ -157,7 +166,7 @@ class DropdownMenu<T> extends React.Component<DropdownMenuProps<T>, DropdownMenu
         if (event.keyCode === ESC_KEYCODE) {
             this.props.onWantClose();
         }
-    }
+    };
 
     componentDidMount() {
         if (this.popperInstance) {
@@ -200,25 +209,25 @@ class DropdownMenu<T> extends React.Component<DropdownMenuProps<T>, DropdownMenu
 
     renderOptions = () => {
         return this.props.options.map((option, i) => {
-            if ("header" in option) {
+            if ('header' in option) {
                 return (
-                    <h6 className="dropdown-header" key={"ddkey" + i}>
+                    <h6 className="dropdown-header" key={'ddkey' + i}>
                         {option.header}
                     </h6>
                 );
             }
-            if ("divider" in option) {
-                return <div className="dropdown-divider" key={"ddkey" + i} />;
+            if ('divider' in option) {
+                return <div className="dropdown-divider" key={'ddkey' + i} />;
             }
 
-            const classes = ["dropdown-item"];
-            option.active && classes.push("active");
-            option.disabled && classes.push("disabled");
+            const classes = ['dropdown-item'];
+            option.active && classes.push('active');
+            option.disabled && classes.push('disabled');
 
             return (
                 <button
                     key={option.key}
-                    className={classes.join(" ")}
+                    className={classes.join(' ')}
                     onClick={() => this.props.onSelect(option.option)}
                     type="button"
                 >
@@ -230,7 +239,11 @@ class DropdownMenu<T> extends React.Component<DropdownMenuProps<T>, DropdownMenu
 
     render() {
         return (
-            <div className="dropdown-menu show" style={this.state.style} ref={this.menuRef}>
+            <div
+                className="dropdown-menu show"
+                style={this.state.style}
+                ref={this.menuRef}
+            >
                 {this.renderOptions()}
             </div>
         );

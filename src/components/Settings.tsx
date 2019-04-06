@@ -1,11 +1,11 @@
-import * as React from "react";
+import * as React from 'react';
 
-import * as game from "../game";
+import * as game from '../game';
 
-import State, { AppState, withGame, withBoth } from "../state";
-import { getDefaultMachine } from "../stateutil";
+import State, { AppState, withGame, withBoth } from '../state';
+import { getDefaultMachine } from '../stateutil';
 
-import { MachinePicker } from "./MachinePicker";
+import { MachinePicker } from './MachinePicker';
 
 interface RawSettingsProps {
     gameData: game.GameData;
@@ -14,15 +14,15 @@ interface RawSettingsProps {
 class RawSettings extends React.Component<RawSettingsProps, {}> {
     render() {
         const categoryNames = Object.entries(this.props.gameData.categoryMap)
-            .filter(entry => entry[1].length > 1)
-            .map(entry => entry[0]);
+            .filter((entry) => entry[1].length > 1)
+            .map((entry) => entry[0]);
 
         categoryNames.sort((a, b) => a.localeCompare(b));
 
         return (
             <div>
                 <h3>Default Assemblers</h3>
-                {categoryNames.map(name => (
+                {categoryNames.map((name) => (
                     <CategoryRow key={name} category={name} />
                 ))}
             </div>

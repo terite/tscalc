@@ -1,13 +1,13 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Module } from "../game";
-import { round2 } from "../util";
+import { Module } from '../game';
+import { round2 } from '../util';
 
 const niceName = {
-    consumption: "Energy Consumption",
-    productivity: "Productivity",
-    speed: "Speed",
-    pollution: "Pollution",
+    consumption: 'Energy Consumption',
+    productivity: 'Productivity',
+    speed: 'Speed',
+    pollution: 'Pollution',
 };
 
 export const ModuleCard = ({ module }: { module: Module }) => {
@@ -19,7 +19,7 @@ export const ModuleCard = ({ module }: { module: Module }) => {
         bonuses.push(
             <div key={bonusName}>
                 <b>
-                    {niceName[bonusName as keyof typeof niceName]}:{" "}
+                    {niceName[bonusName as keyof typeof niceName]}:{' '}
                     {round2(bonus * 100, 2)}%
                 </b>
             </div>

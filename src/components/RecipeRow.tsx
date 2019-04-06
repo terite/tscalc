@@ -1,19 +1,19 @@
-import * as React from "react";
+import * as React from 'react';
 
-import * as game from "../game";
-import { Rational } from "../rational";
+import * as game from '../game';
+import { Rational } from '../rational';
 
-import { Icon } from "./Icon";
-import { RecipeCard } from "./RecipeCard";
-import { MachinePicker } from "./MachinePicker";
-import { ModulePicker } from "./ModulePicker";
-import { IntegerInput, RationalInput } from "./generic";
+import { Icon } from './Icon';
+import { RecipeCard } from './RecipeCard';
+import { MachinePicker } from './MachinePicker';
+import { ModulePicker } from './ModulePicker';
+import { IntegerInput, RationalInput } from './generic';
 
 // import {clone} from '../util'
-import { Totals } from "../totals";
-import State, { withBoth, RecipeRowData, AppState } from "../state";
+import { Totals } from '../totals';
+import State, { withBoth, RecipeRowData, AppState } from '../state';
 
-import * as signal from "../signal";
+import * as signal from '../signal';
 
 interface Props extends RecipeRowData {
     index: number;
@@ -23,7 +23,7 @@ interface Props extends RecipeRowData {
 
 interface IngredientCardProps {
     obj: game.Ingredient | game.Product;
-};
+}
 
 const IngredientCard = (props: IngredientCardProps) => (
     <div className="card">
@@ -42,7 +42,7 @@ class RawRecipeRow extends React.Component<Props, {}> {
         this.applyChange({
             machine: machine,
             modules: this.props.modules
-                .filter(module => module !== null)
+                .filter((module) => module !== null)
                 .slice(0, machine.data.module_slots),
         });
     };
@@ -73,7 +73,10 @@ class RawRecipeRow extends React.Component<Props, {}> {
         this.applyChange({ beaconModule: module });
     };
 
-    public handleIngredientClick = (ingredient: game.Ingredient, event: React.MouseEvent) => {
+    public handleIngredientClick = (
+        ingredient: game.Ingredient,
+        event: React.MouseEvent
+    ) => {
         if (event.shiftKey) {
             event.preventDefault();
             this.props.actions.setRecipeTarget({
@@ -89,7 +92,10 @@ class RawRecipeRow extends React.Component<Props, {}> {
         }
     };
 
-    public handleProductClick = (product: game.Product, event: React.MouseEvent) => {
+    public handleProductClick = (
+        product: game.Product,
+        event: React.MouseEvent
+    ) => {
         if (event.shiftKey) {
             event.preventDefault();
             this.props.actions.setRecipeTarget({
@@ -106,7 +112,7 @@ class RawRecipeRow extends React.Component<Props, {}> {
     };
 
     handleInputGroupClick: React.MouseEventHandler<any> = (event) => {
-        const {recipeTarget} = this.props.state;
+        const { recipeTarget } = this.props.state;
         if (!event.shiftKey || !recipeTarget) {
             return;
         }
@@ -114,26 +120,31 @@ class RawRecipeRow extends React.Component<Props, {}> {
         const output = this.getOutput();
 
         let current: game.Ingredient | game.Product | undefined;
-        current = output.ingredients
-            .find(x => {
-                return x.item.name == recipeTarget.item.name;
-            });
+        current = output.ingredients.find((x) => {
+            return x.item.name == recipeTarget.item.name;
+        });
 
-        current = current || output.products
-            .find(x => {
+        current =
+            current ||
+            output.products.find((x) => {
                 return x.item.name == recipeTarget.item.name;
             });
 
         if (!current) {
-            console.error(`Could not find ${recipeTarget.item.name} in totals`, output);
+            console.error(
+                `Could not find ${recipeTarget.item.name} in totals`,
+                output
+            );
             return;
         }
 
-        const newNum = recipeTarget.amount.div(current.amount).mul(this.props.numMachines);
+        const newNum = recipeTarget.amount
+            .div(current.amount)
+            .mul(this.props.numMachines);
         this.applyChange({
-            numMachines: newNum
+            numMachines: newNum,
         });
-    }
+    };
 
     applyChange(change: Partial<RecipeRowData>) {
         this.props.actions.updateRow(this.props.index, change);
@@ -159,7 +170,7 @@ class RawRecipeRow extends React.Component<Props, {}> {
                     key={i}
                     recipe={this.props.recipe}
                     selected={module}
-                    onChange={m => this.handleSetModule(i, m)}
+                    onChange={(m) => this.handleSetModule(i, m)}
                 />
             );
         }
@@ -210,7 +221,10 @@ class RawRecipeRow extends React.Component<Props, {}> {
     renderMachines() {
         return (
             <div className="btn-toolbar mb-3">
-                <div className="input-group" onClick={this.handleInputGroupClick}>
+                <div
+                    className="input-group"
+                    onClick={this.handleInputGroupClick}
+                >
                     <RationalInput
                         key={this.props.numMachines.toFraction()}
                         value={this.props.numMachines}
@@ -256,14 +270,14 @@ class RawRecipeRow extends React.Component<Props, {}> {
         return (
             <div className="recipe-row card mb-3">
                 <div className="card-header">
-                    <div style={{ float: "left" }}>
+                    <div style={{ float: 'left' }}>
                         <Icon
                             obj={recipe}
                             text={recipe.niceName()}
                             tooltip={<RecipeCard recipe={recipe} />}
                         />
                     </div>
-                    <div style={{ float: "right" }}>
+                    <div style={{ float: 'right' }}>
                         <button
                             type="button"
                             className="btn btn-danger"
@@ -272,10 +286,10 @@ class RawRecipeRow extends React.Component<Props, {}> {
                             Remove
                         </button>
                     </div>
-                    <div style={{ clear: "both" }} />
+                    <div style={{ clear: 'both' }} />
                 </div>
                 <div className="card-body">
-                    <div style={{ float: "left" }}>
+                    <div style={{ float: 'left' }}>
                         {this.renderMachines()}
                         <div className="mb-3 btn-group btn-icon-wrapper">
                             {this.renderModules()}
@@ -283,13 +297,13 @@ class RawRecipeRow extends React.Component<Props, {}> {
                         {this.renderBeacons()}
                     </div>
 
-                    <div style={{ float: "right" }}>
+                    <div style={{ float: 'right' }}>
                         <div
                             className="mr-3"
                             style={{
-                                display: "inline-block",
-                                float: "left",
-                                minWidth: "150px",
+                                display: 'inline-block',
+                                float: 'left',
+                                minWidth: '150px',
                             }}
                         >
                             <b>Ingredients:</b>
@@ -299,15 +313,15 @@ class RawRecipeRow extends React.Component<Props, {}> {
                         <div
                             className="mr-2"
                             style={{
-                                display: "inline-block",
-                                minWidth: "150px",
+                                display: 'inline-block',
+                                minWidth: '150px',
                             }}
                         >
                             <b>Products:</b>
                             {products}
                         </div>
                     </div>
-                    <div style={{ clear: "both" }} />
+                    <div style={{ clear: 'both' }} />
                 </div>
             </div>
         );

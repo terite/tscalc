@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Rational } from "../../rational";
+import * as React from 'react';
+import { Rational } from '../../rational';
 
 interface Props {
     value: Rational;
@@ -27,10 +27,10 @@ export class RationalInput extends React.PureComponent<Props, State> {
             return;
         }
 
-        const index = str.indexOf("/");
-        const lastIndex = str.lastIndexOf("/");
+        const index = str.indexOf('/');
+        const lastIndex = str.lastIndexOf('/');
         if (index !== lastIndex) {
-            this.setState({ error: "Too many slashes" });
+            this.setState({ error: 'Too many slashes' });
             return;
         }
 
@@ -43,7 +43,7 @@ export class RationalInput extends React.PureComponent<Props, State> {
         }
 
         if (this.props.positiveOnly && rational.isNegative()) {
-            this.setState({ error: "Number must be positive" });
+            this.setState({ error: 'Number must be positive' });
             return;
         }
         this.props.onChange(rational);

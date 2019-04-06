@@ -1,17 +1,17 @@
-import * as React from "react";
+import * as React from 'react';
 
-import * as signal from "../signal";
-import * as game from "../game";
-import { Rational } from "../rational";
+import * as signal from '../signal';
+import * as game from '../game';
+import { Rational } from '../rational';
 
-import { RecipeRow } from "./RecipeRow";
-import { RecipePicker } from "./RecipePicker";
-import { TotalCard } from "./TotalCard";
+import { RecipeRow } from './RecipeRow';
+import { RecipePicker } from './RecipePicker';
+import { TotalCard } from './TotalCard';
 
-import { RecipeRowData } from "../state";
+import { RecipeRowData } from '../state';
 
-import State, { AppState, withBoth, withGame } from "../state";
-import * as su from "../stateutil";
+import State, { AppState, withBoth, withGame } from '../state';
+import * as su from '../stateutil';
 
 interface Props {
     gameData: game.GameData;
@@ -42,19 +42,15 @@ class RawRecipeGroup extends React.Component<Props, {}> {
     };
 
     renderRow = (data: RecipeRowData, index: number) => {
-        return (
-            <RecipeRow
-                key={data.recipe.name}
-                index={index}
-                {...data}
-            />
-        );
+        return <RecipeRow key={data.recipe.name} index={index} {...data} />;
     };
 
     render() {
-        const availableRecipes = this.props.gameData.recipes.filter(recipe => {
-            return !this.props.rows.some(row => row.recipe == recipe);
-        });
+        const availableRecipes = this.props.gameData.recipes.filter(
+            (recipe) => {
+                return !this.props.rows.some((row) => row.recipe == recipe);
+            }
+        );
 
         return (
             <div className="recipe-group">

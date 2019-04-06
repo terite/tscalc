@@ -28,13 +28,15 @@ describe('Rational', () => {
                     if (p == q) {
                         continue;
                     }
-                    expect(Rational.fromInts(p, q).equal(Rational.fromFloat(p / q))).toBe(true);
+                    expect(
+                        Rational.fromInts(p, q).equal(Rational.fromFloat(p / q))
+                    ).toBe(true);
                 }
             }
         });
     });
     describe('.fromString', () => {
-        it.each<[string, number,number]>([
+        it.each<[string, number, number]>([
             ['1', 1, 1],
             ['0.1', 1, 10],
             ['1.5', 3, 2],
@@ -71,4 +73,4 @@ describe('Rational', () => {
             }).toThrowError('Denominator must not be zero');
         });
     });
-})
+});

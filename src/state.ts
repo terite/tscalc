@@ -1,16 +1,15 @@
 import { createDakpan } from 'dakpan';
 
-import * as game from './game'
-import { Rational } from './rational'
-import {getDefaultMachine} from './stateutil'
-
+import * as game from './game';
+import { Rational } from './rational';
+import { getDefaultMachine } from './stateutil';
 
 export interface RecipeRowData {
     recipe: game.Recipe;
     machine: game.Entity.AssemblingMachine;
     numMachines: Rational;
-    modules: (game.Module|null)[];
-    beaconModule: game.Module|null;
+    modules: (game.Module | null)[];
+    beaconModule: game.Module | null;
     numBeacons: number;
 }
 
@@ -21,13 +20,13 @@ export interface RecipeGroupData {
 
 export interface AppSettingsData {
     assemblerOverrides: {
-        [category: string]: game.Entity.AssemblingMachine
+        [category: string]: game.Entity.AssemblingMachine;
     };
 }
 
 export interface RecipeTarget {
-    item: game.Item | game.Fluid,
-    amount: Rational,
+    item: game.Item | game.Fluid;
+    amount: Rational;
 }
 
 export interface AppState {
@@ -44,23 +43,24 @@ export interface AppState {
 }
 
 export const defaultState: AppState = {
-    gameData: {} as game.GameData,  // set early by apploader
-    groups: [{
-        name: 'Factory 1',
-        rows: [],
-    }],
+    gameData: {} as game.GameData, // set early by apploader
+    groups: [
+        {
+            name: 'Factory 1',
+            rows: [],
+        },
+    ],
     settings: {
-        assemblerOverrides: {}
+        assemblerOverrides: {},
     },
 
     activeGroupIdx: 0,
     recipeTarget: undefined,
-}
+};
 
 function getActiveGroup(state: AppState) {
     return state.groups[state.activeGroupIdx];
-};
-
+}
 
 function updateGroup(state: AppState, newGroup: Partial<RecipeGroupData>) {
     const groups = state.groups.map((oldGroup, index) => {
@@ -78,19 +78,19 @@ const State = createDakpan(defaultState)({
     addRow: (row: RecipeRowData) => (state) => {
         const group = getActiveGroup(state);
         // ignore adding duplicate rows
-        if (group.rows.some(r => r.recipe.name == row.recipe.name)) {
-            return {}
+        if (group.rows.some((r) => r.recipe.name == row.recipe.name)) {
+            return {};
         }
 
-        return updateGroup(state, {rows: group.rows.concat([row])});
+        return updateGroup(state, { rows: group.rows.concat([row]) });
     },
 
     updateRow: (i: number, updates: Partial<RecipeRowData>) => (state) => {
         const group = getActiveGroup(state);
-        const rows = Array.from(group.rows)
-        rows[i] = {...group.rows[i], ...updates}
+        const rows = Array.from(group.rows);
+        rows[i] = { ...group.rows[i], ...updates };
         return updateGroup(state, {
-            rows: rows
+            rows: rows,
         });
     },
 
@@ -99,7 +99,7 @@ const State = createDakpan(defaultState)({
         const rows = Array.from(group.rows);
         rows.splice(i, 1);
         return updateGroup(state, {
-            rows: rows
+            rows: rows,
         });
     },
 
@@ -108,28 +108,31 @@ const State = createDakpan(defaultState)({
 
         const groups = state.groups.map((group) => {
             const rows = group.rows.map((row) => {
-                if (row.recipe.category != category || row.machine != oldMachine) {
+                if (
+                    row.recipe.category != category ||
+                    row.machine != oldMachine
+                ) {
                     return row;
                 }
                 return {
                     ...row,
-                    machine: newMachine
-                }
+                    machine: newMachine,
+                };
             });
 
-            return {...group, rows}
+            return { ...group, rows };
         });
 
         return {
             groups,
             settings: {
-                ... state.settings,
+                ...state.settings,
                 assemblerOverrides: {
-                    ... state.settings.assemblerOverrides,
-                    [category]: newMachine
-                }
-            }
-        }
+                    ...state.settings.assemblerOverrides,
+                    [category]: newMachine,
+                },
+            },
+        };
     },
 
     setActiveGroup: (index: number) => (_) => {
@@ -137,14 +140,16 @@ const State = createDakpan(defaultState)({
     },
 
     addGroup: (name) => (state) => {
-        const groups = state.groups.concat([{
-            name,
-            rows: []
-        }]);
+        const groups = state.groups.concat([
+            {
+                name,
+                rows: [],
+            },
+        ]);
 
         return {
             groups,
-            activeGroupIdx: state.groups.length
+            activeGroupIdx: state.groups.length,
         };
     },
 
@@ -157,7 +162,7 @@ const State = createDakpan(defaultState)({
         if (!groups.length) {
             groups.push({
                 name: 'Factory 1',
-                rows: []
+                rows: [],
             });
         }
 
@@ -168,17 +173,22 @@ const State = createDakpan(defaultState)({
         return {
             groups,
             activeGroupIdx,
-        }
+        };
     },
 
     setRecipeTarget: (recipeTarget: RecipeTarget) => () => {
         return {
-            recipeTarget
-        }
+            recipeTarget,
+        };
     },
 });
 
-export const withBoth = State.withConsumer((state, actions) => ({state, actions}))
-export const withGame = State.withConsumer((state) => ({gameData: state.gameData}))
+export const withBoth = State.withConsumer((state, actions) => ({
+    state,
+    actions,
+}));
+export const withGame = State.withConsumer((state) => ({
+    gameData: state.gameData,
+}));
 
 export default State;

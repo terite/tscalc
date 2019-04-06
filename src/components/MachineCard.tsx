@@ -1,5 +1,5 @@
-import * as React from "react";
-import * as game from "../game";
+import * as React from 'react';
+import * as game from '../game';
 
 type Machine = game.Entity.AssemblingMachine;
 

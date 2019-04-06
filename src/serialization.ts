@@ -1,19 +1,19 @@
-import * as game from './game'
-import { Rational } from './rational'
-import {AppState, AppSettingsData} from './state'
-import {getDefaultMachine} from './stateutil'
-import {mapValues} from './util'
+import * as game from './game';
+import { Rational } from './rational';
+import { AppState, AppSettingsData } from './state';
+import { getDefaultMachine } from './stateutil';
+import { mapValues } from './util';
 
-import {inflate, deflate} from 'pako'
+import { inflate, deflate } from 'pako';
 
 type SerializedRowV1 = [
     string, // recipe name, required
-    string|null, // assembling machine, null if default
+    string | null, // assembling machine, null if default
     number, // num assembling machines
-    (string|null)[], // modules,
-    string|undefined, // beacon module, if chosen
+    (string | null)[], // modules,
+    string | undefined, // beacon module, if chosen
     number // num beacon modules
-]
+];
 
 interface SerializedAppStateV1 {
     version: 1;
@@ -26,17 +26,17 @@ function state1to2(state: SerializedAppStateV1): SerializedAppStateV2 {
         data: {
             rows: state.data,
             settings: {
-                assemblerOverrides: {}
-            }
-        }
+                assemblerOverrides: {},
+            },
+        },
     };
 }
 
 interface SerializedAppStateV2 {
     version: 2;
     data: {
-        rows: SerializedRowV1[]
-        settings: SerializedSettings
+        rows: SerializedRowV1[];
+        settings: SerializedSettings;
     };
 }
 
@@ -44,13 +44,13 @@ interface SerializedAppStateV2 {
 function state2to3(state: SerializedAppStateV2): SerializedAppStateV3 {
     return {
         version: 3,
-        data: state.data
+        data: state.data,
     };
 }
 
 interface SerializedAppStateV3 {
     version: 3;
-    data: SerializedAppStateV2['data']
+    data: SerializedAppStateV2['data'];
 }
 
 // v4 is multiple groups of rows
@@ -59,10 +59,12 @@ function state3to4(state: SerializedAppStateV3): SerializedAppStateV4 {
         version: 4,
         data: {
             settings: state.data.settings,
-            groups: [{
-                name: 'Factory 1',
-                rows: state.data.rows
-            }]
+            groups: [
+                {
+                    name: 'Factory 1',
+                    rows: state.data.rows,
+                },
+            ],
         },
     };
 }
@@ -77,7 +79,7 @@ interface SerializedAppStateV4 {
     data: {
         groups: SerializedGroupV4[];
         settings: SerializedSettings;
-    }
+    };
 }
 
 // v5 has multiple groups, each with multiple rows
@@ -86,18 +88,11 @@ function state4to5(state: SerializedAppStateV4): SerializedAppStateV5 {
         version: 5,
         data: {
             settings: state.data.settings,
-            groups: state.data.groups.map(group => {
+            groups: state.data.groups.map((group) => {
                 return <SerializedGroupV5>{
                     name: group.name,
-                    rows: group.rows.map(r => {
-                        return [
-                            r[0],
-                            r[1],
-                            r[2].toString(),
-                            r[3],
-                            r[4],
-                            r[5],
-                        ];
+                    rows: group.rows.map((r) => {
+                        return [r[0], r[1], r[2].toString(), r[3], r[4], r[5]];
                     }),
                 };
             }),
@@ -106,12 +101,12 @@ function state4to5(state: SerializedAppStateV4): SerializedAppStateV5 {
 }
 type SerializedRowV5 = [
     string, // recipe name, required
-    string|null, // assembling machine, null if default
+    string | null, // assembling machine, null if default
     string, // num assembling machines as a rational
-    (string|null)[], // modules,
-    string|undefined, // beacon module, if chosen
+    (string | null)[], // modules,
+    string | undefined, // beacon module, if chosen
     number // num beacon modules
-]
+];
 
 interface SerializedGroupV5 {
     name: string;
@@ -122,7 +117,7 @@ interface SerializedAppStateV5 {
     data: {
         groups: SerializedGroupV5[];
         settings: SerializedSettings;
-    }
+    };
 }
 
 interface SerializedAppStateOther {
@@ -130,7 +125,8 @@ interface SerializedAppStateOther {
     data: unknown;
 }
 
-type MultiSerializedAppState = | SerializedAppStateOther
+type MultiSerializedAppState =
+    | SerializedAppStateOther
     | SerializedAppStateV1
     | SerializedAppStateV2
     | SerializedAppStateV3
@@ -142,11 +138,10 @@ type MultiSerializedAppState = | SerializedAppStateOther
 type SerializedRow = SerializedRowV5;
 type SerializedAppState = SerializedAppStateV5;
 
-
 interface SerializedSettings {
     assemblerOverrides: {
-        [category: string]: string
-    }
+        [category: string]: string;
+    };
 }
 
 export function setLocalStorageState(state: AppState) {
@@ -169,31 +164,30 @@ export function getLocalStorageState(gameData: game.GameData): AppState | null {
 export function setUrlState(state: AppState) {
     const serialized = serialize(state);
     const version = serialized.version;
-    let str = JSON.stringify(serialized.data)
+    let str = JSON.stringify(serialized.data);
     // compress
-    str = btoa(deflate(str, {to: 'string'}));
+    str = btoa(deflate(str, { to: 'string' }));
 
-    history.replaceState('', '', `#${version}-${str}`)
+    history.replaceState('', '', `#${version}-${str}`);
 }
 
 function serialize(state: AppState): SerializedAppState {
-
     const groups = state.groups.map((group) => {
         return {
             name: group.name,
             rows: group.rows.map((row) => {
-                let machineName: string | null = row.machine.data.name
-                const defaultMachine = getDefaultMachine(row.recipe, state)
+                let machineName: string | null = row.machine.data.name;
+                const defaultMachine = getDefaultMachine(row.recipe, state);
 
                 if (defaultMachine.data.name == machineName) {
-                    machineName = null
+                    machineName = null;
                 }
 
                 const srow: SerializedRow = [
                     row.recipe.name,
                     machineName,
                     row.numMachines.toFraction(),
-                    row.modules.map(m => m ? m.name : null),
+                    row.modules.map((m) => (m ? m.name : null)),
                     row.beaconModule ? row.beaconModule.name : undefined,
                     row.numBeacons,
                 ];
@@ -203,12 +197,15 @@ function serialize(state: AppState): SerializedAppState {
     });
 
     const settings = {
-        assemblerOverrides: mapValues(state.settings.assemblerOverrides, (a) => a.data.name)
-    }
+        assemblerOverrides: mapValues(
+            state.settings.assemblerOverrides,
+            (a) => a.data.name
+        ),
+    };
 
     return {
         version: 5,
-        data: { groups, settings }
+        data: { groups, settings },
     };
 }
 
@@ -221,7 +218,7 @@ export function getUrlState(gameData: game.GameData) {
     }
     const version = Number(matches[1] || 1);
 
-    let str = decodeURIComponent(matches[2])
+    let str = decodeURIComponent(matches[2]);
     if (version > 2) {
         str = inflate(atob(str), { to: 'string' });
     }
@@ -230,11 +227,13 @@ export function getUrlState(gameData: game.GameData) {
 
     return deserialize(gameData, {
         version: version as 0,
-        data
+        data,
     });
 }
 
-function migrateSerializedState(state: MultiSerializedAppState): SerializedAppState {
+function migrateSerializedState(
+    state: MultiSerializedAppState
+): SerializedAppState {
     switch (state.version) {
         case 1:
             state = state1to2(state);
@@ -245,18 +244,21 @@ function migrateSerializedState(state: MultiSerializedAppState): SerializedAppSt
             state = state3to4(state);
         case 4:
             state = state4to5(state);
-            break
+            break;
         case 5:
             // the latest
-            break
+            break;
         default:
             throw new Error(`unknown state: ${state}`);
     }
 
     return state;
-};
+}
 
-function deserialize(gameData: game.GameData, unmigrated: MultiSerializedAppState): AppState {
+function deserialize(
+    gameData: game.GameData,
+    unmigrated: MultiSerializedAppState
+): AppState {
     const migrated = migrateSerializedState(unmigrated).data;
 
     const state: AppState = {
@@ -267,35 +269,54 @@ function deserialize(gameData: game.GameData, unmigrated: MultiSerializedAppStat
 
         activeGroupIdx: 0,
         recipeTarget: undefined,
-    }
+    };
 
     state.groups = migrated.groups.map((group) => {
         return {
             name: group.name,
-            rows: group.rows.map(([recipeName, machineName, numMachines, modules, beaconModule, numBeacons]) => {
-                const recipe = gameData.recipeMap[recipeName]
+            rows: group.rows.map(
+                ([
+                    recipeName,
+                    machineName,
+                    numMachines,
+                    modules,
+                    beaconModule,
+                    numBeacons,
+                ]) => {
+                    const recipe = gameData.recipeMap[recipeName];
 
-                const machine = machineName
-                    ? gameData.entityMap[machineName]
-                    : getDefaultMachine(recipe, state)
+                    const machine = machineName
+                        ? gameData.entityMap[machineName]
+                        : getDefaultMachine(recipe, state);
 
-                return {
-                    recipe: recipe,
-                    machine: machine,
-                    numMachines: Rational.fromString(numMachines),
-                    modules: modules.map(n => n ? gameData.moduleMap[n] : null),
-                    beaconModule: beaconModule ? gameData.moduleMap[beaconModule] : null,
-                    numBeacons: numBeacons || 0
+                    return {
+                        recipe: recipe,
+                        machine: machine,
+                        numMachines: Rational.fromString(numMachines),
+                        modules: modules.map((n) =>
+                            n ? gameData.moduleMap[n] : null
+                        ),
+                        beaconModule: beaconModule
+                            ? gameData.moduleMap[beaconModule]
+                            : null,
+                        numBeacons: numBeacons || 0,
+                    };
                 }
-            }),
+            ),
         };
     });
 
-    return state
+    return state;
 }
 
-function deserializeSettings(gameData: game.GameData, serialized: SerializedSettings): AppSettingsData {
+function deserializeSettings(
+    gameData: game.GameData,
+    serialized: SerializedSettings
+): AppSettingsData {
     return {
-        assemblerOverrides: mapValues(serialized.assemblerOverrides, (name) => gameData.entityMap[name])
-    }
+        assemblerOverrides: mapValues(
+            serialized.assemblerOverrides,
+            (name) => gameData.entityMap[name]
+        ),
+    };
 }

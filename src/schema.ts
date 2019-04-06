@@ -1,9 +1,8 @@
-export type LocalisedName = {[locale: string]: string}
-
+export type LocalisedName = { [locale: string]: string };
 
 interface Effectable {
-    allowed_effects: ("consumption" | "pollution" | "productivity" | "speed")[]
-    module_slots: number
+    allowed_effects: ('consumption' | 'pollution' | 'productivity' | 'speed')[];
+    module_slots: number;
 }
 
 export interface BaseEntity {
@@ -14,15 +13,15 @@ export interface BaseEntity {
 
     energy_usage?: number;
     energy_source?: {
-        fuel_category: string
-        type: "burner"
-    }
-};
+        fuel_category: string;
+        type: 'burner';
+    };
+}
 
 export interface AssemblingMachine extends BaseEntity, Effectable {
-    crafting_categories: string[]
-    crafting_speed: number
-    ingredient_count: number
+    crafting_categories: string[];
+    crafting_speed: number;
+    ingredient_count: number;
 }
 
 export interface MiningDrill extends BaseEntity, Effectable {
@@ -32,7 +31,7 @@ export interface MiningDrill extends BaseEntity, Effectable {
 }
 
 export interface OffshorePump extends BaseEntity {
-    fluid: string
+    fluid: string;
 }
 
 export interface RocketSilo extends AssemblingMachine {
@@ -40,7 +39,7 @@ export interface RocketSilo extends AssemblingMachine {
 }
 
 export interface TransportBelt extends BaseEntity {
-    belt_speed: number
+    belt_speed: number;
 }
 
 interface BaseItemOrFluid {
@@ -49,16 +48,16 @@ interface BaseItemOrFluid {
     icon_col: number;
     icon_row: number;
     group: string;
-    subgroup: string
+    subgroup: string;
     order: string;
 }
 
 export interface BaseItem extends BaseItemOrFluid {
-    rocket_launch_products: Product[]
+    rocket_launch_products: Product[];
 }
 
 export interface FluidItem extends BaseItemOrFluid {
-    type: "fluid";
+    type: 'fluid';
     default_temperature: number;
 }
 
@@ -68,40 +67,40 @@ interface FuelItem extends BaseItem {
 }
 
 export interface ModuleItem extends BaseItem {
-    type: "module"
-    category: "effectivity" | "productivity" | "speed"
+    type: 'module';
+    category: 'effectivity' | 'productivity' | 'speed';
     effect: {
-        consumption?: {bonus: number}
-        pollution?: {bonus: number}
-        productivity?: {bonus: number}
-        speed?: {bonus: number}
-    }
-    limitation: string[]
+        consumption?: { bonus: number };
+        pollution?: { bonus: number };
+        productivity?: { bonus: number };
+        speed?: { bonus: number };
+    };
+    limitation: string[];
 }
 
-export type Item = BaseItem | FuelItem | ModuleItem | FluidItem
+export type Item = BaseItem | FuelItem | ModuleItem | FluidItem;
 
 export interface Ingredient {
-    name: string
-    amount: number
-    type?: "item" | "fluid"
-    minimum_temperature?: number
-    maximum_temperature?: number
+    name: string;
+    amount: number;
+    type?: 'item' | 'fluid';
+    minimum_temperature?: number;
+    maximum_temperature?: number;
 }
 
 interface BaseProduct {
-    name: string
-    type?: "item" | "fluid"
-    temperature?: number
-    probability?: number
+    name: string;
+    type?: 'item' | 'fluid';
+    temperature?: number;
+    probability?: number;
 }
 
 interface ProductRange extends BaseProduct {
-    amount_min: number
-    amount_max: number
+    amount_min: number;
+    amount_max: number;
 }
 interface ProductAmount extends BaseProduct {
-    amount: number
+    amount: number;
 }
 
 export type Product = ProductAmount | ProductRange;
@@ -117,10 +116,10 @@ export interface Recipe {
     icon_row: number;
     ingredients: Ingredient[];
     results: Product[];
-    type: "recipe";
+    type: 'recipe';
     order: string;
 
-    main_product?: string
+    main_product?: string;
 }
 
 export interface Resource {
@@ -134,46 +133,48 @@ export interface Resource {
     minable: {
         hardness: number;
         mining_time: number;
-        results: Product[]
-        fluid_amount?: number
-        required_fluid?: string
-    }
-
+        results: Product[];
+        fluid_amount?: number;
+        required_fluid?: string;
+    };
 }
 
 export interface Root {
-    active_mods: {[name: string]: string};
+    active_mods: { [name: string]: string };
 
-    groups: {[groupName: string]: {
-        order: string
-        subgroups: {[subName: string]: string}
-    }}
-
+    groups: {
+        [groupName: string]: {
+            order: string;
+            subgroups: { [subName: string]: string };
+        };
+    };
 
     fluids: string[];
     fuel: string[];
     modules: string[];
 
-    recipes: {[name: string]: Recipe};
-    resource: {[name: string]: Resource};
+    recipes: { [name: string]: Recipe };
+    resource: { [name: string]: Resource };
 
     sprites: {
-        hash: string
-        extra: {[s:string]: {
-            icon_row: number
-            icon_col: number
-            name?: string
-        }}
-    }
+        hash: string;
+        extra: {
+            [s: string]: {
+                icon_row: number;
+                icon_col: number;
+                name?: string;
+            };
+        };
+    };
 
-    items: {[name: string]: Item};
+    items: { [name: string]: Item };
 
     // other entities
-    "assembling-machine": {[name: string]: AssemblingMachine};
-    "furnace": {[name: string]: AssemblingMachine};
-    "mining-drill": {[name: string]: MiningDrill};
-    "offshore-pump": {[name: string]: OffshorePump};
-    "reactor": {[name: string]: BaseEntity};
-    "rocket-silo": {[name: string]: RocketSilo};
-    "transport-belt": {[name: string]: TransportBelt}
+    'assembling-machine': { [name: string]: AssemblingMachine };
+    furnace: { [name: string]: AssemblingMachine };
+    'mining-drill': { [name: string]: MiningDrill };
+    'offshore-pump': { [name: string]: OffshorePump };
+    reactor: { [name: string]: BaseEntity };
+    'rocket-silo': { [name: string]: RocketSilo };
+    'transport-belt': { [name: string]: TransportBelt };
 }

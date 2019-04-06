@@ -1,9 +1,9 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { RecipeGroup } from "./RecipeGroup";
-import { Settings } from "./Settings";
+import { RecipeGroup } from './RecipeGroup';
+import { Settings } from './Settings';
 
-import State, { AppState, withBoth } from "../state";
+import State, { AppState, withBoth } from '../state';
 
 interface Props {
     state: AppState;
@@ -15,12 +15,12 @@ interface State {
 }
 
 enum ActivePage {
-    Factory = "FACTORY",
-    Settings = "SETTINGS",
+    Factory = 'FACTORY',
+    Settings = 'SETTINGS',
 }
 
 function assertNever(x: never): never {
-    throw new Error("Unexpected object: " + x);
+    throw new Error('Unexpected object: ' + x);
 }
 
 class RawApp extends React.Component<Props, State> {
@@ -45,14 +45,16 @@ class RawApp extends React.Component<Props, State> {
         if (event.key == 'Shift') {
             document.body.classList.add('shift-down');
         }
-    }
+    };
     handleKeyUp = (event: KeyboardEvent) => {
         if (event.key == 'Shift') {
             document.body.classList.remove('shift-down');
         }
-    }
+    };
 
-    handleClickSettings: React.MouseEventHandler<HTMLButtonElement> = event => {
+    handleClickSettings: React.MouseEventHandler<HTMLButtonElement> = (
+        event
+    ) => {
         event.preventDefault();
         this.setState({
             activePage: ActivePage.Settings,
@@ -70,11 +72,13 @@ class RawApp extends React.Component<Props, State> {
         this.props.actions.setActiveGroup(i);
     };
 
-    handleClickAddGroup: React.MouseEventHandler<HTMLButtonElement> = event => {
+    handleClickAddGroup: React.MouseEventHandler<HTMLButtonElement> = (
+        event
+    ) => {
         event.preventDefault();
         const defaultName = `Factory ${this.props.state.groups.length + 1}`;
         const name = prompt(
-            "What do you want to name this group?",
+            'What do you want to name this group?',
             defaultName
         );
         if (!name || !name.trim()) {
@@ -99,8 +103,8 @@ class RawApp extends React.Component<Props, State> {
         const factoryPills = this.props.state.groups.map((group, i) => {
             const cls =
                 !settingsActive && this.props.state.activeGroupIdx === i
-                    ? "btn btn-primary"
-                    : "btn btn-secondary";
+                    ? 'btn btn-primary'
+                    : 'btn btn-secondary';
 
             return (
                 <div className="btn-group mr-2" role="group" key={i}>
@@ -123,8 +127,8 @@ class RawApp extends React.Component<Props, State> {
             );
         });
         const settingsCls = settingsActive
-            ? "btn btn-primary"
-            : "btn btn-secondary";
+            ? 'btn btn-primary'
+            : 'btn btn-secondary';
 
         return (
             <nav className="navbar">

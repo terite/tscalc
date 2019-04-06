@@ -1,11 +1,11 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { GameData, Module, Recipe } from "../game";
+import { GameData, Module, Recipe } from '../game';
 
-import { Icon } from "./Icon";
-import { ModuleCard } from "./ModuleCard";
-import { Dropdown } from "./generic";
-import { withGame } from "../state";
+import { Icon } from './Icon';
+import { ModuleCard } from './ModuleCard';
+import { Dropdown } from './generic';
+import { withGame } from '../state';
 
 interface ModulePickerProps {
     gameData: GameData;
@@ -18,10 +18,10 @@ interface ModulePickerProps {
 const GameModulePicker = (props: ModulePickerProps) => {
     const icon = props.gameData.raw.sprites.extra.slot_icon_module;
     const nomod = new Module({
-        type: "module",
-        name: "no_module",
-        localised_name: { en: "No Module" },
-        category: "speed",
+        type: 'module',
+        name: 'no_module',
+        localised_name: { en: 'No Module' },
+        category: 'speed',
         effect: {},
         limitation: [],
         rocket_launch_products: [],
@@ -29,9 +29,9 @@ const GameModulePicker = (props: ModulePickerProps) => {
         icon_row: icon.icon_row,
         icon_col: icon.icon_col,
 
-        group: "",
-        subgroup: "",
-        order: "",
+        group: '',
+        subgroup: '',
+        order: '',
     });
 
     const renderSelected = (module: Module | null) => {
@@ -59,21 +59,21 @@ const GameModulePicker = (props: ModulePickerProps) => {
     };
 
     const options = props.gameData.modules
-        .filter(m => {
+        .filter((m) => {
             // TODO: what is the actual logic for which modules are allowed in beacons?
             if (props.isBeacon && m.effects.productivity.isPositive()) {
                 return false;
             }
             return m.canUseWith(props.recipe);
         })
-        .map(m => ({
+        .map((m) => ({
             key: m.name,
             option: m as Module | null,
             active: m == props.selected,
         }));
 
     options.unshift({
-        key: "no_module",
+        key: 'no_module',
         option: null,
         active: !props.selected,
     });

@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Icon } from "./Icon";
-import { RecipeRowData } from "../state";
-import { Totals } from "../totals";
+import * as React from 'react';
+import { Icon } from './Icon';
+import { RecipeRowData } from '../state';
+import { Totals } from '../totals';
 
 interface Props {
     rows: RecipeRowData[];

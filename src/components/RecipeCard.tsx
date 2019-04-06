@@ -1,16 +1,16 @@
-import * as React from "react";
+import * as React from 'react';
 
-import * as game from "../game";
+import * as game from '../game';
 
-import { Icon } from "./Icon";
-import { MachineCard } from "./MachineCard";
-import { withGame } from "../state";
+import { Icon } from './Icon';
+import { MachineCard } from './MachineCard';
+import { withGame } from '../state';
 
 interface Props {
     gameData: game.GameData;
     recipe: game.Recipe;
     onClick?(r: game.Recipe): void;
-};
+}
 
 const GameRecipeCard = (props: Props) => {
     const handleClick = () => {
@@ -40,19 +40,19 @@ const GameRecipeCard = (props: Props) => {
             </div>
             <div className="card-body">
                 <Icon
-                    obj={props.gameData.raw.sprites.extra["clock"]}
+                    obj={props.gameData.raw.sprites.extra['clock']}
                     text={recipe.crafting_time.toDecimal()}
                 />
-                <div style={{ float: "left" }}>
+                <div style={{ float: 'left' }}>
                     Ingredients:
                     {ingredients}
                 </div>
-                <div style={{ display: "inline-block" }}>
+                <div style={{ display: 'inline-block' }}>
                     Products:
                     {products}
                 </div>
-                <div style={{ clear: "both" }} />
-                <div style={{ lineHeight: "32px" }}>
+                <div style={{ clear: 'both' }} />
+                <div style={{ lineHeight: '32px' }}>
                     Made In:
                     {madeIn}
                 </div>

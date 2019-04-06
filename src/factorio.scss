@@ -4,8 +4,13 @@ body {
     line-height: 32px;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    color: #FFE6C0;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #ffe6c0;
 }
 
 h1 {
@@ -15,7 +20,6 @@ h1 {
 .form-control {
     background-color: rgb(142, 142, 142);
     border: 1px solid rgb(142, 142, 142);
-
 
     &:hover {
         background-color: rgb(227, 152, 39);
@@ -29,20 +33,19 @@ h1 {
     }
 }
 
-
 .btn-group {
-  > .btn:first-child {
-    margin-left: 0;
-  }
+    > .btn:first-child {
+        margin-left: 0;
+    }
 
-  // Reset rounded corners
-  > .btn:not(:last-child),
-  > .btn-group:not(:last-child) > .btn {
-    @include border-right-radius(0);
-  }
+    // Reset rounded corners
+    > .btn:not(:last-child),
+    > .btn-group:not(:last-child) > .btn {
+        @include border-right-radius(0);
+    }
 
-  > .btn:not(:first-child),
-  > .btn-group:not(:first-child) > .btn {
-    @include border-left-radius(0);
-  }
+    > .btn:not(:first-child),
+    > .btn-group:not(:first-child) > .btn {
+        @include border-left-radius(0);
+    }
 }

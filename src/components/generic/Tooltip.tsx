@@ -1,6 +1,6 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import Popper from "popper.js";
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import Popper from 'popper.js';
 
 interface Props {
     relativeTo: React.RefObject<HTMLElement>;
@@ -19,16 +19,16 @@ export class Tooltip extends React.Component<Props, State> {
         this.selfRef = React.createRef();
         this.popperInstance = null;
         this.state = {
-            style: {zIndex: 1001}
+            style: { zIndex: 1001 },
         };
     }
 
     popperUpdate = (data: Popper.Data) => {
         this.setState({
-            style: data.styles as React.CSSProperties
+            style: data.styles as React.CSSProperties,
         });
         return data;
-    }
+    };
 
     componentDidMount() {
         if (this.popperInstance) {
@@ -50,11 +50,11 @@ export class Tooltip extends React.Component<Props, State> {
             modifiers: {
                 offset: {
                     enabled: true,
-                    offset: "0, 20",
+                    offset: '0, 20',
                 },
                 preventOverflow: {
                     enabled: true,
-                    boundariesElement: "window",
+                    boundariesElement: 'window',
                 },
             },
         });
@@ -72,8 +72,8 @@ export class Tooltip extends React.Component<Props, State> {
         return ReactDOM.createPortal(
             <div style={this.state.style} ref={this.selfRef}>
                 {this.props.children}
-            </div>
-            , document.body
+            </div>,
+            document.body
         );
     }
 }

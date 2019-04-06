@@ -1,19 +1,19 @@
-import * as React from "react";
-import * as Fuse from "fuse.js";
-import debounce = require("lodash/debounce");
+import * as React from 'react';
+import * as Fuse from 'fuse.js';
+import debounce = require('lodash/debounce');
 
-import * as game from "../game";
-import * as signal from "../signal";
+import * as game from '../game';
+import * as signal from '../signal';
 
-import { Icon } from "./Icon";
+import { Icon } from './Icon';
 
-type KeyTypes = "niceName" | "name";
+type KeyTypes = 'niceName' | 'name';
 
 function getFn(recipe: game.Recipe, key: string) {
     switch (key as KeyTypes) {
-        case "niceName":
+        case 'niceName':
             return recipe.niceName();
-        case "name":
+        case 'name':
             return recipe.name;
     }
 }
@@ -23,18 +23,18 @@ const RE_ADVANCED = /((?:produces)|(?:consumes)):([a-z0-9\-]+)/g;
 interface Props {
     recipes: game.Recipe[];
     onPickRecipe(r: game.Recipe): void;
-};
+}
 
 interface State {
     query: string;
     matches: game.Recipe[];
-};
+}
 
 export class RecipePicker extends React.PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            query: "",
+            query: '',
             matches: [],
         };
 
@@ -73,7 +73,7 @@ export class RecipePicker extends React.PureComponent<Props, State> {
 
     public handleRecipeClick = (recipe: game.Recipe) => {
         this.props.onPickRecipe(recipe);
-        this.setQuery("");
+        this.setQuery('');
     };
 
     public setQuery = (query: string, callback?: () => void) => {
@@ -81,7 +81,7 @@ export class RecipePicker extends React.PureComponent<Props, State> {
             this.debCalculateMatches.cancel();
             this.setState(
                 {
-                    query: "",
+                    query: '',
                     matches: [],
                 },
                 callback
@@ -109,20 +109,20 @@ export class RecipePicker extends React.PureComponent<Props, State> {
         query = query
             .replace(RE_ADVANCED, (_, key, value) => {
                 conditions[key as ckey].push(value);
-                return "";
+                return '';
             })
             .trim();
 
         let recipes = this.props.recipes;
         if (conditions.consumes.length || conditions.produces.length) {
-            recipes = recipes.filter(recipe => {
+            recipes = recipes.filter((recipe) => {
                 for (let name of conditions.consumes) {
-                    if (!recipe.ingredients.some(i => i.name == name)) {
+                    if (!recipe.ingredients.some((i) => i.name == name)) {
                         return false;
                     }
                 }
                 for (let name of conditions.produces) {
-                    if (!recipe.products.some(i => i.name == name)) {
+                    if (!recipe.products.some((i) => i.name == name)) {
                         return false;
                     }
                 }
@@ -136,11 +136,11 @@ export class RecipePicker extends React.PureComponent<Props, State> {
                 getFn: getFn,
                 keys: [
                     {
-                        name: "niceName",
+                        name: 'niceName',
                         weight: 0.7,
                     },
                     {
-                        name: "name",
+                        name: 'name',
                         weight: 0.2,
                     },
                 ],
@@ -154,7 +154,7 @@ export class RecipePicker extends React.PureComponent<Props, State> {
 
     renderMatches() {
         if (!this.state.matches.length) {
-            return "";
+            return '';
         }
         let matches = this.state.matches;
         if (matches.length > 100) {
@@ -171,7 +171,7 @@ export class RecipePicker extends React.PureComponent<Props, State> {
                     </tr>
                 </thead>
                 <tbody>
-                    {matches.map(r => (
+                    {matches.map((r) => (
                         <RecipeMatch
                             recipe={r}
                             key={r.name}
