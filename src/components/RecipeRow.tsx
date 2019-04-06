@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Draggable } from 'react-beautiful-dnd';
 
 import * as game from '../game';
 import { Rational } from '../rational';
@@ -268,62 +269,73 @@ class RawRecipeRow extends React.Component<Props, {}> {
             </div>
         ));
         return (
-            <div className="recipe-row card mb-3">
-                <div className="card-header">
-                    <div style={{ float: 'left' }}>
-                        <Icon
-                            obj={recipe}
-                            text={recipe.niceName()}
-                            tooltip={<RecipeCard recipe={recipe} />}
-                        />
-                    </div>
-                    <div style={{ float: 'right' }}>
-                        <button
-                            type="button"
-                            className="btn btn-danger"
-                            onClick={this.handleRemoveClick}
-                        >
-                            Remove
-                        </button>
-                    </div>
-                    <div style={{ clear: 'both' }} />
-                </div>
-                <div className="card-body">
-                    <div style={{ float: 'left' }}>
-                        {this.renderMachines()}
-                        <div className="mb-3 btn-group btn-icon-wrapper">
-                            {this.renderModules()}
-                        </div>
-                        {this.renderBeacons()}
-                    </div>
-
-                    <div style={{ float: 'right' }}>
+            <Draggable draggableId={recipe.name} index={this.props.index}>
+                {(provided) => (
+                    <div
+                        className="recipe-row card mb-3"
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                    >
                         <div
-                            className="mr-3"
-                            style={{
-                                display: 'inline-block',
-                                float: 'left',
-                                minWidth: '150px',
-                            }}
+                            className="card-header"
+                            {...provided.dragHandleProps}
                         >
-                            <b>Ingredients:</b>
-                            {ingredients}
+                            <div style={{ float: 'left' }}>
+                                <Icon
+                                    obj={recipe}
+                                    text={recipe.niceName()}
+                                    tooltip={<RecipeCard recipe={recipe} />}
+                                />
+                            </div>
+                            <div style={{ float: 'right' }}>
+                                <button
+                                    type="button"
+                                    className="btn btn-danger"
+                                    onClick={this.handleRemoveClick}
+                                >
+                                    Remove
+                                </button>
+                            </div>
+                            <div style={{ clear: 'both' }} />
                         </div>
+                        <div className="card-body">
+                            <div style={{ float: 'left' }}>
+                                {this.renderMachines()}
+                                <div className="mb-3 btn-group btn-icon-wrapper">
+                                    {this.renderModules()}
+                                </div>
+                                {this.renderBeacons()}
+                            </div>
 
-                        <div
-                            className="mr-2"
-                            style={{
-                                display: 'inline-block',
-                                minWidth: '150px',
-                            }}
-                        >
-                            <b>Products:</b>
-                            {products}
+                            <div style={{ float: 'right' }}>
+                                <div
+                                    className="mr-3"
+                                    style={{
+                                        display: 'inline-block',
+                                        float: 'left',
+                                        minWidth: '150px',
+                                    }}
+                                >
+                                    <b>Ingredients:</b>
+                                    {ingredients}
+                                </div>
+
+                                <div
+                                    className="mr-2"
+                                    style={{
+                                        display: 'inline-block',
+                                        minWidth: '150px',
+                                    }}
+                                >
+                                    <b>Products:</b>
+                                    {products}
+                                </div>
+                            </div>
+                            <div style={{ clear: 'both' }} />
                         </div>
                     </div>
-                    <div style={{ clear: 'both' }} />
-                </div>
-            </div>
+                )}
+            </Draggable>
         );
     }
 }

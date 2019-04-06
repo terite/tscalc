@@ -97,8 +97,14 @@ export class Tooltip extends React.Component<Props, State> {
     componentWillUnmount() {
         const referenceEl = this.props.relativeTo.current;
         if (referenceEl) {
-            referenceEl.removeEventListener('mouseenter', this.handleMouseEnter);
-            referenceEl.removeEventListener('mouseleave', this.handleMouseLeave);
+            referenceEl.removeEventListener(
+                'mouseenter',
+                this.handleMouseEnter
+            );
+            referenceEl.removeEventListener(
+                'mouseleave',
+                this.handleMouseLeave
+            );
         }
     }
 

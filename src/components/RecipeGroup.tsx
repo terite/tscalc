@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import { DropResult, DragDropContext, Droppable } from 'react-beautiful-dnd';
+
 import * as signal from '../signal';
 import * as game from '../game';
 import { Rational } from '../rational';
@@ -10,7 +12,7 @@ import { TotalCard } from './TotalCard';
 
 import { RecipeRowData } from '../state';
 
-import State, { AppState, withBoth} from '../state';
+import State, { AppState, withBoth } from '../state';
 import * as su from '../stateutil';
 
 interface Props {
@@ -39,17 +41,25 @@ class RawRecipeGroup extends React.Component<Props, {}> {
         });
     };
 
+    handleDragEnd = (result: DropResult) => {
+        if (!result.destination) {
+            return;
+        }
+        this.props.actions.moveRow(
+            result.source.index,
+            result.destination.index
+        );
+    };
+
     renderRow = (data: RecipeRowData, index: number) => {
         return <RecipeRow key={data.recipe.name} index={index} {...data} />;
     };
 
     render() {
         const gd = this.props.state.gameData;
-        const availableRecipes = gd.recipes.filter(
-            (recipe) => {
-                return !this.props.rows.some((row) => row.recipe == recipe);
-            }
-        );
+        const availableRecipes = gd.recipes.filter((recipe) => {
+            return !this.props.rows.some((row) => row.recipe == recipe);
+        });
 
         return (
             <div className="recipe-group">
@@ -58,7 +68,21 @@ class RawRecipeGroup extends React.Component<Props, {}> {
                     onPickRecipe={this.handlePickRecipe}
                 />
                 <hr />
-                {this.props.rows.map(this.renderRow)}
+
+                <DragDropContext onDragEnd={this.handleDragEnd}>
+                    <Droppable droppableId={'eyy'}>
+                        {(provided) => (
+                            <div
+                                ref={provided.innerRef}
+                                {...provided.droppableProps}
+                            >
+                                {this.props.rows.map(this.renderRow)}
+                                {provided.placeholder}
+                            </div>
+                        )}
+                    </Droppable>
+                </DragDropContext>
+
                 <hr />
                 <TotalCard rows={this.props.rows} />
             </div>

@@ -37,7 +37,9 @@ export class RecipePicker extends React.PureComponent<Props, State> {
             query: '',
             matches: [],
         };
+    }
 
+    componentDidMount() {
         signal.addIngredientFilter.addHandler(this.handleIngredientClick);
         signal.addProductFilter.addHandler(this.handleProductClick);
     }
@@ -229,10 +231,7 @@ class RecipeMatch extends React.PureComponent<RecipeMatchProps, {}> {
         return (
             <tr onClick={this.handleClickAdd}>
                 <td className="result-name">
-                    <Icon
-                        obj={recipe}
-                        text={recipe.niceName()
-                    }/>
+                    <Icon obj={recipe} text={recipe.niceName()} />
                 </td>
                 <td>{recipe.crafting_time.toDecimal()}</td>
                 <td>{ingredients}</td>

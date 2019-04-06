@@ -103,6 +103,18 @@ const State = createDakpan(defaultState)({
         });
     },
 
+    moveRow: (oldIndex: number, newIndex: number) => (state) => {
+        const group = getActiveGroup(state);
+        const rows = Array.from(group.rows);
+
+        const [removed] = rows.splice(oldIndex, 1);
+        rows.splice(newIndex, 0, removed);
+
+        return updateGroup(state, {
+            rows: rows,
+        });
+    },
+
     updateDefaultMachine: (category, newMachine) => (state) => {
         const oldMachine = getDefaultMachine(category, state);
 

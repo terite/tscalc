@@ -12,8 +12,7 @@ interface Props {
     text?: string;
 }
 
-interface State {
-}
+interface State {}
 
 export class Icon extends React.PureComponent<Props, State> {
     iconRef: React.RefObject<HTMLDivElement>;
