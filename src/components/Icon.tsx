@@ -16,7 +16,7 @@ interface State {
     showTooltip: boolean;
 }
 
-export class Icon extends React.Component<Props, State> {
+export class Icon extends React.PureComponent<Props, State> {
     iconRef: React.RefObject<HTMLDivElement>;
 
     constructor(props: Props) {
@@ -44,22 +44,21 @@ export class Icon extends React.Component<Props, State> {
     }
 
     render() {
-        const props = this.props;
-        const x = -props.obj.icon_col * 32;
-        const y = -props.obj.icon_row * 32;
+        const x = -this.props.obj.icon_col * 32;
+        const y = -this.props.obj.icon_row * 32;
 
         const divStyle = {
             display: "inline-block",
             backgroundPosition: `${x}px ${y}px`,
             width: "32px",
             height: "32px",
-            ...props.style,
+            ...this.props.style,
         };
 
         let icon = <div
             ref={this.iconRef}
-            onClick={props.onClick}
-            title={props.title}
+            onClick={this.props.onClick}
+            title={this.props.title}
             className="game-icon"
             style={divStyle}
             onMouseEnter={this.handleMouseEnter}
@@ -75,11 +74,11 @@ export class Icon extends React.Component<Props, State> {
             );
         }
 
-        if (props.text) {
+        if (this.props.text) {
             icon = (
                 <div style={{ lineHeight: "32px" }}>
                     {icon}
-                    <span style={{ marginLeft: "9px" }}>{props.text}</span>
+                    <span style={{ marginLeft: "9px" }}>{this.props.text}</span>
                 </div>
             );
         }
