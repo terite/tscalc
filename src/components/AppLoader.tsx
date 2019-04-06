@@ -7,7 +7,7 @@ import * as serialization from '../serialization';
 
 import { App } from './App';
 
-interface Props { }
+interface Props {}
 interface State {
     gameData: game.GameData | null;
 }
@@ -18,10 +18,9 @@ export class AppLoader extends React.Component<Props, State> {
         this.state = {
             gameData: null,
         };
-
     }
     componentDidMount() {
-        this.load().catch(err => {
+        this.load().catch((err) => {
             this.setState(() => {
                 throw err;
             });
@@ -77,7 +76,9 @@ export class AppLoader extends React.Component<Props, State> {
                 </State.Provider>
             );
         }
-        const sheet = `assets/sprite-sheet-${this.state.gameData.raw.sprites.hash}.png`;
+        const sheet = `assets/sprite-sheet-${
+            this.state.gameData.raw.sprites.hash
+        }.png`;
         const style = `
         .game-icon {
             background-image: url(${sheet});
@@ -95,7 +96,7 @@ export class AppLoader extends React.Component<Props, State> {
 }
 
 interface PrefetchProps {
-    href: string
+    href: string;
 }
 function Prefetch(props: PrefetchProps) {
     return ReactDOM.createPortal(

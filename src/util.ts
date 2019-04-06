@@ -4,6 +4,10 @@ export function assert(check: any, message?: string): void {
     }
 }
 
+export function assertNever(x: never): never {
+    throw new Error('Unexpected object: ' + x);
+}
+
 export function mapValues<T, V>(
     obj: { [s: string]: T },
     fn: (v: T) => V

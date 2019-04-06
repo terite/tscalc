@@ -4,6 +4,7 @@ import { RecipeGroup } from './RecipeGroup';
 import { Settings } from './Settings';
 
 import State, { AppState, withBoth } from '../state';
+import { assertNever } from '../util';
 
 interface Props {
     state: AppState;
@@ -17,10 +18,6 @@ interface State {
 enum ActivePage {
     Factory = 'FACTORY',
     Settings = 'SETTINGS',
-}
-
-function assertNever(x: never): never {
-    throw new Error('Unexpected object: ' + x);
 }
 
 class RawApp extends React.Component<Props, State> {

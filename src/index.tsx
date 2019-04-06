@@ -1,8 +1,8 @@
-declare var process : {
-  env: {
-    NODE_ENV: string
-  }
-}
+declare var process: {
+    env: {
+        NODE_ENV: string;
+    };
+};
 
 import * as Sentry from '@sentry/browser';
 if (process.env.NODE_ENV === 'production') {
