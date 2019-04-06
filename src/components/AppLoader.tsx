@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
 import * as game from '../game';
 import State, { AppState } from '../state';
@@ -6,25 +7,25 @@ import * as serialization from '../serialization';
 
 import { App } from './App';
 
+interface Props { }
 interface State {
     gameData: game.GameData | null;
 }
 
-export class AppLoader extends React.Component<{}, State> {
-    constructor(props: {}) {
+export class AppLoader extends React.Component<Props, State> {
+    constructor(props: Props) {
         super(props);
         this.state = {
             gameData: null,
         };
+
     }
-    async componentDidMount() {
-        try {
-            await this.load();
-        } catch (err) {
+    componentDidMount() {
+        this.load().catch(err => {
             this.setState(() => {
                 throw err;
             });
-        }
+        });
     }
 
     async load() {
@@ -76,19 +77,29 @@ export class AppLoader extends React.Component<{}, State> {
                 </State.Provider>
             );
         }
+        const sheet = `assets/sprite-sheet-${this.state.gameData.raw.sprites.hash}.png`;
         const style = `
         .game-icon {
-            background-image: url(assets/sprite-sheet-${
-                this.state.gameData.raw.sprites.hash
-            }.png);
+            background-image: url(${sheet});
         }
         `;
         return (
             <State.Provider>
+                <Prefetch href={sheet} />
                 <style>{style}</style>
                 <State.Consumer>{this.handleStateChange}</State.Consumer>
                 <App />
             </State.Provider>
         );
     }
+}
+
+interface PrefetchProps {
+    href: string
+}
+function Prefetch(props: PrefetchProps) {
+    return ReactDOM.createPortal(
+        <link rel="prefetch" href={props.href} />,
+        document.head
+    );
 }
