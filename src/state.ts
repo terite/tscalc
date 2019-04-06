@@ -82,7 +82,7 @@ const State = createDakpan(defaultState)({
             return {};
         }
 
-        return updateGroup(state, { rows: group.rows.concat([row]) });
+        return updateGroup(state, { rows: [...group.rows, row] });
     },
 
     updateRow: (i: number, updates: Partial<RecipeRowData>) => (state) => {
@@ -140,12 +140,13 @@ const State = createDakpan(defaultState)({
     },
 
     addGroup: (name) => (state) => {
-        const groups = state.groups.concat([
+        const groups = [
+            ...state.groups,
             {
                 name,
                 rows: [],
             },
-        ]);
+        ];
 
         return {
             groups,
