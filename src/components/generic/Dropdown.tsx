@@ -198,11 +198,10 @@ class DropdownMenu<T> extends React.Component<
     }
 
     componentWillUnmount() {
-        if (!this.popperInstance) {
-            return;
+        if (this.popperInstance) {
+            this.popperInstance.disableEventListeners();
+            this.popperInstance = null;
         }
-        this.popperInstance.disableEventListeners();
-        this.popperInstance = null;
         document.body.removeEventListener('click', this.handleBodyClick);
         document.body.removeEventListener('keyup', this.handleKeyEvent);
     }

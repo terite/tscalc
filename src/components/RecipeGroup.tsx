@@ -10,19 +10,17 @@ import { TotalCard } from './TotalCard';
 
 import { RecipeRowData } from '../state';
 
-import State, { AppState, withBoth, withGame } from '../state';
+import State, { AppState, withBoth} from '../state';
 import * as su from '../stateutil';
 
 interface Props {
-    gameData: game.GameData;
     rows: RecipeRowData[];
     state: AppState;
     actions: typeof State.actions;
 }
 
 class RawRecipeGroup extends React.Component<Props, {}> {
-    constructor(props: Props) {
-        super(props);
+    componentDidMount() {
         signal.addRecipeRow.addHandler(this.handlePickRecipe);
     }
 
@@ -30,7 +28,7 @@ class RawRecipeGroup extends React.Component<Props, {}> {
         signal.addRecipeRow.removeHandler(this.handlePickRecipe);
     }
 
-    public handlePickRecipe = (recipe: game.Recipe) => {
+    handlePickRecipe = (recipe: game.Recipe) => {
         this.props.actions.addRow({
             recipe: recipe,
             machine: su.getDefaultMachine(recipe, this.props.state),
@@ -46,7 +44,8 @@ class RawRecipeGroup extends React.Component<Props, {}> {
     };
 
     render() {
-        const availableRecipes = this.props.gameData.recipes.filter(
+        const gd = this.props.state.gameData;
+        const availableRecipes = gd.recipes.filter(
             (recipe) => {
                 return !this.props.rows.some((row) => row.recipe == recipe);
             }
@@ -67,4 +66,4 @@ class RawRecipeGroup extends React.Component<Props, {}> {
     }
 }
 
-export const RecipeGroup = withGame(withBoth(RawRecipeGroup));
+export const RecipeGroup = withBoth(RawRecipeGroup);

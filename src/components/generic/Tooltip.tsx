@@ -7,6 +7,7 @@ interface Props {
 }
 
 interface State {
+    showSelf: boolean;
     style: React.CSSProperties;
 }
 
@@ -19,20 +20,14 @@ export class Tooltip extends React.Component<Props, State> {
         this.selfRef = React.createRef();
         this.popperInstance = null;
         this.state = {
+            showSelf: false,
             style: { zIndex: 1001 },
         };
     }
 
-    popperUpdate = (data: Popper.Data) => {
-        this.setState({
-            style: data.styles as React.CSSProperties,
-        });
-        return data;
-    };
-
-    componentDidMount() {
+    initPopper() {
         if (this.popperInstance) {
-            throw new Error('Component mounted twice?');
+            return;
         }
 
         const referenceEl = this.props.relativeTo.current;
@@ -60,15 +55,58 @@ export class Tooltip extends React.Component<Props, State> {
         });
     }
 
-    componentWillUnmount() {
-        if (!this.popperInstance) {
-            return;
+    cleanupPopper() {
+        if (this.popperInstance) {
+            this.popperInstance.disableEventListeners();
+            this.popperInstance = null;
         }
-        this.popperInstance.disableEventListeners();
-        this.popperInstance = null;
+    }
+
+    componentDidUpdate(_: Props, prevState: State) {
+        if (prevState.showSelf !== this.state.showSelf) {
+            if (this.state.showSelf) {
+                this.initPopper();
+            } else {
+                this.cleanupPopper();
+            }
+        }
+    }
+
+    componentDidMount() {
+        const referenceEl = this.props.relativeTo.current;
+        if (!referenceEl) {
+            throw new Error('Invalid relativeTo');
+        }
+
+        referenceEl.addEventListener('mouseenter', this.handleMouseEnter);
+        referenceEl.addEventListener('mouseleave', this.handleMouseLeave);
+    }
+
+    handleMouseEnter = () => {
+        this.setState({
+            showSelf: true,
+        });
+    };
+
+    handleMouseLeave = () => {
+        this.setState({
+            showSelf: false,
+        });
+    };
+
+    componentWillUnmount() {
+        const referenceEl = this.props.relativeTo.current;
+        if (referenceEl) {
+            referenceEl.removeEventListener('mouseenter', this.handleMouseEnter);
+            referenceEl.removeEventListener('mouseleave', this.handleMouseLeave);
+        }
     }
 
     render() {
+        if (!this.state.showSelf) {
+            return null;
+        }
+
         return ReactDOM.createPortal(
             <div style={this.state.style} ref={this.selfRef}>
                 {this.props.children}

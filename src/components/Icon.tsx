@@ -13,7 +13,6 @@ interface Props {
 }
 
 interface State {
-    showTooltip: boolean;
 }
 
 export class Icon extends React.PureComponent<Props, State> {
@@ -22,26 +21,7 @@ export class Icon extends React.PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
         this.iconRef = React.createRef();
-        this.state = {
-            showTooltip: false,
-        };
     }
-
-    handleMouseEnter = () => {
-        if (this.props.tooltip && !this.state.showTooltip) {
-            this.setState({
-                showTooltip: true,
-            });
-        }
-    };
-
-    handleMouseLeave = () => {
-        if (this.props.tooltip || this.state.showTooltip) {
-            this.setState({
-                showTooltip: false,
-            });
-        }
-    };
 
     render() {
         const x = -this.props.obj.icon_col * 32;
@@ -62,14 +42,12 @@ export class Icon extends React.PureComponent<Props, State> {
                 title={this.props.title}
                 className="game-icon"
                 style={divStyle}
-                onMouseEnter={this.handleMouseEnter}
-                onMouseLeave={this.handleMouseLeave}
             >
                 &nbsp;
             </div>
         );
 
-        if (this.state.showTooltip) {
+        if (this.props.tooltip) {
             icon = (
                 <>
                     {icon}
