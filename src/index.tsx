@@ -12,10 +12,6 @@ const root = document.createElement('div');
 root.id = 'root';
 document.body.appendChild(root);
 
-const floaterRoot = document.createElement('div');
-floaterRoot.id = 'floater-root';
-document.body.appendChild(floaterRoot);
-
 import {ErrorCatcher} from "./components/ErrorCatcher"
 import {AppLoader} from "./components/AppLoader"
 ReactDOM.render(
