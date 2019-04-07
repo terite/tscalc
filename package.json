@@ -39,6 +39,7 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --mode=development",
+    "start-prod": "webpack-dev-server --mode=production --profile",
     "build": "webpack --mode=production",
     "prettier-all": "prettier --write src/{**/,}*",
     "test": "jest"
