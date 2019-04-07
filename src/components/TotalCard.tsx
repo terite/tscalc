@@ -1,13 +1,15 @@
 import * as React from 'react';
 import { Icon } from './Icon';
-import { RecipeRowData } from '../state';
+import { withGame, RecipeRowData } from '../state';
 import { Totals } from '../totals';
+import * as game from '../game';
 
 interface Props {
+    gameData: game.GameData;
     rows: RecipeRowData[];
 }
 
-export function TotalCard(props: Props) {
+function RawTotalCard(props: Props) {
     const totals = new Totals();
     for (let row of props.rows) {
         totals.addRow(row);
@@ -17,6 +19,8 @@ export function TotalCard(props: Props) {
     if (!ingredients.length && !products.length) {
         return <div />;
     }
+
+    props.gameData.sortByItem(products, (p) => p.item);
 
     return (
         <div className="card combined-totals">
@@ -50,3 +54,5 @@ export function TotalCard(props: Props) {
         </div>
     );
 }
+
+export const TotalCard = withGame(RawTotalCard);

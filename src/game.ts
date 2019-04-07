@@ -441,4 +441,49 @@ export class GameData {
         console.log(`Processed ${this.entities.length} entities`);
         console.groupEnd();
     }
+
+    getItemOrder(item: Item | Fluid) {
+        let groupOrder = '';
+        let subgroupOrder = '';
+        const group = this.raw.groups[item.raw.group];
+        if (group) {
+            groupOrder = group.order;
+            subgroupOrder = group.subgroups[item.raw.subgroup] || '';
+        }
+        return [
+            groupOrder,
+            subgroupOrder,
+            item.raw.order,
+            item.raw.name,
+        ];
+    }
+
+    // Sort by
+    // 1. group
+    // 2. subgroup
+    // 3. item order string
+    // 4. item name
+    sortByItem<T>(
+        collection: T[],
+        keyFn: (obj: T) => Item | Fluid
+    ): void {
+        const sortFn = (a: T, b: T) => {
+            const ordersA = this.getItemOrder(keyFn(a));
+            const ordersB = this.getItemOrder(keyFn(b))
+
+            for (const i in ordersA) {
+                const valA = ordersA[i];
+                const valB = ordersB[i];
+                if (valA > valB) {
+                    return 1;
+                } else if (valA < valB) {
+                    return -1;
+                }
+            }
+
+            return 0;
+        }
+
+        collection.sort(sortFn);
+    }
 }
