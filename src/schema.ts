@@ -171,10 +171,10 @@ export interface Root {
 
     // other entities
     'assembling-machine': { [name: string]: AssemblingMachine };
-    furnace: { [name: string]: AssemblingMachine };
+    'furnace': { [name: string]: AssemblingMachine };
     'mining-drill': { [name: string]: MiningDrill };
     'offshore-pump': { [name: string]: OffshorePump };
-    reactor: { [name: string]: BaseEntity };
+    'reactor': { [name: string]: BaseEntity };
     'rocket-silo': { [name: string]: RocketSilo };
     'transport-belt': { [name: string]: TransportBelt };
 }

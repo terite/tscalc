@@ -39,7 +39,7 @@ class RawRecipeRow extends React.Component<Props, {}> {
         this.props.actions.removeRow(this.props.index);
     };
 
-    public handleMachineChange = (machine: game.Entity.AssemblingMachine) => {
+    public handleMachineChange = (machine: game.AssemblingMachine) => {
         this.applyChange({
             machine: machine,
             modules: this.props.modules

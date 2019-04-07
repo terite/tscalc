@@ -6,7 +6,7 @@ import { getDefaultMachine } from './stateutil';
 
 export interface RecipeRowData {
     recipe: game.Recipe;
-    machine: game.Entity.AssemblingMachine;
+    machine: game.AssemblingMachine;
     numMachines: Rational;
     modules: (game.Module | null)[];
     beaconModule: game.Module | null;
@@ -20,7 +20,7 @@ export interface RecipeGroupData {
 
 export interface AppSettingsData {
     assemblerOverrides: {
-        [category: string]: game.Entity.AssemblingMachine;
+        [category: string]: game.AssemblingMachine;
     };
 }
 

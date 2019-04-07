@@ -6,7 +6,7 @@ import { Icon } from './Icon';
 import { MachineCard } from './MachineCard';
 import { Dropdown } from './generic';
 
-type Machine = game.Entity.AssemblingMachine;
+type Machine = game.AssemblingMachine;
 
 interface MachinePickerProps {
     machines: Machine[];

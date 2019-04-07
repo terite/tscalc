@@ -5,19 +5,19 @@ import { assert } from './util';
 export function getDefaultMachine(
     category: string,
     state: AppState
-): game.Entity.AssemblingMachine;
+): game.AssemblingMachine;
 export function getDefaultMachine(
     recipe: game.Recipe,
     state: AppState
-): game.Entity.AssemblingMachine;
+): game.AssemblingMachine;
 
 export function getDefaultMachine(
     input: game.Recipe | string,
     state: AppState
-): game.Entity.AssemblingMachine {
+): game.AssemblingMachine {
     const category = input instanceof game.Recipe ? input.category : input;
 
-    let defaultMachine: game.Entity.AssemblingMachine;
+    let defaultMachine: game.AssemblingMachine;
     if (category in state.settings.assemblerOverrides) {
         defaultMachine = state.settings.assemblerOverrides[category];
     } else {

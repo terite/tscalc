@@ -12,7 +12,7 @@ interface IBaseDisplayable {
     icon_row: number;
 }
 
-export class BaseDisplayable implements IBaseDisplayable {
+export class BaseDisplayable {
     name: string;
     localised_name: LocalisedName;
     icon_col: number;
@@ -42,10 +42,6 @@ abstract class BaseItem<T extends schema.Item> extends BaseDisplayable {
         this.localised_name = d.localised_name;
         this.icon_col = d.icon_col;
         this.icon_row = d.icon_row;
-    }
-
-    toJSON() {
-        return this.name;
     }
 }
 
@@ -250,7 +246,7 @@ export class Recipe extends BaseDisplayable {
     products: Product[];
     crafting_time: Rational;
 
-    madeIn: Entity.AssemblingMachine[] = [];
+    madeIn: AssemblingMachine[] = [];
 
     constructor(d: schema.Recipe, gd: GameData) {
         super(d);
@@ -275,10 +271,6 @@ export class Recipe extends BaseDisplayable {
         });
     }
 
-    toJSON() {
-        return this.name;
-    }
-
     niceName() {
         if (this.products.length > 1) {
             return super.niceName();
@@ -290,49 +282,43 @@ export class Recipe extends BaseDisplayable {
     }
 }
 
-export namespace Entity {
-    export abstract class BaseEntity<T extends schema.BaseEntity> {
-        data: T;
-        constructor(data: T) {
-            this.data = data;
-        }
-
-        niceName() {
-            return this.data.localised_name.en;
-        }
-
-        toJSON() {
-            return this.data.name;
-        }
+export abstract class BaseEntity<T extends schema.BaseEntity> {
+    data: T;
+    constructor(data: T) {
+        this.data = data;
     }
 
-    export class AssemblingMachine extends BaseEntity<
-        schema.AssemblingMachine
-    > {
-        canBuildRecipe(recipe: Recipe) {
-            // TODO: this needs to account for entity fluid boxes
-            if (this.data.crafting_categories.indexOf(recipe.category) == -1) {
-                return false;
-            }
-
-            // ingredient_count seems to be item specific. this is disabled until
-            // I can figure out how many fluids a machine can support
-            // if (recipe.ingredients.length > this.data.ingredient_count) {
-            //     return false
-            // }
-            return true;
-        }
+    niceName() {
+        return this.data.localised_name.en;
     }
-
-    export type Any = AssemblingMachine;
 }
 
-type CategoryMap = { [category: string]: Entity.AssemblingMachine[] };
+export class AssemblingMachine extends BaseEntity<
+    schema.AssemblingMachine
+> {
+    canBuildRecipe(recipe: Recipe) {
+        // TODO: this needs to account for entity fluid boxes
+        if (this.data.crafting_categories.indexOf(recipe.category) == -1) {
+            return false;
+        }
 
-const createCategoryMap = (entities: Entity.Any[]) => {
+        // ingredient_count seems to be item specific. this is disabled until
+        // I can figure out how many fluids a machine can support
+        // if (recipe.ingredients.length > this.data.ingredient_count) {
+        //     return false
+        // }
+        return true;
+    }
+}
+
+export type Entity = AssemblingMachine;
+
+type CategoryMap = { [category: string]: AssemblingMachine[] };
+
+const createCategoryMap = (entities: Entity[]) => {
     const catMap: CategoryMap = {};
     for (let entity of entities) {
-        if (!(entity instanceof Entity.AssemblingMachine)) {
+        if (!(entity instanceof AssemblingMachine)) {
         }
         for (let category of entity.data.crafting_categories) {
             if (!catMap.hasOwnProperty(category)) {
@@ -359,8 +345,8 @@ export class GameData {
     recipes: Recipe[] = [];
     recipeMap: { [name: string]: Recipe } = {};
 
-    entities: Entity.Any[] = [];
-    entityMap: { [name: string]: Entity.Any } = {};
+    entities: Entity[] = [];
+    entityMap: { [name: string]: Entity } = {};
 
     categoryMap: CategoryMap;
 
@@ -369,7 +355,7 @@ export class GameData {
         this.raw = raw;
 
         type Thing<T> = {
-            new (d: T): Entity.Any;
+            new (d: T): Entity;
         };
 
         const addOfType = <S extends schema.BaseEntity, C extends Thing<S>>(
@@ -383,9 +369,9 @@ export class GameData {
             }
         };
 
-        addOfType(values(raw['assembling-machine']), Entity.AssemblingMachine);
-        addOfType(values(raw['furnace']), Entity.AssemblingMachine);
-        addOfType(values(raw['rocket-silo']), Entity.AssemblingMachine);
+        addOfType(values(raw['assembling-machine']), AssemblingMachine);
+        addOfType(values(raw['furnace']), AssemblingMachine);
+        addOfType(values(raw['rocket-silo']), AssemblingMachine);
 
         for (let itemName in raw.items) {
             const thing = raw.items[itemName];

@@ -37,7 +37,7 @@ interface CategoryRowProps {
 }
 
 class RawCategoryRow extends React.Component<CategoryRowProps, {}> {
-    handleChange = (machine: game.Entity.AssemblingMachine) => {
+    handleChange = (machine: game.AssemblingMachine) => {
         this.props.actions.updateDefaultMachine(this.props.category, machine);
     };
 

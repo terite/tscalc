@@ -1,9 +1,11 @@
 import * as React from 'react';
 import * as game from '../game';
 
-type Machine = game.Entity.AssemblingMachine;
+interface Props {
+    machine: game.AssemblingMachine;
+}
 
-export const MachineCard = (props: { machine: Machine }) => {
+export const MachineCard = (props: Props) => {
     return (
         <div className="machine-card card">
             <div className="card-body">
