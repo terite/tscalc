@@ -46,7 +46,6 @@ class RawAppLoader extends React.Component<Props, State> {
 
         const gameData = new game.GameData(parsed);
 
-        console.log('scheduling call');
         this.props.actions.replaceState({ gameData });
 
         const urlState = serialization.getUrlState(gameData);
@@ -62,7 +61,6 @@ class RawAppLoader extends React.Component<Props, State> {
             }
         }
 
-        console.log('gameData', gameData);
         this.setState({ gameData });
     }
 

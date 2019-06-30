@@ -75,7 +75,6 @@ function updateGroup(state: AppState, newGroup: Partial<RecipeGroupData>) {
 
 export const [StateProvider, useDakpan] = createDakpan(defaultState)({
     replaceState: (newState: Partial<AppState>) => (state) => {
-        console.log('replaceState', {...state, ...newState});
         return {...state, ...newState};
     },
 
