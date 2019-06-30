@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as Fuse from 'fuse.js';
-import debounce = require('lodash/debounce');
+import debounce from 'lodash/debounce';
 
 import * as game from '../game';
 import * as signal from '../signal';

@@ -168,7 +168,7 @@ export function setUrlState(state: AppState) {
     // compress
     str = btoa(deflate(str, { to: 'string' }));
 
-    history.replaceState('', '', `#${version}-${str}`);
+    window.history.replaceState('', '', `#${version}-${str}`);
 }
 
 function serialize(state: AppState): SerializedAppState {

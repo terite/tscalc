@@ -1,47 +1,51 @@
 {
+  "version": "0.1.0",
   "private": true,
   "name": "tscalc",
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
     "@sentry/browser": "^5.0.5",
-    "@types/jest": "^24.0.11",
+    "@types/jest": "24.0.15",
     "@types/lodash": "^4.14.123",
+    "@types/node": "12.0.10",
     "@types/pako": "^1.0.1",
-    "@types/react": "^16.8.12",
+    "@types/react": "16.8.22",
     "@types/react-beautiful-dnd": "^10.1.1",
-    "@types/react-dom": "^16.8.3",
+    "@types/react-dom": "16.8.4",
     "bootstrap": "^4.3.1",
-    "clean-webpack-plugin": "^2.0.1",
-    "css-loader": "^2.1.1",
     "dakpan": "^1.3.1",
     "fuse.js": "^3.4.4",
-    "html-webpack-plugin": "^3.2.0",
-    "jest": "^24.7.1",
     "lodash": "^4.17.11",
-    "node-sass": "*",
     "pako": "^1.0.10",
     "popper.js": "^1.15.0",
     "prettier": "^1.16.4",
     "react": "^16.8.6",
     "react-beautiful-dnd": "^11.0.0-beta",
     "react-dom": "^16.8.6",
-    "sass-loader": "*",
-    "style-loader": "*",
-    "ts-jest": "^24.0.2",
-    "ts-loader": "^5.3.3",
-    "typescript": "^3.4.2",
-    "webpack": "^4.29.6",
-    "webpack-bundle-analyzer": "^3.2.0",
-    "webpack-cli": "^3.3.0",
-    "webpack-dev-server": "^3.2.1"
+    "react-scripts": "3.0.1",
+    "typescript": "3.5.2"
   },
   "author": "David Stensland <me@terite.com>",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server --mode=development",
-    "start-prod": "webpack-dev-server --mode=production --profile",
-    "build": "webpack --mode=production",
-    "prettier-all": "prettier --write src/{**/,}*",
-    "test": "jest"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "prettier-all": "prettier --write src/{**/,}*"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

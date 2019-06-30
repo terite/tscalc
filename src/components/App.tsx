@@ -39,12 +39,12 @@ class RawApp extends React.Component<Props, State> {
     }
 
     handleKeyDown = (event: KeyboardEvent) => {
-        if (event.key == 'Shift') {
+        if (event.key === 'Shift') {
             document.body.classList.add('shift-down');
         }
     };
     handleKeyUp = (event: KeyboardEvent) => {
-        if (event.key == 'Shift') {
+        if (event.key === 'Shift') {
             document.body.classList.remove('shift-down');
         }
     };
@@ -90,7 +90,7 @@ class RawApp extends React.Component<Props, State> {
     ) => {
         event.preventDefault();
         const group = this.props.state.groups[this.props.state.activeGroupIdx];
-        if (confirm(`Are you sure you want to delete ${group.name}`)) {
+        if (window.confirm(`Are you sure you want to delete ${group.name}`)) {
             this.props.actions.removeGroup(i);
         }
     };

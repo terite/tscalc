@@ -78,7 +78,7 @@ const State = createDakpan(defaultState)({
     addRow: (row: RecipeRowData) => (state) => {
         const group = getActiveGroup(state);
         // ignore adding duplicate rows
-        if (group.rows.some((r) => r.recipe.name == row.recipe.name)) {
+        if (group.rows.some((r) => r.recipe.name === row.recipe.name)) {
             return {};
         }
 
@@ -121,8 +121,8 @@ const State = createDakpan(defaultState)({
         const groups = state.groups.map((group) => {
             const rows = group.rows.map((row) => {
                 if (
-                    row.recipe.category != category ||
-                    row.machine != oldMachine
+                    row.recipe.category !== category ||
+                    row.machine !== oldMachine
                 ) {
                     return row;
                 }
@@ -147,8 +147,8 @@ const State = createDakpan(defaultState)({
         };
     },
 
-    setActiveGroup: (index: number) => (_) => {
-        return { activeGroupIdx: index };
+    setActiveGroup: (groupIdx: number) => (state) => {
+        return { activeGroupIdx: groupIdx };
     },
 
     addGroup: (name) => (state) => {
