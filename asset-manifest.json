@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/static/css/main.76642c52.chunk.css",
-    "main.js": "/static/js/main.25c4741f.chunk.js",
-    "main.js.map": "/static/js/main.25c4741f.chunk.js.map",
-    "runtime~main.js": "/static/js/runtime~main.a8a9905a.js",
-    "runtime~main.js.map": "/static/js/runtime~main.a8a9905a.js.map",
-    "static/js/2.5755a1d0.chunk.js": "/static/js/2.5755a1d0.chunk.js",
-    "static/js/2.5755a1d0.chunk.js.map": "/static/js/2.5755a1d0.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.f375cb19be35450ffdbd30a72f2e9e98.js": "/precache-manifest.f375cb19be35450ffdbd30a72f2e9e98.js",
-    "service-worker.js": "/service-worker.js",
-    "static/css/main.76642c52.chunk.css.map": "/static/css/main.76642c52.chunk.css.map"
+    "main.css": "/tscalc/static/css/main.76642c52.chunk.css",
+    "main.js": "/tscalc/static/js/main.25c4741f.chunk.js",
+    "main.js.map": "/tscalc/static/js/main.25c4741f.chunk.js.map",
+    "runtime~main.js": "/tscalc/static/js/runtime~main.a5856d81.js",
+    "runtime~main.js.map": "/tscalc/static/js/runtime~main.a5856d81.js.map",
+    "static/js/2.5755a1d0.chunk.js": "/tscalc/static/js/2.5755a1d0.chunk.js",
+    "static/js/2.5755a1d0.chunk.js.map": "/tscalc/static/js/2.5755a1d0.chunk.js.map",
+    "index.html": "/tscalc/index.html",
+    "precache-manifest.e0ae9d0664c6ce74661f9ac9971cd929.js": "/tscalc/precache-manifest.e0ae9d0664c6ce74661f9ac9971cd929.js",
+    "service-worker.js": "/tscalc/service-worker.js",
+    "static/css/main.76642c52.chunk.css.map": "/tscalc/static/css/main.76642c52.chunk.css.map"
   }
 }
