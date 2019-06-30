@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import * as ReactDOM from 'react-dom';
 
 import * as game from '../game';
-import { AppActions, AppState, withBoth} from '../state';
+import { AppActions, withBoth, useDakpan } from '../state';
 import * as serialization from '../serialization';
 
 import { App } from './App';
@@ -64,13 +64,6 @@ class RawAppLoader extends React.Component<Props, State> {
         this.setState({ gameData });
     }
 
-    // TODO: reimplement me for dakpan 2.0
-    handleStateChange = (state: AppState) => {
-        serialization.setUrlState(state);
-        serialization.setLocalStorageState(state);
-        return '';
-    };
-
     render() {
         if (!this.state.gameData) {
             return (
@@ -87,6 +80,7 @@ class RawAppLoader extends React.Component<Props, State> {
         `;
         return (
             <>
+                <StateWriter />
                 <Prefetch href={sheet} />
                 <style>{style}</style>
                 <App />
@@ -94,6 +88,19 @@ class RawAppLoader extends React.Component<Props, State> {
         );
     }
 }
+
+const StateWriter: React.FC = () => {
+    const [state] = useDakpan();
+
+    useEffect(() => {
+        serialization.setUrlState(state);
+        serialization.setLocalStorageState(state);
+    }, [state]);
+
+    return null;
+};
+
+
 
 const Prefetch: React.FC<{href: string}> = (props) => {
     return ReactDOM.createPortal(
