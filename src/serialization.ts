@@ -82,20 +82,22 @@ interface SerializedAppStateV4 {
     };
 }
 
+function groupv4to5(group: SerializedGroupV4): SerializedGroupV5 {
+    return {
+        name: group.name,
+        rows: group.rows.map((r) => {
+            return [r[0], r[1], r[2].toString(), r[3], r[4], r[5]];
+        }),
+    };
+}
+
 // v5 has multiple groups, each with multiple rows
 function state4to5(state: SerializedAppStateV4): SerializedAppStateV5 {
     return {
         version: 5,
         data: {
             settings: state.data.settings,
-            groups: state.data.groups.map((group) => {
-                return <SerializedGroupV5>{
-                    name: group.name,
-                    rows: group.rows.map((r) => {
-                        return [r[0], r[1], r[2].toString(), r[3], r[4], r[5]];
-                    }),
-                };
-            }),
+            groups: state.data.groups.map(groupv4to5),
         },
     };
 }
@@ -179,7 +181,7 @@ function serialize(state: AppState): SerializedAppState {
                 let machineName: string | null = row.machine.data.name;
                 const defaultMachine = getDefaultMachine(row.recipe, state);
 
-                if (defaultMachine.data.name == machineName) {
+                if (defaultMachine.data.name === machineName) {
                     machineName = null;
                 }
 
@@ -237,14 +239,16 @@ function migrateSerializedState(
     switch (state.version) {
         case 1:
             state = state1to2(state);
+            // fall through
         case 2:
-            // version 2 is an uncompressed version of 3
             state = state2to3(state);
+            // fall through
         case 3:
             state = state3to4(state);
+            // fall through
         case 4:
             state = state4to5(state);
-            break;
+            // fall through
         case 5:
             // the latest
             break;

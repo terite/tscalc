@@ -13,12 +13,12 @@ export class Totals {
     addIngredient = (newIng: game.Ingredient) => {
         for (let oldIng of this.ingredients) {
             let match =
-                newIng.type == oldIng.type && newIng.item == oldIng.item;
-            if (newIng.type == 'fluid' && oldIng.type == 'fluid') {
+                newIng.type === oldIng.type && newIng.item === oldIng.item;
+            if (newIng.type === 'fluid' && oldIng.type === 'fluid') {
                 match =
                     match &&
-                    (newIng.maximum_temperature == oldIng.maximum_temperature &&
-                        newIng.minimum_temperature ==
+                    (newIng.maximum_temperature === oldIng.maximum_temperature &&
+                        newIng.minimum_temperature ===
                             oldIng.minimum_temperature);
             }
 
@@ -33,9 +33,9 @@ export class Totals {
     addProduct = (newProd: game.Product) => {
         for (let oldProd of this.products) {
             let match =
-                newProd.type == oldProd.type && newProd.item == oldProd.item;
-            if (newProd.type == 'fluid' && oldProd.type == 'fluid') {
-                match = match && newProd.temperature == oldProd.temperature;
+                newProd.type === oldProd.type && newProd.item === oldProd.item;
+            if (newProd.type === 'fluid' && oldProd.type === 'fluid') {
+                match = match && newProd.temperature === oldProd.temperature;
             }
 
             if (match) {

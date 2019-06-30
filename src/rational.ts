@@ -30,7 +30,7 @@ export class Rational {
             q = -q;
         }
 
-        if (p == 0) {
+        if (p === 0) {
             q = 1;
         }
 
@@ -49,7 +49,7 @@ export class Rational {
     floor() {
         const divmod = num_divmod(this.p, this.q);
         let result = new Rational(divmod.quotient, 1);
-        if (result.less(Rational.zero) && divmod.remainder != 0) {
+        if (result.less(Rational.zero) && divmod.remainder !== 0) {
             result = result.sub(Rational.one);
         }
         return result;
@@ -112,7 +112,7 @@ export class Rational {
     }
 
     equal(other: Rational) {
-        return this.p == other.p && this.q == other.q;
+        return this.p === other.p && this.q === other.q;
     }
 
     isNegative() {
@@ -123,11 +123,11 @@ export class Rational {
     }
 
     isOne() {
-        return this.p == 1;
+        return this.p === 1;
     }
 
     isZero() {
-        return this.p == 0;
+        return this.p === 0;
     }
 
     less(other: Rational) {
@@ -142,7 +142,7 @@ export class Rational {
     toString: null;
 
     toFraction() {
-        if (this.q == 1) {
+        if (this.q === 1) {
             return this.p.toString();
         }
         return this.p.toString() + '/' + this.q.toString();
@@ -177,11 +177,11 @@ export class Rational {
             maxDigits--;
         }
         if (fraction.equal(roundingFactor)) {
-            while (decimalPart[decimalPart.length - 1] == '0') {
+            while (decimalPart[decimalPart.length - 1] === '0') {
                 decimalPart = decimalPart.slice(0, decimalPart.length - 1);
             }
         }
-        if (decimalPart != '') {
+        if (decimalPart !== '') {
             return sign + integerPart + '.' + decimalPart;
         }
         return sign + integerPart;

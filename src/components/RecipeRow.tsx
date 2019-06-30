@@ -86,7 +86,7 @@ class RawRecipeRow extends React.Component<Props, {}> {
             });
             return;
         }
-        if (ingredient.item.madeBy.length == 1) {
+        if (ingredient.item.madeBy.length === 1) {
             signal.addRecipeRow.dispatch(ingredient.item.madeBy[0]);
         } else {
             signal.addIngredientFilter.dispatch(ingredient);
@@ -105,7 +105,7 @@ class RawRecipeRow extends React.Component<Props, {}> {
             });
             return;
         }
-        if (product.item.usedBy.length == 1) {
+        if (product.item.usedBy.length === 1) {
             signal.addRecipeRow.dispatch(product.item.usedBy[0]);
         } else {
             signal.addProductFilter.dispatch(product);
@@ -122,13 +122,13 @@ class RawRecipeRow extends React.Component<Props, {}> {
 
         let current: game.Ingredient | game.Product | undefined;
         current = output.ingredients.find((x) => {
-            return x.item.name == recipeTarget.item.name;
+            return x.item.name === recipeTarget.item.name;
         });
 
         current =
             current ||
             output.products.find((x) => {
-                return x.item.name == recipeTarget.item.name;
+                return x.item.name === recipeTarget.item.name;
             });
 
         if (!current) {

@@ -18,7 +18,7 @@ function getFn(recipe: game.Recipe, key: string) {
     }
 }
 
-const RE_ADVANCED = /((?:produces)|(?:consumes)):([a-z0-9\-]+)/g;
+const RE_ADVANCED = /((?:produces)|(?:consumes)):([a-z0-9-]+)/g;
 
 interface Props {
     recipes: game.Recipe[];
@@ -119,12 +119,12 @@ export class RecipePicker extends React.PureComponent<Props, State> {
         if (conditions.consumes.length || conditions.produces.length) {
             recipes = recipes.filter((recipe) => {
                 for (let name of conditions.consumes) {
-                    if (!recipe.ingredients.some((i) => i.name == name)) {
+                    if (!recipe.ingredients.some((i) => i.name === name)) {
                         return false;
                     }
                 }
                 for (let name of conditions.produces) {
-                    if (!recipe.products.some((i) => i.name == name)) {
+                    if (!recipe.products.some((i) => i.name === name)) {
                         return false;
                     }
                 }

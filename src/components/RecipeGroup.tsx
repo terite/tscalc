@@ -58,7 +58,7 @@ class RawRecipeGroup extends React.Component<Props, {}> {
     render() {
         const gd = this.props.state.gameData;
         const availableRecipes = gd.recipes.filter((recipe) => {
-            return !this.props.rows.some((row) => row.recipe == recipe);
+            return !this.props.rows.some((row) => row.recipe === recipe);
         });
 
         return (

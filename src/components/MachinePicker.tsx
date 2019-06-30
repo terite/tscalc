@@ -34,7 +34,7 @@ export const MachinePicker = (props: MachinePickerProps) => {
     const options = props.machines.map((machine) => ({
         key: machine.data.name,
         option: machine,
-        active: machine == props.selected,
+        active: machine === props.selected,
     }));
 
     return (

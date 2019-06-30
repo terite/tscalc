@@ -75,7 +75,7 @@ export class Module extends BaseItem<schema.ModuleItem> {
     }
 
     canUseWith(recipe: Recipe) {
-        if (this.limitedTo.size == 0) {
+        if (this.limitedTo.size === 0) {
             return true;
         }
 
@@ -148,11 +148,11 @@ export class FluidIngredient extends BaseIngredient {
         const min = this.minimum_temperature;
         const max = this.maximum_temperature;
         let range = '';
-        if (min != -Infinity && max != Infinity) {
+        if (min !== -Infinity && max !== Infinity) {
             range = ` (${min}° – ${max}°)`;
-        } else if (max != Infinity) {
+        } else if (max !== Infinity) {
             range = ` (≤ ${max}°)`;
-        } else if (min != -Infinity) {
+        } else if (min !== -Infinity) {
             range = ` (≥ ${max}°)`;
         }
         return `${this.amount.toDecimal()} × ${this.item.niceName()}${range}`;
@@ -176,9 +176,9 @@ abstract class BaseProduct {
         }
 
         if (typeof d.probability == 'number') {
-            if (d.probability == 0) {
+            if (d.probability === 0) {
                 amount = Rational.zero;
-            } else if (d.probability != 1) {
+            } else if (d.probability !== 1) {
                 assert(d.probability > 0);
                 assert(d.probability < 1);
                 amount = amount.mul(Rational.fromFloat(d.probability));
@@ -202,7 +202,7 @@ export class ItemProduct extends BaseProduct {
     }
 
     satisfies(ingredient: Ingredient) {
-        return ingredient.type == 'item' && ingredient.item == this.item;
+        return ingredient.type === 'item' && ingredient.item === this.item;
     }
 }
 
@@ -222,7 +222,7 @@ export class FluidProduct extends BaseProduct {
 
     niceName() {
         let temp = '';
-        if (this.temperature != this.item.default_temperature) {
+        if (this.temperature !== this.item.default_temperature) {
             temp = ` (${this.temperature}°)`;
         }
         return `${this.amount.toDecimal()} × ${this.item.niceName()}${temp}`;
@@ -230,8 +230,8 @@ export class FluidProduct extends BaseProduct {
 
     satisfies(ingredient: Ingredient) {
         return (
-            ingredient.type == 'fluid' &&
-            ingredient.item == this.item &&
+            ingredient.type === 'fluid' &&
+            ingredient.item === this.item &&
             ingredient.maximum_temperature >= this.temperature &&
             ingredient.minimum_temperature <= this.temperature
         );
@@ -255,7 +255,7 @@ export class Recipe extends BaseDisplayable {
         this.crafting_time = Rational.fromFloat(d.energy_required);
 
         this.ingredients = d.ingredients.map((ingredient) => {
-            if (ingredient.type == 'fluid') {
+            if (ingredient.type === 'fluid') {
                 return new FluidIngredient(ingredient, gd);
             } else {
                 return new ItemIngredient(ingredient, gd);
@@ -263,7 +263,7 @@ export class Recipe extends BaseDisplayable {
         });
 
         this.products = d.results.map((result) => {
-            if (result.type == 'fluid') {
+            if (result.type === 'fluid') {
                 return new FluidProduct(result, gd);
             } else {
                 return new ItemProduct(result, gd);
@@ -298,7 +298,7 @@ export class AssemblingMachine extends BaseEntity<
 > {
     canBuildRecipe(recipe: Recipe) {
         // TODO: this needs to account for entity fluid boxes
-        if (this.data.crafting_categories.indexOf(recipe.category) == -1) {
+        if (this.data.crafting_categories.indexOf(recipe.category) === -1) {
             return false;
         }
 
@@ -375,11 +375,11 @@ export class GameData {
 
         for (let itemName in raw.items) {
             const thing = raw.items[itemName];
-            if ('type' in thing && thing.type == 'fluid') {
+            if ('type' in thing && thing.type === 'fluid') {
                 const fluid = new Fluid(thing);
                 this.fluids.push(fluid);
                 this.fluidMap[fluid.name] = fluid;
-            } else if ('type' in thing && thing.type == 'module') {
+            } else if ('type' in thing && thing.type === 'module') {
                 const item = new Module(thing);
                 this.items.push(item);
                 this.itemMap[item.name] = item;
@@ -405,7 +405,7 @@ export class GameData {
                     recipe.madeIn.push(entity);
                 }
             }
-            if (recipe.madeIn.length == 0) {
+            if (!recipe.madeIn.length) {
                 // Filter to only recipes buildable by knonwn assembling machines
                 console.warn(
                     'Ignoring uncraftable recipe',

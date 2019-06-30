@@ -9,14 +9,14 @@ export class Signal<T> {
 
     addHandler(handler: SignalHandler<T>) {
         const index = this.handlers.indexOf(handler);
-        if (index == -1) {
+        if (index === -1) {
             this.handlers.push(handler);
         }
     }
 
     removeHandler(handler: SignalHandler<T>) {
         const index = this.handlers.indexOf(handler);
-        if (index != -1) {
+        if (index !== -1) {
             this.handlers.splice(index, 1);
         }
     }

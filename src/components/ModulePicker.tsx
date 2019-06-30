@@ -69,7 +69,7 @@ const GameModulePicker = (props: ModulePickerProps) => {
         .map((m) => ({
             key: m.name,
             option: m as Module | null,
-            active: m == props.selected,
+            active: m === props.selected,
         }));
 
     options.unshift({
