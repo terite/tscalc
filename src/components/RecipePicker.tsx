@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as Fuse from 'fuse.js';
+import Fuse from 'fuse.js';
 import debounce from 'lodash/debounce';
 
 import * as game from '../game';

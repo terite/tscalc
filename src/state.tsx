@@ -1,3 +1,4 @@
+import React from 'react';
 import { createDakpan } from 'dakpan';
 
 import * as game from './game';
@@ -43,7 +44,7 @@ export interface AppState {
 }
 
 export const defaultState: AppState = {
-    gameData: {} as game.GameData, // set early by apploader
+    gameData: {fakeGameData: true} as any as game.GameData, // set early by apploader
     groups: [
         {
             name: 'Factory 1',
@@ -69,17 +70,20 @@ function updateGroup(state: AppState, newGroup: Partial<RecipeGroupData>) {
             : oldGroup;
     });
 
-    return { groups };
+    return { ...state, groups };
 }
 
-const State = createDakpan(defaultState)({
-    replaceState: (newState: Partial<AppState>) => () => newState,
+export const [StateProvider, useDakpan] = createDakpan(defaultState)({
+    replaceState: (newState: Partial<AppState>) => (state) => {
+        console.log('replaceState', {...state, ...newState});
+        return {...state, ...newState};
+    },
 
     addRow: (row: RecipeRowData) => (state) => {
         const group = getActiveGroup(state);
         // ignore adding duplicate rows
         if (group.rows.some((r) => r.recipe.name === row.recipe.name)) {
-            return {};
+            return;
         }
 
         return updateGroup(state, { rows: [...group.rows, row] });
@@ -136,6 +140,7 @@ const State = createDakpan(defaultState)({
         });
 
         return {
+            ...state,
             groups,
             settings: {
                 ...state.settings,
@@ -148,7 +153,7 @@ const State = createDakpan(defaultState)({
     },
 
     setActiveGroup: (groupIdx: number) => (state) => {
-        return { activeGroupIdx: groupIdx };
+        return { ...state, activeGroupIdx: groupIdx };
     },
 
     addGroup: (name) => (state) => {
@@ -161,6 +166,7 @@ const State = createDakpan(defaultState)({
         ];
 
         return {
+            ...state,
             groups,
             activeGroupIdx: state.groups.length,
         };
@@ -184,24 +190,43 @@ const State = createDakpan(defaultState)({
         const activeGroupIdx = Math.min(state.activeGroupIdx, maxIndex);
 
         return {
+            ...state,
             groups,
             activeGroupIdx,
         };
     },
 
-    setRecipeTarget: (recipeTarget: RecipeTarget) => () => {
+    setRecipeTarget: (recipeTarget: RecipeTarget) => (state) => {
         return {
+            ...state,
             recipeTarget,
         };
     },
 });
 
-export const withBoth = State.withConsumer((state, actions) => ({
-    state,
-    actions,
-}));
-export const withGame = State.withConsumer((state) => ({
-    gameData: state.gameData,
-}));
+export type AppActions = ReturnType<typeof useDakpan>[1]
 
-export default State;
+
+export const withBoth = <T extends React.ComponentType<any>>(OldComponent: T) => {
+    type NewProps = Omit<PropsOf<T>, 'state'|'actions'>;
+
+    const WrappedComponent: React.FC<NewProps> = (props: any) => {
+        const [state, actions] = useDakpan();
+        return <OldComponent state={state} actions={actions} {...props}/>;
+    };
+
+    return WrappedComponent;
+}
+
+type PropsOf<T extends React.ComponentType<any>> = T extends React.ComponentType<infer P> ? P : never;
+
+export const withGame = <T extends React.ComponentType<any>>(OldComponent: T) => {
+    type NewProps = Omit<PropsOf<T>, 'gameData'>;
+
+    const WrappedComponent: React.FC<NewProps> = (props: any) => {
+        const [state] = useDakpan();
+        return <OldComponent gameData={state.gameData} {...props}/>;
+    };
+
+    return WrappedComponent;
+};

@@ -3,12 +3,12 @@ import * as React from 'react';
 import { RecipeGroup } from './RecipeGroup';
 import { Settings } from './Settings';
 
-import State, { AppState, withBoth } from '../state';
+import { AppActions, AppState, withBoth } from '../state';
 import { assertNever } from '../util';
 
 interface Props {
     state: AppState;
-    actions: typeof State.actions;
+    actions: AppActions;
 }
 
 interface State {
@@ -174,6 +174,9 @@ class RawApp extends React.Component<Props, State> {
     };
 
     render() {
+        if (!this.props.state.gameData.raw) {
+            return null;
+        }
         let body: JSX.Element;
         if (this.state.activePage === ActivePage.Factory) {
             body = this.renderFactory();

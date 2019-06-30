@@ -12,13 +12,13 @@ import { TotalCard } from './TotalCard';
 
 import { RecipeRowData } from '../state';
 
-import State, { AppState, withBoth } from '../state';
+import { AppActions, AppState, withBoth } from '../state';
 import * as su from '../stateutil';
 
 interface Props {
     rows: RecipeRowData[];
     state: AppState;
-    actions: typeof State.actions;
+    actions: AppActions;
 }
 
 class RawRecipeGroup extends React.Component<Props, {}> {

@@ -12,13 +12,13 @@ import { IntegerInput, RationalInput } from './generic';
 
 // import {clone} from '../util'
 import { Totals } from '../totals';
-import State, { withBoth, RecipeRowData, AppState } from '../state';
+import { withBoth, RecipeRowData, AppActions, AppState } from '../state';
 
 import * as signal from '../signal';
 
 interface Props extends RecipeRowData {
     index: number;
-    actions: typeof State.actions;
+    actions: AppActions;
     state: AppState;
 }
 

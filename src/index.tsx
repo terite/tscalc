@@ -4,6 +4,10 @@ import * as ReactDOM from 'react-dom';
 
 import { ErrorCatcher } from './components/ErrorCatcher';
 import { AppLoader } from './components/AppLoader';
+import {StateProvider} from './state';
+
+// import 'bootstrap/dist/css/bootstrap.css';
+import './index.scss';
 
 if (process.env.NODE_ENV === 'production') {
     Sentry.init({
@@ -14,7 +18,9 @@ if (process.env.NODE_ENV === 'production') {
 ReactDOM.render(
     <React.StrictMode>
         <ErrorCatcher>
-            <AppLoader />
+            <StateProvider>
+                <AppLoader />
+            </StateProvider>
         </ErrorCatcher>
     </React.StrictMode>,
     document.getElementById('root')

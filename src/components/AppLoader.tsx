@@ -2,17 +2,19 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import * as game from '../game';
-import State, { AppState } from '../state';
+import { AppActions, AppState, withBoth} from '../state';
 import * as serialization from '../serialization';
 
 import { App } from './App';
 
-interface Props {}
+interface Props {
+    actions: AppActions
+}
 interface State {
     gameData: game.GameData | null;
 }
 
-export class AppLoader extends React.Component<Props, State> {
+class RawAppLoader extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
@@ -29,7 +31,7 @@ export class AppLoader extends React.Component<Props, State> {
 
     async load() {
         const response = await fetch('assets/landblock.json');
-        if (response.status != 200) {
+        if (response.status !== 200) {
             throw new Error(
                 `Could not load game data, got HTTP status ${response.status}`
             );
@@ -44,24 +46,27 @@ export class AppLoader extends React.Component<Props, State> {
 
         const gameData = new game.GameData(parsed);
 
-        State.actions.replaceState({ gameData });
+        console.log('scheduling call');
+        this.props.actions.replaceState({ gameData });
 
         const urlState = serialization.getUrlState(gameData);
         if (urlState) {
             // everything comes from url state
-            State.actions.replaceState(urlState);
+            this.props.actions.replaceState(urlState);
         } else {
             // Load just settings
             const storageState = serialization.getLocalStorageState(gameData);
             if (storageState) {
                 // everything comes from url state
-                State.actions.replaceState(storageState);
+                this.props.actions.replaceState(storageState);
             }
         }
 
+        console.log('gameData', gameData);
         this.setState({ gameData });
     }
 
+    // TODO: reimplement me for dakpan 2.0
     handleStateChange = (state: AppState) => {
         serialization.setUrlState(state);
         serialization.setLocalStorageState(state);
@@ -71,9 +76,7 @@ export class AppLoader extends React.Component<Props, State> {
     render() {
         if (!this.state.gameData) {
             return (
-                <State.Provider>
-                    <h1>Loading...</h1>
-                </State.Provider>
+                <h1>Loading...</h1>
             );
         }
         const sheet = `assets/sprite-sheet-${
@@ -85,22 +88,20 @@ export class AppLoader extends React.Component<Props, State> {
         }
         `;
         return (
-            <State.Provider>
+            <>
                 <Prefetch href={sheet} />
                 <style>{style}</style>
-                <State.Consumer>{this.handleStateChange}</State.Consumer>
                 <App />
-            </State.Provider>
+            </>
         );
     }
 }
 
-interface PrefetchProps {
-    href: string;
-}
-function Prefetch(props: PrefetchProps) {
+const Prefetch: React.FC<{href: string}> = (props) => {
     return ReactDOM.createPortal(
         <link rel="prefetch" href={props.href} />,
         document.head
     );
-}
+};
+
+export const AppLoader = withBoth(RawAppLoader);

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import * as game from '../game';
 
-import State, { AppState, withGame, withBoth } from '../state';
+import { AppActions, AppState, withGame, withBoth } from '../state';
 import { getDefaultMachine } from '../stateutil';
 
 import { MachinePicker } from './MachinePicker';
@@ -33,7 +33,7 @@ class RawSettings extends React.Component<RawSettingsProps, {}> {
 interface CategoryRowProps {
     category: string;
     state: AppState;
-    actions: typeof State.actions;
+    actions: AppActions;
 }
 
 class RawCategoryRow extends React.Component<CategoryRowProps, {}> {
