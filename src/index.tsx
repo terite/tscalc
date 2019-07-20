@@ -6,8 +6,9 @@ import { ErrorCatcher } from './components/ErrorCatcher';
 import { AppLoader } from './components/AppLoader';
 import {StateProvider} from './state';
 
-// import 'bootstrap/dist/css/bootstrap.css';
-import './index.scss';
+// https://bootswatch.com/4/slate/bootstrap.css
+import 'bootstrap/dist/css/bootstrap.css';
+import './index.css';
 
 if (process.env.NODE_ENV === 'production') {
     Sentry.init({
@@ -16,12 +17,10 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 ReactDOM.render(
-    <React.StrictMode>
-        <ErrorCatcher>
-            <StateProvider>
-                <AppLoader />
-            </StateProvider>
-        </ErrorCatcher>
-    </React.StrictMode>,
+    <ErrorCatcher>
+        <StateProvider>
+            <AppLoader />
+        </StateProvider>
+    </ErrorCatcher>,
     document.getElementById('root')
 );
