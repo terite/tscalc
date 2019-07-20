@@ -80,25 +80,40 @@ class RawApp extends React.Component<Props, State> {
     }
   };
 
+  handleClickRenameGrorup = (i: number) => {
+    const name = prompt(
+      'Whatcha wanna call it now?',
+      this.props.state.groups[i].name
+    );
+    if (name) {
+      this.props.actions.renameGroup(i, name);
+    }
+  };
+
   renderNavbar = () => {
     const settingsActive = this.state.activePage === ActivePage.Settings;
 
-    type NavKey = number | 'settings';
-    const activeKey: NavKey = settingsActive
+    const activeKey = settingsActive
       ? 'settings'
       : this.props.state.activeGroupIdx;
 
     const factoryPills = this.props.state.groups.map((group, i) => (
       <SplitButton
         key={i}
-        variant="primary"
+        variant={activeKey === i ? 'primary' : 'secondary'}
         id={i}
         onClick={() => {
           this.handleClickGroup(i);
         }}
         title={group.name}
       >
-        <Dropdown.Item>Rename</Dropdown.Item>
+        <Dropdown.Item
+          onClick={() => {
+            this.handleClickRenameGrorup(i);
+          }}
+        >
+          Rename
+        </Dropdown.Item>
         <Dropdown.Divider />
         <Dropdown.Item
           onClick={() => {

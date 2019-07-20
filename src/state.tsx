@@ -168,9 +168,18 @@ export const [StateProvider, useDakpan] = createDakpan(defaultState)({
     };
   },
 
-  removeGroup: (index) => (state) => {
+  renameGroup: (index: number, name: string) => (state) => {
+    const groups = [...state.groups];
+    groups[index] = { ...groups[index], name };
+    return {
+      ...state,
+      groups,
+    };
+  },
+
+  removeGroup: (index: number) => (state) => {
     // Remove group
-    const groups = Array.from(state.groups);
+    const groups = [...state.groups];
     groups.splice(index, 1);
 
     // Add new group if necessary
