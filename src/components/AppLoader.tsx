@@ -8,105 +8,99 @@ import * as serialization from '../serialization';
 import { App } from './App';
 
 interface Props {
-    actions: AppActions
+  actions: AppActions;
 }
 interface State {
-    gameData: game.GameData | null;
+  gameData: game.GameData | null;
 }
 
 class RawAppLoader extends React.Component<Props, State> {
-    constructor(props: Props) {
-        super(props);
-        this.state = {
-            gameData: null,
-        };
-    }
-    componentDidMount() {
-        this.load().catch((err) => {
-            this.setState(() => {
-                throw err;
-            });
-        });
-    }
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      gameData: null,
+    };
+  }
+  componentDidMount() {
+    this.load().catch((err) => {
+      this.setState(() => {
+        throw err;
+      });
+    });
+  }
 
-    async load() {
-        const response = await fetch('assets/landblock.json');
-        if (response.status !== 200) {
-            throw new Error(
-                `Could not load game data, got HTTP status ${response.status}`
-            );
-        }
-
-        let parsed;
-        try {
-            parsed = await response.json();
-        } catch (err) {
-            throw new Error(`Could not parse game data: ${err}`);
-        }
-
-        const gameData = new game.GameData(parsed);
-
-        this.props.actions.replaceState({ gameData });
-
-        const urlState = serialization.getUrlState(gameData);
-        if (urlState) {
-            // everything comes from url state
-            this.props.actions.replaceState(urlState);
-        } else {
-            // Load just settings
-            const storageState = serialization.getLocalStorageState(gameData);
-            if (storageState) {
-                // everything comes from url state
-                this.props.actions.replaceState(storageState);
-            }
-        }
-
-        this.setState({ gameData });
+  async load() {
+    const response = await fetch('assets/landblock.json');
+    if (response.status !== 200) {
+      throw new Error(
+        `Could not load game data, got HTTP status ${response.status}`
+      );
     }
 
-    render() {
-        if (!this.state.gameData) {
-            return (
-                <h1>Loading...</h1>
-            );
-        }
-        const sheet = `assets/sprite-sheet-${
-            this.state.gameData.raw.sprites.hash
-        }.png`;
-        const style = `
+    let parsed;
+    try {
+      parsed = await response.json();
+    } catch (err) {
+      throw new Error(`Could not parse game data: ${err}`);
+    }
+
+    const gameData = new game.GameData(parsed);
+
+    this.props.actions.replaceState({ gameData });
+
+    const urlState = serialization.getUrlState(gameData);
+    if (urlState) {
+      // everything comes from url state
+      this.props.actions.replaceState(urlState);
+    } else {
+      // Load just settings
+      const storageState = serialization.getLocalStorageState(gameData);
+      if (storageState) {
+        // everything comes from url state
+        this.props.actions.replaceState(storageState);
+      }
+    }
+
+    this.setState({ gameData });
+  }
+
+  render() {
+    if (!this.state.gameData) {
+      return <h1>Loading...</h1>;
+    }
+    const sheet = `assets/sprite-sheet-${this.state.gameData.raw.sprites.hash}.png`;
+    const style = `
         .game-icon {
             background-image: url(${sheet});
         }
         `;
-        return (
-            <>
-                <StateWriter />
-                <Prefetch href={sheet} />
-                <style>{style}</style>
-                <App />
-            </>
-        );
-    }
+    return (
+      <>
+        <StateWriter />
+        <Prefetch href={sheet} />
+        <style>{style}</style>
+        <App />
+      </>
+    );
+  }
 }
 
 const StateWriter: React.FC = () => {
-    const [state] = useDakpan();
+  const [state] = useDakpan();
 
-    useEffect(() => {
-        serialization.setUrlState(state);
-        serialization.setLocalStorageState(state);
-    }, [state]);
+  useEffect(() => {
+    serialization.setUrlState(state);
+    serialization.setLocalStorageState(state);
+  }, [state]);
 
-    return null;
+  return null;
 };
 
-
-
-const Prefetch: React.FC<{href: string}> = (props) => {
-    return ReactDOM.createPortal(
-        <link rel="prefetch" href={props.href} />,
-        document.head
-    );
+const Prefetch: React.FC<{ href: string }> = (props) => {
+  return ReactDOM.createPortal(
+    <link rel="prefetch" href={props.href} />,
+    document.head
+  );
 };
 
 export const AppLoader = withBoth(RawAppLoader);

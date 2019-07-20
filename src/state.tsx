@@ -6,226 +6,228 @@ import { Rational } from './rational';
 import { getDefaultMachine } from './stateutil';
 
 export interface RecipeRowData {
-    recipe: game.Recipe;
-    machine: game.AssemblingMachine;
-    numMachines: Rational;
-    modules: (game.Module | null)[];
-    beaconModule: game.Module | null;
-    numBeacons: number;
+  recipe: game.Recipe;
+  machine: game.AssemblingMachine;
+  numMachines: Rational;
+  modules: (game.Module | null)[];
+  beaconModule: game.Module | null;
+  numBeacons: number;
 }
 
 export interface RecipeGroupData {
-    name: string;
-    rows: RecipeRowData[];
+  name: string;
+  rows: RecipeRowData[];
 }
 
 export interface AppSettingsData {
-    assemblerOverrides: {
-        [category: string]: game.AssemblingMachine;
-    };
+  assemblerOverrides: {
+    [category: string]: game.AssemblingMachine;
+  };
 }
 
 export interface RecipeTarget {
-    item: game.Item | game.Fluid;
-    amount: Rational;
+  item: game.Item | game.Fluid;
+  amount: Rational;
 }
 
 export interface AppState {
-    // Loaded automatically
-    gameData: game.GameData;
+  // Loaded automatically
+  gameData: game.GameData;
 
-    // Preserved via url/localstorage
-    groups: RecipeGroupData[];
-    settings: AppSettingsData;
+  // Preserved via url/localstorage
+  groups: RecipeGroupData[];
+  settings: AppSettingsData;
 
-    // unsaved state
-    activeGroupIdx: number;
-    recipeTarget: RecipeTarget | undefined;
+  // unsaved state
+  activeGroupIdx: number;
+  recipeTarget: RecipeTarget | undefined;
 }
 
 export const defaultState: AppState = {
-    gameData: {fakeGameData: true} as any as game.GameData, // set early by apploader
-    groups: [
-        {
-            name: 'Factory 1',
-            rows: [],
-        },
-    ],
-    settings: {
-        assemblerOverrides: {},
+  gameData: ({ fakeGameData: true } as any) as game.GameData, // set early by apploader
+  groups: [
+    {
+      name: 'Factory 1',
+      rows: [],
     },
+  ],
+  settings: {
+    assemblerOverrides: {},
+  },
 
-    activeGroupIdx: 0,
-    recipeTarget: undefined,
+  activeGroupIdx: 0,
+  recipeTarget: undefined,
 };
 
 function getActiveGroup(state: AppState) {
-    return state.groups[state.activeGroupIdx];
+  return state.groups[state.activeGroupIdx];
 }
 
 function updateGroup(state: AppState, newGroup: Partial<RecipeGroupData>) {
-    const groups = state.groups.map((oldGroup, index) => {
-        return index === state.activeGroupIdx
-            ? { ...oldGroup, ...newGroup }
-            : oldGroup;
-    });
+  const groups = state.groups.map((oldGroup, index) => {
+    return index === state.activeGroupIdx
+      ? { ...oldGroup, ...newGroup }
+      : oldGroup;
+  });
 
-    return { ...state, groups };
+  return { ...state, groups };
 }
 
 export const [StateProvider, useDakpan] = createDakpan(defaultState)({
-    replaceState: (newState: Partial<AppState>) => (state) => {
-        return {...state, ...newState};
-    },
+  replaceState: (newState: Partial<AppState>) => (state) => {
+    return { ...state, ...newState };
+  },
 
-    addRow: (row: RecipeRowData) => (state) => {
-        const group = getActiveGroup(state);
-        // ignore adding duplicate rows
-        if (group.rows.some((r) => r.recipe.name === row.recipe.name)) {
-            return;
+  addRow: (row: RecipeRowData) => (state) => {
+    const group = getActiveGroup(state);
+    // ignore adding duplicate rows
+    if (group.rows.some((r) => r.recipe.name === row.recipe.name)) {
+      return;
+    }
+
+    return updateGroup(state, { rows: [...group.rows, row] });
+  },
+
+  updateRow: (i: number, updates: Partial<RecipeRowData>) => (state) => {
+    const group = getActiveGroup(state);
+    const rows = Array.from(group.rows);
+    rows[i] = { ...group.rows[i], ...updates };
+    return updateGroup(state, {
+      rows: rows,
+    });
+  },
+
+  removeRow: (i: number) => (state) => {
+    const group = getActiveGroup(state);
+    const rows = Array.from(group.rows);
+    rows.splice(i, 1);
+    return updateGroup(state, {
+      rows: rows,
+    });
+  },
+
+  moveRow: (oldIndex: number, newIndex: number) => (state) => {
+    const group = getActiveGroup(state);
+    const rows = Array.from(group.rows);
+
+    const [removed] = rows.splice(oldIndex, 1);
+    rows.splice(newIndex, 0, removed);
+
+    return updateGroup(state, {
+      rows: rows,
+    });
+  },
+
+  updateDefaultMachine: (category, newMachine) => (state) => {
+    const oldMachine = getDefaultMachine(category, state);
+
+    const groups = state.groups.map((group) => {
+      const rows = group.rows.map((row) => {
+        if (row.recipe.category !== category || row.machine !== oldMachine) {
+          return row;
         }
-
-        return updateGroup(state, { rows: [...group.rows, row] });
-    },
-
-    updateRow: (i: number, updates: Partial<RecipeRowData>) => (state) => {
-        const group = getActiveGroup(state);
-        const rows = Array.from(group.rows);
-        rows[i] = { ...group.rows[i], ...updates };
-        return updateGroup(state, {
-            rows: rows,
-        });
-    },
-
-    removeRow: (i: number) => (state) => {
-        const group = getActiveGroup(state);
-        const rows = Array.from(group.rows);
-        rows.splice(i, 1);
-        return updateGroup(state, {
-            rows: rows,
-        });
-    },
-
-    moveRow: (oldIndex: number, newIndex: number) => (state) => {
-        const group = getActiveGroup(state);
-        const rows = Array.from(group.rows);
-
-        const [removed] = rows.splice(oldIndex, 1);
-        rows.splice(newIndex, 0, removed);
-
-        return updateGroup(state, {
-            rows: rows,
-        });
-    },
-
-    updateDefaultMachine: (category, newMachine) => (state) => {
-        const oldMachine = getDefaultMachine(category, state);
-
-        const groups = state.groups.map((group) => {
-            const rows = group.rows.map((row) => {
-                if (
-                    row.recipe.category !== category ||
-                    row.machine !== oldMachine
-                ) {
-                    return row;
-                }
-                return {
-                    ...row,
-                    machine: newMachine,
-                };
-            });
-
-            return { ...group, rows };
-        });
-
         return {
-            ...state,
-            groups,
-            settings: {
-                ...state.settings,
-                assemblerOverrides: {
-                    ...state.settings.assemblerOverrides,
-                    [category]: newMachine,
-                },
-            },
+          ...row,
+          machine: newMachine,
         };
-    },
+      });
 
-    setActiveGroup: (groupIdx: number) => (state) => {
-        return { ...state, activeGroupIdx: groupIdx };
-    },
+      return { ...group, rows };
+    });
 
-    addGroup: (name) => (state) => {
-        const groups = [
-            ...state.groups,
-            {
-                name,
-                rows: [],
-            },
-        ];
+    return {
+      ...state,
+      groups,
+      settings: {
+        ...state.settings,
+        assemblerOverrides: {
+          ...state.settings.assemblerOverrides,
+          [category]: newMachine,
+        },
+      },
+    };
+  },
 
-        return {
-            ...state,
-            groups,
-            activeGroupIdx: state.groups.length,
-        };
-    },
+  setActiveGroup: (groupIdx: number) => (state) => {
+    return { ...state, activeGroupIdx: groupIdx };
+  },
 
-    removeGroup: (index) => (state) => {
-        // Remove group
-        const groups = Array.from(state.groups);
-        groups.splice(index, 1);
+  addGroup: (name) => (state) => {
+    const groups = [
+      ...state.groups,
+      {
+        name,
+        rows: [],
+      },
+    ];
 
-        // Add new group if necessary
-        if (!groups.length) {
-            groups.push({
-                name: 'Factory 1',
-                rows: [],
-            });
-        }
+    return {
+      ...state,
+      groups,
+      activeGroupIdx: state.groups.length,
+    };
+  },
 
-        // Fix the index if it's outside of bounds
-        const maxIndex = groups.length - 1;
-        const activeGroupIdx = Math.min(state.activeGroupIdx, maxIndex);
+  removeGroup: (index) => (state) => {
+    // Remove group
+    const groups = Array.from(state.groups);
+    groups.splice(index, 1);
 
-        return {
-            ...state,
-            groups,
-            activeGroupIdx,
-        };
-    },
+    // Add new group if necessary
+    if (!groups.length) {
+      groups.push({
+        name: 'Factory 1',
+        rows: [],
+      });
+    }
 
-    setRecipeTarget: (recipeTarget: RecipeTarget) => (state) => {
-        return {
-            ...state,
-            recipeTarget,
-        };
-    },
+    // Fix the index if it's outside of bounds
+    const maxIndex = groups.length - 1;
+    const activeGroupIdx = Math.min(state.activeGroupIdx, maxIndex);
+
+    return {
+      ...state,
+      groups,
+      activeGroupIdx,
+    };
+  },
+
+  setRecipeTarget: (recipeTarget: RecipeTarget) => (state) => {
+    return {
+      ...state,
+      recipeTarget,
+    };
+  },
 });
 
-export type AppActions = ReturnType<typeof useDakpan>[1]
+export type AppActions = ReturnType<typeof useDakpan>[1];
 
+export const withBoth = <T extends React.ComponentType<any>>(
+  OldComponent: T
+) => {
+  type NewProps = Omit<PropsOf<T>, 'state' | 'actions'>;
 
-export const withBoth = <T extends React.ComponentType<any>>(OldComponent: T) => {
-    type NewProps = Omit<PropsOf<T>, 'state'|'actions'>;
+  const WrappedComponent: React.FC<NewProps> = (props: any) => {
+    const [state, actions] = useDakpan();
+    return <OldComponent state={state} actions={actions} {...props} />;
+  };
 
-    const WrappedComponent: React.FC<NewProps> = (props: any) => {
-        const [state, actions] = useDakpan();
-        return <OldComponent state={state} actions={actions} {...props}/>;
-    };
+  return WrappedComponent;
+};
 
-    return WrappedComponent;
-}
+type PropsOf<
+  T extends React.ComponentType<any>
+> = T extends React.ComponentType<infer P> ? P : never;
 
-type PropsOf<T extends React.ComponentType<any>> = T extends React.ComponentType<infer P> ? P : never;
+export const withGame = <T extends React.ComponentType<any>>(
+  OldComponent: T
+) => {
+  type NewProps = Omit<PropsOf<T>, 'gameData'>;
 
-export const withGame = <T extends React.ComponentType<any>>(OldComponent: T) => {
-    type NewProps = Omit<PropsOf<T>, 'gameData'>;
+  const WrappedComponent: React.FC<NewProps> = (props: any) => {
+    const [state] = useDakpan();
+    return <OldComponent gameData={state.gameData} {...props} />;
+  };
 
-    const WrappedComponent: React.FC<NewProps> = (props: any) => {
-        const [state] = useDakpan();
-        return <OldComponent gameData={state.gameData} {...props}/>;
-    };
-
-    return WrappedComponent;
+  return WrappedComponent;
 };

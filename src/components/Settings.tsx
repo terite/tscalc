@@ -8,66 +8,59 @@ import { getDefaultMachine } from '../stateutil';
 import { MachinePicker } from './MachinePicker';
 
 interface RawSettingsProps {
-    gameData: game.GameData;
+  gameData: game.GameData;
 }
 
 class RawSettings extends React.Component<RawSettingsProps, {}> {
-    render() {
-        const categoryNames = Object.entries(this.props.gameData.categoryMap)
-            .filter((entry) => entry[1].length > 1)
-            .map((entry) => entry[0]);
+  render() {
+    const categoryNames = Object.entries(this.props.gameData.categoryMap)
+      .filter((entry) => entry[1].length > 1)
+      .map((entry) => entry[0]);
 
-        categoryNames.sort((a, b) => a.localeCompare(b));
+    categoryNames.sort((a, b) => a.localeCompare(b));
 
-        return (
-            <div>
-                <h3>Default Assemblers</h3>
-                {categoryNames.map((name) => (
-                    <CategoryRow key={name} category={name} />
-                ))}
-            </div>
-        );
-    }
+    return (
+      <div>
+        <h3>Default Assemblers</h3>
+        {categoryNames.map((name) => (
+          <CategoryRow key={name} category={name} />
+        ))}
+      </div>
+    );
+  }
 }
 
 interface CategoryRowProps {
-    category: string;
-    state: AppState;
-    actions: AppActions;
+  category: string;
+  state: AppState;
+  actions: AppActions;
 }
 
 class RawCategoryRow extends React.Component<CategoryRowProps, {}> {
-    handleChange = (machine: game.AssemblingMachine) => {
-        this.props.actions.updateDefaultMachine(this.props.category, machine);
-    };
+  handleChange = (machine: game.AssemblingMachine) => {
+    this.props.actions.updateDefaultMachine(this.props.category, machine);
+  };
 
-    render() {
-        const machines = this.props.state.gameData.categoryMap[
-            this.props.category
-        ];
-        const selected = getDefaultMachine(
-            this.props.category,
-            this.props.state
-        );
-        return (
-            <div className="btn-toolbar mb-3" key={this.props.category}>
-                <div className="input-group">
-                    <div className="input-group-prepend">
-                        <span className="input-group-text">
-                            {this.props.category}
-                        </span>
-                    </div>
-                    <div className="input-group-append btn-icon-wrapper">
-                        <MachinePicker
-                            machines={machines}
-                            selected={selected}
-                            onChange={this.handleChange}
-                        />
-                    </div>
-                </div>
-            </div>
-        );
-    }
+  render() {
+    const machines = this.props.state.gameData.categoryMap[this.props.category];
+    const selected = getDefaultMachine(this.props.category, this.props.state);
+    return (
+      <div className="btn-toolbar mb-3" key={this.props.category}>
+        <div className="input-group">
+          <div className="input-group-prepend">
+            <span className="input-group-text">{this.props.category}</span>
+          </div>
+          <div className="input-group-append btn-icon-wrapper">
+            <MachinePicker
+              machines={machines}
+              selected={selected}
+              onChange={this.handleChange}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
 
 const CategoryRow = withBoth(RawCategoryRow);
