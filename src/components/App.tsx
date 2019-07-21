@@ -80,7 +80,7 @@ class RawApp extends React.Component<Props, State> {
     }
   };
 
-  handleClickRenameGrorup = (i: number) => {
+  handleClickRenameGroup = (i: number) => {
     const name = prompt(
       'Whatcha wanna call it now?',
       this.props.state.groups[i].name
@@ -109,7 +109,7 @@ class RawApp extends React.Component<Props, State> {
       >
         <Dropdown.Item
           onClick={() => {
-            this.handleClickRenameGrorup(i);
+            this.handleClickRenameGroup(i);
           }}
         >
           Rename
