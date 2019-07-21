@@ -1,8 +1,9 @@
 import React from 'react';
 
 import Container from 'react-bootstrap/Container';
+import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
-import Nav from 'react-bootstrap/Nav';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import SplitButton from 'react-bootstrap/SplitButton';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -90,6 +91,12 @@ class RawApp extends React.Component<Props, State> {
     }
   };
 
+  handleClickSettings = () => {
+    this.setState({
+      activePage: ActivePage.Settings,
+    });
+  };
+
   renderNavbar = () => {
     const settingsActive = this.state.activePage === ActivePage.Settings;
 
@@ -126,17 +133,24 @@ class RawApp extends React.Component<Props, State> {
     ));
 
     return (
-      <Nav variant="tabs" className="px-2 pt-2">
-        {factoryPills}
-        <Nav.Item>
-          <Nav.Link title="Add a factory" onClick={this.handleClickAddGroup}>
-            +
-          </Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link eventKey="settings">Settings</Nav.Link>
-        </Nav.Item>
-      </Nav>
+      <>
+        <ButtonGroup vertical>{factoryPills}</ButtonGroup>
+        <br />
+        <ButtonGroup vertical>
+          <Button onClick={this.handleClickAddGroup} variant="secondary">
+            Add a Factory
+          </Button>
+        </ButtonGroup>
+        <br />
+        <ButtonGroup>
+          <Button
+            onClick={this.handleClickSettings}
+            variant={settingsActive ? 'primary' : 'secondary'}
+          >
+            Settings
+          </Button>
+        </ButtonGroup>
+      </>
     );
   };
 
