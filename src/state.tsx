@@ -209,7 +209,7 @@ export const [StateProvider, useDakpan] = createDakpan(defaultState)({
   },
 });
 
-export type AppActions = ReturnType<typeof useDakpan>[1];
+export type AppActions = NonNullable<ReturnType<typeof useDakpan>[1]>;
 
 export const withBoth = <T extends React.ComponentType<any>>(
   OldComponent: T
