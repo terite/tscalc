@@ -7,6 +7,8 @@ import * as signal from '../signal';
 
 import { Icon } from './Icon';
 
+import styles from './RecipePicker.module.css';
+
 type KeyTypes = 'niceName' | 'name';
 
 function getFn(recipe: game.Recipe, key: string) {
@@ -187,11 +189,11 @@ export class RecipePicker extends React.PureComponent<Props, State> {
 
   render() {
     return (
-      <div className="recipe-picker">
+      <div className={styles.RecipePicker}>
         <div>
           <input
             className="editable-display form-control"
-            placeholder="Search for a recipe"
+            placeholder="What do you want to build?"
             value={this.state.query}
             onChange={this.handleQueryInput}
           />
@@ -230,7 +232,7 @@ class RecipeMatch extends React.PureComponent<RecipeMatchProps, {}> {
     ));
     return (
       <tr onClick={this.handleClickAdd}>
-        <td className="result-name">
+        <td className={styles.ResultName}>
           <Icon obj={recipe} text={recipe.niceName()} />
         </td>
         <td>{recipe.crafting_time.toDecimal()}</td>

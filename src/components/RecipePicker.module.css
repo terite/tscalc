@@ -1,0 +1,9 @@
+.RecipePicker {
+}
+
+.ResultName {
+  max-width: 30rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

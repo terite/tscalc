@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as Sentry from '@sentry/browser';
 
+import styles from './ErrorCatcher.module.css';
+
 interface Props {}
 
 interface State {
@@ -43,7 +45,7 @@ export class ErrorCatcher extends React.Component<Props, State> {
   render() {
     if (typeof this.state.crashMsg !== 'undefined') {
       return (
-        <div className="crashed">
+        <div className={styles.crashed}>
           <h1>Crashed!</h1>
           <pre>{this.state.crashMsg}</pre>
         </div>

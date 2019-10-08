@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 
+import Button from 'react-bootstrap/Button';
+
 import * as game from '../game';
 import { Rational } from '../rational';
 
@@ -198,7 +200,7 @@ class RawRecipeRow extends React.Component<Props, {}> {
       <div className="btn-toolbar mb-3">
         <div className="input-group">
           <div className="input-group-prepend">
-            <div className="input-group-text">Beacon Modules</div>
+            <span className="input-group-text">Beacon Modules</span>
           </div>
           <IntegerInput
             value={this.props.numBeacons}
@@ -282,13 +284,13 @@ class RawRecipeRow extends React.Component<Props, {}> {
                 />
               </div>
               <div style={{ float: 'right' }}>
-                <button
-                  type="button"
-                  className="btn btn-danger"
+                <Button
+                  variant="danger"
                   onClick={this.handleRemoveClick}
+                  size="sm"
                 >
                   Remove
-                </button>
+                </Button>
               </div>
               <div style={{ clear: 'both' }} />
             </div>

@@ -1,6 +1,9 @@
-import * as React from 'react';
+import React from 'react';
+import classNames from 'classnames';
 
 import { Tooltip } from './generic';
+
+import styles from './Icon.module.css';
 
 interface Props {
   obj: { icon_row: number; icon_col: number };
@@ -39,7 +42,7 @@ export class Icon extends React.PureComponent<Props, State> {
         ref={this.iconRef}
         onClick={this.props.onClick}
         title={this.props.title}
-        className="game-icon"
+        className={classNames(styles.Icon, 'game-icon')}
         style={divStyle}
       >
         &nbsp;

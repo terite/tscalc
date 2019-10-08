@@ -1,4 +1,7 @@
 import * as React from 'react';
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 import { DropResult, DragDropContext, Droppable } from 'react-beautiful-dnd';
 
@@ -10,13 +13,15 @@ import { RecipeRow } from './RecipeRow';
 import { RecipePicker } from './RecipePicker';
 import { TotalCard } from './TotalCard';
 
-import { RecipeRowData } from '../state';
+import { RecipeGroupData, RecipeRowData } from '../state';
 
 import { AppActions, AppState, withBoth } from '../state';
 import * as su from '../stateutil';
 
+import styles from './RecipeGroup.module.css';
+
 interface Props {
-  rows: RecipeRowData[];
+  group: RecipeGroupData;
   state: AppState;
   actions: AppActions;
 }
@@ -52,14 +57,51 @@ class RawRecipeGroup extends React.Component<Props, {}> {
     return <RecipeRow key={data.recipe.name} index={index} {...data} />;
   };
 
+  handleClickRename = () => {
+    const i = this.props.state.activeGroupIdx;
+    const name = prompt(
+      'Whatcha wanna call it now?',
+      this.props.state.groups[i].name
+    );
+    if (name) {
+      this.props.actions.renameGroup(i, name);
+    }
+  };
+
+  handleClickDelete = () => {
+    const i = this.props.state.activeGroupIdx;
+    const group = this.props.state.groups[i];
+    if (window.confirm(`Are you sure you want to delete ${group.name}`)) {
+      this.props.actions.removeGroup(i);
+    }
+  };
+
   render() {
     const gd = this.props.state.gameData;
     const availableRecipes = gd.recipes.filter((recipe) => {
-      return !this.props.rows.some((row) => row.recipe === recipe);
+      return !this.props.group.rows.some((row) => row.recipe === recipe);
     });
 
     return (
-      <div className="recipe-group">
+      <div className={styles.RecipeGroup}>
+        <div className="clearfix">
+          <h3 className="float-left">{this.props.group.name}</h3>
+          <div className="float-right">
+            <Dropdown as={ButtonGroup} size="sm">
+              <Button variant="info" onClick={this.handleClickRename}>
+                Rename
+              </Button>
+
+              <Dropdown.Toggle split variant="info" id="button-split" />
+
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={this.handleClickDelete}>
+                  Delete
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+        </div>
         <RecipePicker
           recipes={availableRecipes}
           onPickRecipe={this.handlePickRecipe}
@@ -70,7 +112,7 @@ class RawRecipeGroup extends React.Component<Props, {}> {
           <Droppable droppableId={'eyy'}>
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
-                {this.props.rows.map(this.renderRow)}
+                {this.props.group.rows.map(this.renderRow)}
                 {provided.placeholder}
               </div>
             )}
@@ -78,7 +120,7 @@ class RawRecipeGroup extends React.Component<Props, {}> {
         </DragDropContext>
 
         <hr />
-        <TotalCard rows={this.props.rows} />
+        <TotalCard rows={this.props.group.rows} />
       </div>
     );
   }

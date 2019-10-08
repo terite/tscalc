@@ -4,6 +4,8 @@ import { withGame, RecipeRowData } from '../state';
 import { Totals } from '../totals';
 import * as game from '../game';
 
+import styles from './TotalCard.module.css';
+
 interface Props {
   gameData: game.GameData;
   rows: RecipeRowData[];
@@ -23,10 +25,10 @@ function RawTotalCard(props: Props) {
   props.gameData.sortByItem(products, (p) => p.item);
 
   return (
-    <div className="card combined-totals">
+    <div className={`card ${styles.TotalCard}`}>
       <div className="card-header">Combined Totals</div>
       <div className="card-body">
-        <div className="container">
+        <div className="container-fluid">
           <div className="row">
             <div className="col">
               Ingredients:

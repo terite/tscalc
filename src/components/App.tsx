@@ -1,11 +1,9 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
-import Dropdown from 'react-bootstrap/Dropdown';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import SplitButton from 'react-bootstrap/SplitButton';
 import Row from 'react-bootstrap/Row';
+import Nav from 'react-bootstrap/Nav';
 import Col from 'react-bootstrap/Col';
 
 import { RecipeGroup } from './RecipeGroup';
@@ -13,6 +11,8 @@ import { Settings } from './Settings';
 
 import { AppActions, AppState, withBoth } from '../state';
 import { assertNever } from '../util';
+
+import styles from './App.module.css';
 
 interface Props {
   state: AppState;
@@ -64,7 +64,7 @@ class RawApp extends React.Component<Props, State> {
     this.props.actions.setActiveGroup(i);
   };
 
-  handleClickAddGroup: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+  handleClickAddGroup: React.MouseEventHandler<any> = (event) => {
     event.preventDefault();
     const defaultName = `Factory ${this.props.state.groups.length + 1}`;
     const name = prompt('What do you want to name this group?', defaultName);
@@ -74,99 +74,74 @@ class RawApp extends React.Component<Props, State> {
     this.props.actions.addGroup(name);
   };
 
-  handleClickRemoveGroup = (i: number) => {
-    const group = this.props.state.groups[this.props.state.activeGroupIdx];
-    if (window.confirm(`Are you sure you want to delete ${group.name}`)) {
-      this.props.actions.removeGroup(i);
-    }
-  };
-
-  handleClickRenameGroup = (i: number) => {
-    const name = prompt(
-      'Whatcha wanna call it now?',
-      this.props.state.groups[i].name
-    );
-    if (name) {
-      this.props.actions.renameGroup(i, name);
-    }
-  };
-
   handleClickSettings = () => {
     this.setState({
       activePage: ActivePage.Settings,
     });
   };
 
-  renderNavbar = () => {
+  renderNavbar() {
     const settingsActive = this.state.activePage === ActivePage.Settings;
 
     const activeKey = settingsActive
       ? 'settings'
       : this.props.state.activeGroupIdx;
 
-    const factoryPills = this.props.state.groups.map((group, i) => (
-      <SplitButton
-        key={i}
-        variant={activeKey === i ? 'primary' : 'secondary'}
-        id={i}
-        onClick={() => {
-          this.handleClickGroup(i);
-        }}
-        title={group.name}
-      >
-        <Dropdown.Item
-          onClick={() => {
-            this.handleClickRenameGroup(i);
-          }}
-        >
-          Rename
-        </Dropdown.Item>
-        <Dropdown.Divider />
-        <Dropdown.Item
-          onClick={() => {
-            this.handleClickRemoveGroup(i);
-          }}
-        >
-          Delete
-        </Dropdown.Item>
-      </SplitButton>
-    ));
+    const factoryPills = this.props.state.groups.map((group, i) => {
+      const active = activeKey === i;
+      return (
+        <Nav.Item onClick={() => this.handleClickGroup(i)} key={i}>
+          <Nav.Link active={active}>{group.name}</Nav.Link>
+        </Nav.Item>
+      );
+    });
 
     return (
       <>
-        <ButtonGroup vertical>{factoryPills}</ButtonGroup>
-        <br />
-        <ButtonGroup vertical>
-          <Button onClick={this.handleClickAddGroup} variant="secondary">
-            Add a Factory
-          </Button>
-        </ButtonGroup>
-        <br />
-        <ButtonGroup>
-          <Button
-            onClick={this.handleClickSettings}
-            variant={settingsActive ? 'primary' : 'secondary'}
-          >
-            Settings
-          </Button>
-        </ButtonGroup>
+        <Nav className="flex-column">
+          <Nav.Item>
+            <Nav.Link disabled>
+              <span role="img" aria-label="Factory icon">
+                🏭
+              </span>{' '}
+              Factories
+            </Nav.Link>
+          </Nav.Item>
+          {factoryPills}
+          <Nav.Item>
+            <Nav.Link onClick={this.handleClickAddGroup}>
+              Add A Factory
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link
+              active={activeKey === 'settings'}
+              onClick={this.handleClickSettings}
+            >
+              <span role="img" aria-label="Gear icon">
+                ⚙️
+              </span>{' '}
+              Settings
+            </Nav.Link>
+          </Nav.Item>
+        </Nav>
       </>
     );
-  };
+  }
 
   renderFactory = () => {
     const group = this.props.state.groups[this.props.state.activeGroupIdx];
 
     return (
-      <Container>
-        <RecipeGroup rows={group.rows} />
+      <Container fluid>
+        <RecipeGroup group={group} />
       </Container>
     );
   };
 
   renderSettings = () => {
     return (
-      <Container>
+      <Container fluid>
         <Settings />
       </Container>
     );
@@ -188,7 +163,9 @@ class RawApp extends React.Component<Props, State> {
     return (
       <Container fluid>
         <Row>
-          <Col xs="3">{this.renderNavbar()}</Col>
+          <Col xs="2" className={classNames('bg-primary', styles.Sidebar)}>
+            {this.renderNavbar()}
+          </Col>
           <Col>{body}</Col>
         </Row>
       </Container>
