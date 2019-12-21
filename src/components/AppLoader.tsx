@@ -30,7 +30,7 @@ class RawAppLoader extends React.Component<Props, State> {
   }
 
   async load() {
-    const response = await fetch('assets/landblock.json');
+    const response = await fetch('assets/seablock-17.json');
     if (response.status !== 200) {
       throw new Error(
         `Could not load game data, got HTTP status ${response.status}`
