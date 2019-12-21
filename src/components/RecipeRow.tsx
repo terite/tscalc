@@ -226,7 +226,6 @@ class RawRecipeRow extends React.Component<Props, {}> {
       <div className="btn-toolbar mb-3">
         <div className="input-group" onClick={this.handleInputGroupClick}>
           <RationalInput
-            key={this.props.numMachines.toFraction()}
             value={this.props.numMachines}
             onChange={this.handleNumMachinesChange}
             positiveOnly={true}
