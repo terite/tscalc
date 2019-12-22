@@ -33,13 +33,13 @@ interface State {
 }
 
 export class RecipePicker extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      query: '',
-      matches: [],
-    };
-  }
+
+  inputRef = React.createRef<HTMLInputElement>();
+
+  state: State = {
+    query: '',
+    matches: [],
+  };
 
   componentDidMount() {
     signal.addIngredientFilter.addHandler(this.handleIngredientClick);
@@ -58,6 +58,7 @@ export class RecipePicker extends React.PureComponent<Props, State> {
       this.setQuery(`${this.state.query} ${term}`, () => {
         this.calculateMatches();
       });
+      this.inputRef.current?.scrollIntoView();
     }
   };
 
@@ -67,6 +68,7 @@ export class RecipePicker extends React.PureComponent<Props, State> {
       this.setQuery(`${this.state.query} ${term}`, () => {
         this.calculateMatches();
       });
+      this.inputRef.current?.scrollIntoView();
     }
   };
 
@@ -192,6 +194,7 @@ export class RecipePicker extends React.PureComponent<Props, State> {
       <div className={styles.RecipePicker}>
         <div>
           <input
+            ref={this.inputRef}
             className="editable-display form-control"
             placeholder="What do you want to build?"
             value={this.state.query}
