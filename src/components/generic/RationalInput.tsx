@@ -79,8 +79,8 @@ function stringToRational(str: string): Rational {
 }
 
 function rationalToString(rational: Rational): string {
-  const dec = rational.toDecimal(10);
-  if (dec.toString().length < 10) {
+  const dec = rational.toFloat().toString();
+  if (dec.length < 10) {
     return dec;
   }
 
