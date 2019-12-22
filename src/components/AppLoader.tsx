@@ -54,10 +54,14 @@ class RawAppLoader extends React.Component<Props, State> {
       this.props.actions.replaceState(urlState);
     } else {
       // Load just settings
-      const storageState = serialization.getLocalStorageState(gameData);
-      if (storageState) {
-        // everything comes from url state
-        this.props.actions.replaceState(storageState);
+      try {
+        const storageState = serialization.getLocalStorageState(gameData);
+        if (storageState) {
+          // everything comes from url state
+          this.props.actions.replaceState(storageState);
+        }
+      } catch (err) {
+        console.error('Failed to load local storage state', err);
       }
     }
 
