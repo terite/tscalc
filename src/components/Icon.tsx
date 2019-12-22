@@ -12,7 +12,7 @@ interface Props {
   onClick?(event: React.MouseEvent<HTMLDivElement, MouseEvent>): void;
   style?: React.CSSProperties;
   tooltip?: React.ReactNode;
-  text?: string;
+  text?: React.ReactNode;
 }
 
 interface State {}

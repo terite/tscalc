@@ -82,6 +82,7 @@ class RawRecipeRow extends React.Component<Props, {}> {
   ) => {
     if (event.shiftKey) {
       event.preventDefault();
+      event.stopPropagation();
       this.props.actions.setRecipeTarget({
         item: ingredient.item,
         amount: ingredient.amount,
@@ -101,6 +102,7 @@ class RawRecipeRow extends React.Component<Props, {}> {
   ) => {
     if (event.shiftKey) {
       event.preventDefault();
+      event.stopPropagation();
       this.props.actions.setRecipeTarget({
         item: product.item,
         amount: product.amount,
@@ -120,6 +122,7 @@ class RawRecipeRow extends React.Component<Props, {}> {
       return;
     }
     event.preventDefault();
+    event.stopPropagation();
     const output = this.getOutput();
 
     let current: game.Ingredient | game.Product | undefined;
@@ -252,7 +255,7 @@ class RawRecipeRow extends React.Component<Props, {}> {
           onClick={this.handleIngredientClick.bind(null, ingredient)}
           tooltip={<IngredientCard obj={ingredient} />}
           obj={ingredient.item}
-          text={`${ingredient.amount.toDecimal()} / sec`}
+          text={perSecond(ingredient.amount)}
         />
       </div>
     ));
@@ -262,7 +265,7 @@ class RawRecipeRow extends React.Component<Props, {}> {
           onClick={this.handleProductClick.bind(null, product)}
           tooltip={<IngredientCard obj={product} />}
           obj={product.item}
-          text={`${product.amount.toDecimal()} / sec`}
+          text={perSecond(product.amount)}
         />
       </div>
     ));
@@ -333,6 +336,17 @@ class RawRecipeRow extends React.Component<Props, {}> {
       </Draggable>
     );
   }
+}
+
+function perSecond(rational: Rational): React.ReactNode {
+  const dec = rational.toDecimal().toString();
+  let amount: React.ReactNode;
+  if (dec.includes('.') && dec.length > 4) {
+    amount =<abbr title={rational.toFraction()}>{rational.toDecimal()}</abbr>
+  } else {
+    amount = dec;
+  }
+  return <>{amount} / sec</>
 }
 
 export const RecipeRow = withBoth(RawRecipeRow);
