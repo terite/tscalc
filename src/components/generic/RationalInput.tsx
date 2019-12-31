@@ -24,32 +24,43 @@ export class RationalInput extends React.PureComponent<Props, State> {
     }
 
     componentDidUpdate(oldProps: Props) {
-      if (!oldProps.value.equal(this.props.value)) {
-        this.setState({
-          error: undefined,
-          txtValue: rationalToString(this.props.value),
-        });
+      if (!this.props.value.equal(oldProps.value)) {
+        let parsed: Rational;
+        try {
+          parsed = stringToRational(this.state.txtValue)
+        } catch (err) {
+          return;
+        }
+
+        if (!parsed.equal(this.props.value)) {
+          this.setState({
+            txtValue: rationalToString(this.props.value)
+          })
+        }
       }
     }
 
     public handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const str = event.target.value;
-        this.setState({ txtValue: str, error: undefined });
 
-        let rational;
+        let errmsg: string | undefined;
+        let parsed: Rational | undefined;
+
         try {
-          rational = stringToRational(str);
+          parsed = stringToRational(str);
         } catch (err) {
-          this.setState({error: err.message});
-          return
+          errmsg = err.message;
         }
 
-        if (this.props.positiveOnly && rational.isNegative()) {
-            this.setState({ error: 'Number must be positive' });
-            return;
+        if (parsed && this.props.positiveOnly && parsed.isNegative()) {
+          parsed = undefined;
+          errmsg = 'Number must be positive';
         }
-
-        this.props.onChange(rational);
+        this.setState({ txtValue: str, error: errmsg }, () => {
+          if (parsed) {
+            this.props.onChange(parsed);
+          }
+        });
     };
 
     render() {
