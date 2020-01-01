@@ -158,8 +158,7 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
           <IntegerInput
             value={this.props.numBeacons}
             onChange={this.handleNumBeaconsChange}
-            positiveOnly={true}
-            intOnly={true}
+            min={0}
           />
           <div className="input-group-append btn-icon-wrapper">
             <ModulePicker

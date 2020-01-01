@@ -3,8 +3,7 @@ import * as React from 'react';
 interface Props {
   value: number;
   onChange: (value: number) => void;
-  intOnly?: boolean;
-  positiveOnly?: boolean;
+  min?: number;
 }
 
 interface State {
@@ -19,20 +18,38 @@ export class IntegerInput extends React.PureComponent<Props, State> {
     };
   }
 
-  handleChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const value = (event.target as HTMLInputElement).value;
-    this.setState({ txtValue: value });
-    if (!value.trim()) {
-      return;
+  componentDidUpdate(oldProps: Props) {
+    if (oldProps.value !== this.props.value) {
+      this.setState((state) => ({
+        txtValue:
+          Number(state.txtValue) === this.props.value
+            ? state.txtValue
+            : this.props.value.toString(),
+      }));
     }
-    const num = Number(value);
-    if (this.props.intOnly && !Number.isInteger(num)) {
-      return;
-    }
-    if (this.props.positiveOnly && num < 0) {
-      return;
-    }
-    this.props.onChange(num);
+  }
+
+  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    this.setState({ txtValue: value }, () => {
+      if (!value.trim()) {
+        return;
+      }
+      const num = Number(value);
+      if (isNaN(num)) {
+        return;
+      }
+      if (!Number.isInteger(num)) {
+        return;
+      }
+
+      if (typeof this.props.min === 'number' && num < this.props.min) {
+        // TODO: Error
+        return;
+      }
+
+      this.props.onChange(num);
+    });
   };
 
   render() {
@@ -42,7 +59,7 @@ export class IntegerInput extends React.PureComponent<Props, State> {
         value={this.state.txtValue}
         onChange={this.handleChange}
         type="number"
-        min="0"
+        min={this.props.min}
         step="1"
       />
     );
