@@ -40,7 +40,7 @@ export class RationalInput extends React.PureComponent<Props, State> {
       }
     }
 
-    public handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const str = event.target.value;
 
         let errmsg: string | undefined;

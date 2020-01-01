@@ -54,7 +54,7 @@ export class RecipePicker extends React.PureComponent<Props, State> {
     signal.addProductFilter.removeHandler(this.handleProductClick);
   }
 
-  public handleIngredientClick = (ingredient: game.Ingredient) => {
+  handleIngredientClick = (ingredient: game.Ingredient) => {
     const term = `produces:${ingredient.name}`;
     if (!this.state.query.includes(term)) {
       this.setQuery(`${this.state.query} ${term}`, () => {
@@ -64,7 +64,7 @@ export class RecipePicker extends React.PureComponent<Props, State> {
     }
   };
 
-  public handleProductClick = (product: game.Product) => {
+  handleProductClick = (product: game.Product) => {
     const term = `consumes:${product.name}`;
     if (!this.state.query.includes(term)) {
       this.setQuery(`${this.state.query} ${term}`, () => {
@@ -74,17 +74,17 @@ export class RecipePicker extends React.PureComponent<Props, State> {
     }
   };
 
-  public handleQueryInput = (event: React.FormEvent<HTMLInputElement>) => {
+  handleQueryInput = (event: React.FormEvent<HTMLInputElement>) => {
     const target = event.target as HTMLInputElement;
     this.setQuery(target.value);
   };
 
-  public handleRecipeClick = (recipe: game.Recipe) => {
+  handleRecipeClick = (recipe: game.Recipe) => {
     this.props.onPickRecipe(recipe);
     this.setQuery('');
   };
 
-  public setQuery = (query: string, callback?: () => void) => {
+  setQuery = (query: string, callback?: () => void) => {
     if (!query.trim()) {
       this.debCalculateMatches.cancel();
       this.setState(

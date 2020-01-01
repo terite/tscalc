@@ -26,7 +26,7 @@ interface Props {
   actions: AppActions;
 }
 
-class RawRecipeGroup extends React.Component<Props, {}> {
+class RawRecipeGroup extends React.PureComponent<Props, never> {
   componentDidMount() {
     signal.addRecipeRow.addHandler(this.handlePickRecipe);
   }

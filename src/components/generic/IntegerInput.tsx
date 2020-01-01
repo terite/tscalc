@@ -12,6 +12,7 @@ interface State {
 }
 
 export class IntegerInput extends React.PureComponent<Props, State> {
+
     constructor(props: Props) {
         super(props);
         this.state = {
@@ -19,7 +20,7 @@ export class IntegerInput extends React.PureComponent<Props, State> {
         };
     }
 
-    public handleChange = (event: React.FormEvent<HTMLInputElement>) => {
+    handleChange = (event: React.FormEvent<HTMLInputElement>) => {
         const value = (event.target as HTMLInputElement).value;
         this.setState({ txtValue: value });
         if (!value.trim()) {
