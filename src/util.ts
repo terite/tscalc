@@ -35,3 +35,24 @@ export function round2(num: number, places: number) {
   const mag = Math.pow(10, places);
   return Math.round(num * mag) / mag;
 }
+
+export function format_magnitude(amount: number, suffixes: string[]): string {
+  let i = 0;
+  for (; i < suffixes.length; i++) {
+    if (amount >= 1000) {
+      amount = amount / 1000;
+    } else {
+      break;
+    }
+  }
+
+  return `${round2(amount, 2)} ${suffixes[i]}`;
+}
+
+export function format_watts(watts: number): string {
+  return format_magnitude(watts, ['W', 'kW', 'MW', 'GW', 'TW', 'PW']);
+}
+
+export function format_joules(joules: number): string {
+  return format_magnitude(joules, ['J', 'kJ', 'MJ', 'GJ', 'TJ', 'PJ']);
+}

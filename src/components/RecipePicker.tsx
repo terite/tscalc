@@ -6,6 +6,8 @@ import * as game from '../game';
 import * as signal from '../signal';
 
 import { Icon } from './Icon';
+import { IngredientCard } from './IngredientCard';
+import { RecipeCard } from './RecipeCard';
 
 import styles from './RecipePicker.module.css';
 
@@ -194,6 +196,7 @@ export class RecipePicker extends React.PureComponent<Props, State> {
       <div className={styles.RecipePicker}>
         <div>
           <input
+            type="search"
             ref={this.inputRef}
             className="editable-display form-control"
             placeholder="What do you want to build?"
@@ -212,15 +215,7 @@ interface RecipeMatchProps {
   onClick(recipe: game.Recipe): void;
 }
 
-function card(body: React.ReactNode) {
-  return (
-    <div className="card">
-      <div className="card-body">{body}</div>
-    </div>
-  );
-}
-
-class RecipeMatch extends React.PureComponent<RecipeMatchProps, {}> {
+class RecipeMatch extends React.PureComponent<RecipeMatchProps, never> {
   handleClickAdd = () => {
     this.props.onClick(this.props.recipe);
   };
@@ -228,15 +223,15 @@ class RecipeMatch extends React.PureComponent<RecipeMatchProps, {}> {
   render() {
     const recipe = this.props.recipe;
     const ingredients = recipe.ingredients.map((ing, i) => (
-      <Icon key={i} obj={ing.item} tooltip={card(ing.niceName())} />
+      <Icon key={i} obj={ing.item} tooltip={<IngredientCard obj={ing} />} />
     ));
     const products = recipe.products.map((prod, i) => (
-      <Icon key={i} obj={prod.item} tooltip={card(prod.niceName())} />
+      <Icon key={i} obj={prod.item} tooltip={<IngredientCard obj={prod} />} />
     ));
     return (
       <tr onClick={this.handleClickAdd}>
         <td className={styles.ResultName}>
-          <Icon obj={recipe} text={recipe.niceName()} />
+          <Icon obj={recipe} text={recipe.niceName()} tooltip={<RecipeCard recipe={recipe} />} />
         </td>
         <td>{recipe.crafting_time.toDecimal()}</td>
         <td>{ingredients}</td>

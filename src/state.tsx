@@ -240,3 +240,16 @@ export const withGame = <T extends React.ComponentType<any>>(
 
   return WrappedComponent;
 };
+
+export const withActions = <T extends React.ComponentType<any>>(
+  OldComponent: T
+) => {
+  type NewProps = Omit<PropsOf<T>, 'actions'>;
+
+  const WrappedComponent: React.FC<NewProps> = (props: any) => {
+    const [, actions] = useDakpan();
+    return <OldComponent actions={actions} {...props} />;
+  };
+
+  return WrappedComponent;
+};

@@ -7,6 +7,7 @@ import * as game from '../game';
 import { Rational } from '../rational';
 
 import { Icon } from './Icon';
+import { RecipeOutput } from './RecipeOutput';
 import { RecipeCard } from './RecipeCard';
 import { MachinePicker } from './MachinePicker';
 import { ModulePicker } from './ModulePicker';
@@ -16,32 +17,18 @@ import { IntegerInput, RationalInput } from './generic';
 import { Totals } from '../totals';
 import { withBoth, RecipeRowData, AppActions, AppState } from '../state';
 
-import * as signal from '../signal';
-
 interface Props extends RecipeRowData {
   index: number;
   actions: AppActions;
   state: AppState;
 }
 
-interface IngredientCardProps {
-  obj: game.Ingredient | game.Product;
-}
-
-const IngredientCard = (props: IngredientCardProps) => (
-  <div className="card">
-    <div className="card-header">
-      {props.obj.item.niceName()} ({props.obj.name})
-    </div>
-  </div>
-);
-
 class RawRecipeRow extends React.Component<Props, {}> {
-  public handleRemoveClick = () => {
+  handleRemoveClick = () => {
     this.props.actions.removeRow(this.props.index);
   };
 
-  public handleMachineChange = (machine: game.AssemblingMachine) => {
+  handleMachineChange = (machine: game.AssemblingMachine) => {
     this.applyChange({
       machine: machine,
       modules: this.props.modules
@@ -50,15 +37,15 @@ class RawRecipeRow extends React.Component<Props, {}> {
     });
   };
 
-  public handleNumMachinesChange = (num: Rational) => {
+  handleNumMachinesChange = (num: Rational) => {
     this.applyChange({ numMachines: num });
   };
 
-  public handleNumBeaconsChange = (num: number) => {
+  handleNumBeaconsChange = (num: number) => {
     this.applyChange({ numBeacons: num });
   };
 
-  public handleSetAllModules = () => {
+  handleSetAllModules = () => {
     this.applyChange({
       modules: new Array(this.props.machine.data.module_slots).fill(
         this.props.modules[0]
@@ -66,54 +53,14 @@ class RawRecipeRow extends React.Component<Props, {}> {
     });
   };
 
-  public handleSetModule = (index: number, module: game.Module | null) => {
+  handleSetModule = (index: number, module: game.Module | null) => {
     const modules = this.props.modules.slice();
     modules[index] = module;
     this.applyChange({ modules: modules });
   };
 
-  public handleSetBeaconModule = (module: game.Module | null) => {
+  handleSetBeaconModule = (module: game.Module | null) => {
     this.applyChange({ beaconModule: module });
-  };
-
-  public handleIngredientClick = (
-    ingredient: game.Ingredient,
-    event: React.MouseEvent
-  ) => {
-    if (event.shiftKey) {
-      event.preventDefault();
-      event.stopPropagation();
-      this.props.actions.setRecipeTarget({
-        item: ingredient.item,
-        amount: ingredient.amount,
-      });
-      return;
-    }
-    if (ingredient.item.madeBy.length === 1) {
-      signal.addRecipeRow.dispatch(ingredient.item.madeBy[0]);
-    } else {
-      signal.addIngredientFilter.dispatch(ingredient);
-    }
-  };
-
-  public handleProductClick = (
-    product: game.Product,
-    event: React.MouseEvent
-  ) => {
-    if (event.shiftKey) {
-      event.preventDefault();
-      event.stopPropagation();
-      this.props.actions.setRecipeTarget({
-        item: product.item,
-        amount: product.amount,
-      });
-      return;
-    }
-    if (product.item.usedBy.length === 1) {
-      signal.addRecipeRow.dispatch(product.item.usedBy[0]);
-    } else {
-      signal.addProductFilter.dispatch(product);
-    }
   };
 
   handleInputGroupClick: React.MouseEventHandler<any> = (event) => {
@@ -123,7 +70,12 @@ class RawRecipeRow extends React.Component<Props, {}> {
     }
     event.preventDefault();
     event.stopPropagation();
-    const output = this.getOutput();
+
+    const output = new Totals();
+    output.addRow({
+      ...this.props,
+      numMachines: Rational.one,
+    });
 
     let current: game.Ingredient | game.Product | undefined;
     current = output.ingredients.find((x) => {
@@ -144,9 +96,8 @@ class RawRecipeRow extends React.Component<Props, {}> {
       return;
     }
 
-    const newNum = recipeTarget.amount
-      .div(current.amount)
-      .mul(this.props.numMachines);
+    const newNum = recipeTarget.amount.div(current.amount)
+
     this.applyChange({
       numMachines: newNum,
     });
@@ -251,22 +202,12 @@ class RawRecipeRow extends React.Component<Props, {}> {
 
     const ingredients = output.ingredients.map((ingredient, i) => (
       <div className="mb-1" key={i}>
-        <Icon
-          onClick={this.handleIngredientClick.bind(null, ingredient)}
-          tooltip={<IngredientCard obj={ingredient} />}
-          obj={ingredient.item}
-          text={perSecond(ingredient.amount)}
-        />
+        <RecipeOutput obj={ingredient} />
       </div>
     ));
     const products = output.products.map((product, i) => (
       <div className="mb-1" key={i}>
-        <Icon
-          onClick={this.handleProductClick.bind(null, product)}
-          tooltip={<IngredientCard obj={product} />}
-          obj={product.item}
-          text={perSecond(product.amount)}
-        />
+        <RecipeOutput obj={product} />
       </div>
     ));
     return (
@@ -336,17 +277,6 @@ class RawRecipeRow extends React.Component<Props, {}> {
       </Draggable>
     );
   }
-}
-
-function perSecond(rational: Rational): React.ReactNode {
-  const dec = rational.toDecimal().toString();
-  let amount: React.ReactNode;
-  if (dec.includes('.') && dec.length > 4) {
-    amount =<abbr title={rational.toFraction()}>{rational.toDecimal()}</abbr>
-  } else {
-    amount = dec;
-  }
-  return <>{amount} / sec</>
 }
 
 export const RecipeRow = withBoth(RawRecipeRow);

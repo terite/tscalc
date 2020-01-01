@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Icon } from './Icon';
+import { RecipeOutput } from './RecipeOutput';
 import { withGame, RecipeRowData } from '../state';
 import { Totals } from '../totals';
 import * as game from '../game';
@@ -33,13 +33,13 @@ function RawTotalCard(props: Props) {
             <div className="col">
               Ingredients:
               {ingredients.map((ing, i) => (
-                <Icon key={i} obj={ing.item} text={ing.niceName()} />
+                <RecipeOutput key={i} obj={ing} showName />
               ))}
             </div>
             <div className="col">
               Products:
               {products.map((prod, i) => (
-                <Icon key={i} obj={prod.item} text={prod.niceName()} />
+                <RecipeOutput key={i} obj={prod} showName />
               ))}
             </div>
           </div>

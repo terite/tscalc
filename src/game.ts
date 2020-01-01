@@ -97,7 +97,7 @@ export class Fluid extends BaseItem<schema.FluidItem> {
   }
 }
 
-abstract class BaseIngredient {
+export abstract class BaseIngredient {
   name: string;
   amount: Rational;
 

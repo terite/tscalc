@@ -59,6 +59,9 @@ export interface BaseItem extends BaseItemOrFluid {
 export interface FluidItem extends BaseItemOrFluid {
   type: 'fluid';
   default_temperature: number;
+  max_temperature: number;
+  heat_capacity: number;
+  fuel_value: number;
 }
 
 interface FuelItem extends BaseItem {
