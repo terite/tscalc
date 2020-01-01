@@ -35,7 +35,6 @@ interface State {
 }
 
 export class RecipePicker extends React.PureComponent<Props, State> {
-
   inputRef = React.createRef<HTMLInputElement>();
 
   state: State = {
@@ -231,7 +230,11 @@ class RecipeMatch extends React.PureComponent<RecipeMatchProps, never> {
     return (
       <tr onClick={this.handleClickAdd}>
         <td className={styles.ResultName}>
-          <Icon obj={recipe} text={recipe.niceName()} tooltip={<RecipeCard recipe={recipe} />} />
+          <Icon
+            obj={recipe}
+            text={recipe.niceName()}
+            tooltip={<RecipeCard recipe={recipe} />}
+          />
         </td>
         <td>{recipe.crafting_time.toDecimal()}</td>
         <td>{ingredients}</td>

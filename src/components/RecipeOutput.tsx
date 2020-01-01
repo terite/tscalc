@@ -15,9 +15,7 @@ interface Props {
 }
 
 class RawRecipeOutput extends React.PureComponent<Props, never> {
-  handleClick = (
-    event: React.MouseEvent
-  ) => {
+  handleClick = (event: React.MouseEvent) => {
     const { obj } = this.props;
 
     if (event.shiftKey) {
@@ -43,7 +41,6 @@ class RawRecipeOutput extends React.PureComponent<Props, never> {
         signal.addProductFilter.dispatch(obj);
       }
     }
-
   };
 
   render() {
@@ -51,15 +48,21 @@ class RawRecipeOutput extends React.PureComponent<Props, never> {
 
     let text = perSecond(obj.amount);
     if (showName) {
-      text = <>{obj.item.niceName()} -- {text}</>
+      text = (
+        <>
+          {obj.item.niceName()} -- {text}
+        </>
+      );
     }
 
-    return <Icon
-      onClick={this.handleClick}
-      tooltip={<IngredientCard obj={obj} />}
-      obj={obj.item}
-      text={text}
-    />;
+    return (
+      <Icon
+        onClick={this.handleClick}
+        tooltip={<IngredientCard obj={obj} />}
+        obj={obj.item}
+        text={text}
+      />
+    );
   }
 }
 
@@ -67,11 +70,11 @@ function perSecond(rational: Rational): React.ReactNode {
   const dec = rational.toDecimal().toString();
   let amount: React.ReactNode;
   if (dec.includes('.') && dec.length > 4) {
-    amount =<abbr title={rational.toFraction()}>{rational.toDecimal()}</abbr>
+    amount = <abbr title={rational.toFraction()}>{rational.toDecimal()}</abbr>;
   } else {
     amount = dec;
   }
-  return <>{amount} / sec</>
+  return <>{amount} / sec</>;
 }
 
 export const RecipeOutput = withActions(RawRecipeOutput);

@@ -16,8 +16,8 @@ export class Totals {
       if (newIng.type === 'fluid' && oldIng.type === 'fluid') {
         match =
           match &&
-          (newIng.maximum_temperature === oldIng.maximum_temperature &&
-            newIng.minimum_temperature === oldIng.minimum_temperature);
+          newIng.maximum_temperature === oldIng.maximum_temperature &&
+          newIng.minimum_temperature === oldIng.minimum_temperature;
       }
 
       if (match) {

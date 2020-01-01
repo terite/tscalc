@@ -132,15 +132,11 @@ class RawApp extends React.Component<Props, State> {
   renderFactory = () => {
     const group = this.props.state.groups[this.props.state.activeGroupIdx];
 
-    return (
-      <RecipeGroup group={group} />
-    );
+    return <RecipeGroup group={group} />;
   };
 
   renderSettings = () => {
-    return (
-        <Settings />
-    );
+    return <Settings />;
   };
 
   render() {

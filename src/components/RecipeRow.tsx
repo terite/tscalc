@@ -96,7 +96,7 @@ class RawRecipeRow extends React.Component<Props, {}> {
       return;
     }
 
-    const newNum = recipeTarget.amount.div(current.amount)
+    const newNum = recipeTarget.amount.div(current.amount);
 
     this.applyChange({
       numMachines: newNum,
