@@ -13,7 +13,6 @@ import { MachinePicker } from './MachinePicker';
 import { ModulePicker } from './ModulePicker';
 import { IntegerInput, RationalInput } from './generic';
 
-// import {clone} from '../util'
 import { Totals } from '../totals';
 import { withBoth, RecipeRowData, AppActions, AppState } from '../state';
 
@@ -23,7 +22,7 @@ interface Props extends RecipeRowData {
   state: AppState;
 }
 
-class RawRecipeRow extends React.Component<Props, {}> {
+class RawRecipeRow extends React.PureComponent<Props, never> {
   handleRemoveClick = () => {
     this.props.actions.removeRow(this.props.index);
   };

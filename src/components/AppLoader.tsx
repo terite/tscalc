@@ -14,7 +14,7 @@ interface State {
   gameData: game.GameData | null;
 }
 
-class RawAppLoader extends React.Component<Props, State> {
+class RawAppLoader extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {

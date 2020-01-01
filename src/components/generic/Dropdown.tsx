@@ -32,38 +32,31 @@ interface State {
 
 const ESC_KEYCODE = 27;
 
-export class Dropdown<T> extends React.Component<Props<T>, State> {
-  buttonRef: React.RefObject<any>;
+export class Dropdown<T> extends React.PureComponent<Props<T>, State> {
+  buttonRef: React.RefObject<HTMLButtonElement> = React.createRef();
 
-  constructor(props: Props<T>) {
-    super(props);
-    this.state = {
-      isOpen: false,
-    };
-    this.buttonRef = React.createRef();
-  }
+  state: State = {
+    isOpen: false,
+  };
 
   handleToggle = () => {
-    this.setState({
-      isOpen: !this.state.isOpen,
-    });
+    this.setState((state) => ({
+      ...state,
+      isOpen: !state.isOpen,
+    }));
   };
 
   handleSelect = (selected: T) => {
     this.props.onSelect(selected);
-    if (this.state.isOpen) {
-      this.setState({
-        isOpen: false,
-      });
-    }
+    this.setState({
+      isOpen: false,
+    });
   };
 
   handleWantClose = () => {
-    if (this.state.isOpen) {
-      this.setState({
-        isOpen: false,
-      });
-    }
+    this.setState({
+      isOpen: false,
+    });
   };
 
   render() {
@@ -121,20 +114,16 @@ interface DropdownMenuState {
   style: React.CSSProperties;
 }
 
-class DropdownMenu<T> extends React.Component<
+class DropdownMenu<T> extends React.PureComponent<
   DropdownMenuProps<T>,
   DropdownMenuState
 > {
   popperInstance: Popper | null = null;
-  menuRef: React.RefObject<HTMLDivElement>;
+  menuRef: React.RefObject<HTMLDivElement> = React.createRef();
 
-  constructor(props: DropdownMenuProps<T>) {
-    super(props);
-    this.menuRef = React.createRef();
-    this.state = {
-      style: {},
-    };
-  }
+  state: DropdownMenuState = {
+    style: {},
+  };
 
   popperUpdate = (data: Popper.Data) => {
     this.setState({

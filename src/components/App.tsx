@@ -28,7 +28,7 @@ enum ActivePage {
   Settings = 'SETTINGS',
 }
 
-class RawApp extends React.Component<Props, State> {
+class RawApp extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 

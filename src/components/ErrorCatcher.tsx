@@ -9,7 +9,7 @@ interface State {
   crashMsg?: string;
 }
 
-export class ErrorCatcher extends React.Component<Props, State> {
+export class ErrorCatcher extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {

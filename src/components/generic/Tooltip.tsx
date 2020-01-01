@@ -11,7 +11,7 @@ interface State {
   style: React.CSSProperties;
 }
 
-export class Tooltip extends React.Component<Props, State> {
+export class Tooltip extends React.PureComponent<Props, State> {
   selfRef: React.RefObject<any>;
   popperInstance: Popper | null;
 

@@ -11,7 +11,7 @@ interface RawSettingsProps {
   gameData: game.GameData;
 }
 
-class RawSettings extends React.Component<RawSettingsProps, {}> {
+class RawSettings extends React.PureComponent<RawSettingsProps, never> {
   render() {
     const categoryNames = Object.entries(this.props.gameData.categoryMap)
       .filter((entry) => entry[1].length > 1)
@@ -36,7 +36,7 @@ interface CategoryRowProps {
   actions: AppActions;
 }
 
-class RawCategoryRow extends React.Component<CategoryRowProps, {}> {
+class RawCategoryRow extends React.PureComponent<CategoryRowProps, never> {
   handleChange = (machine: game.AssemblingMachine) => {
     this.props.actions.updateDefaultMachine(this.props.category, machine);
   };
