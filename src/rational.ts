@@ -21,8 +21,14 @@ export class Rational {
   q: number;
 
   constructor(p: number, q: number) {
-    assert(Number.isSafeInteger(p), 'Numerator must be an integer');
-    assert(Number.isSafeInteger(q), 'Denominator must be an integer');
+    assert(
+      Number.isSafeInteger(p),
+      `Numerator must be a safe integer, got ${p}`
+    );
+    assert(
+      Number.isSafeInteger(q),
+      `Denominator must be a safe integer, got ${q}`
+    );
     assert(q !== 0, 'Denominator must not be zero');
 
     if (q < 0) {
