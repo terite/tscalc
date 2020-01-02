@@ -50,7 +50,7 @@ describe('Rational', () => {
     it('should not support floats when it sees a divison symbol', () => {
       expect(() => {
         Rational.fromString('1.5 / 2');
-      }).toThrowError('Numerator must be an integer');
+      }).toThrowError('Numerator must be a safe integer, got 1.5');
     });
   });
 
@@ -64,7 +64,7 @@ describe('Rational', () => {
     ])('should reject invalid input (%s, %s)', (p, q) => {
       expect(() => {
         new Rational(p, q);
-      }).toThrowError('must be an integer');
+      }).toThrowError('must be a safe integer');
     });
 
     it('should not allow division by zero', () => {

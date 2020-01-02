@@ -158,7 +158,7 @@ class RawApp extends React.PureComponent<Props, State> {
           <Col xs="2" className={classNames('bg-primary', styles.Sidebar)}>
             {this.renderNavbar()}
           </Col>
-          <Col>{body}</Col>
+          <Col className="pt-3">{body}</Col>
         </Row>
       </Container>
     );
