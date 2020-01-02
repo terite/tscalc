@@ -28,20 +28,18 @@ function RawTotalCard(props: Props) {
     <div className={`card ${styles.TotalCard}`}>
       <div className="card-header">Combined Totals</div>
       <div className="card-body">
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col">
-              Ingredients:
-              {ingredients.map((ing, i) => (
-                <RecipeOutput key={i} obj={ing} showName />
-              ))}
-            </div>
-            <div className="col">
-              Products:
-              {products.map((prod, i) => (
-                <RecipeOutput key={i} obj={prod} showName />
-              ))}
-            </div>
+        <div className="row">
+          <div className="col">
+            Ingredients:
+            {ingredients.map((ing, i) => (
+              <RecipeOutput key={i} obj={ing} showName />
+            ))}
+          </div>
+          <div className="col">
+            Products:
+            {products.map((prod, i) => (
+              <RecipeOutput key={i} obj={prod} showName />
+            ))}
           </div>
         </div>
       </div>

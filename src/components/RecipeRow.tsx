@@ -150,7 +150,7 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
 
   renderBeacons() {
     return (
-      <div className="btn-toolbar mb-3">
+      <div className="btn-toolbar">
         <div className="input-group">
           <div className="input-group-prepend">
             <span className="input-group-text">Beacon Modules</span>
@@ -216,15 +216,15 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
             ref={provided.innerRef}
             {...provided.draggableProps}
           >
-            <div className="card-header" {...provided.dragHandleProps}>
-              <div style={{ float: 'left' }}>
+            <div className="card-header clearfix" {...provided.dragHandleProps}>
+              <div className="float-left">
                 <Icon
                   obj={recipe}
                   text={recipe.niceName()}
                   tooltip={<RecipeCard recipe={recipe} />}
                 />
               </div>
-              <div style={{ float: 'right' }}>
+              <div className="float-right">
                 <Button
                   variant="danger"
                   onClick={this.handleRemoveClick}
@@ -233,10 +233,9 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
                   Remove
                 </Button>
               </div>
-              <div style={{ clear: 'both' }} />
             </div>
-            <div className="card-body">
-              <div style={{ float: 'left' }}>
+            <div className="card-body clearfix">
+              <div className="float-left">
                 {this.renderMachines()}
                 <div className="mb-3 btn-group btn-icon-wrapper">
                   {this.renderModules()}
@@ -244,7 +243,7 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
                 {this.renderBeacons()}
               </div>
 
-              <div style={{ float: 'right' }}>
+              <div className="float-right">
                 <div
                   className="mr-3"
                   style={{
@@ -268,7 +267,6 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
                   {products}
                 </div>
               </div>
-              <div style={{ clear: 'both' }} />
             </div>
           </div>
         )}
