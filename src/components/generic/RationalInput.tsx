@@ -97,5 +97,5 @@ function rationalToString(rational: Rational): string {
     return dec;
   }
 
-  return rational.toFraction();
+  return rational.toMixed();
 }

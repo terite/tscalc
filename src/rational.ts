@@ -187,6 +187,24 @@ export class Rational {
     return sign + integerPart;
   }
 
+  toMixed(): string {
+    if (this.isZero()) {
+      return '0';
+    }
+
+    const { quotient, remainder } = this.divmod(Rational.one);
+
+    let parts: string[] = [];
+    if (!quotient.isZero()) {
+      parts.push(quotient.toFraction());
+    }
+    if (!remainder.isZero()) {
+      parts.push(remainder.toFraction());
+    }
+
+    return parts.join(' + ');
+  }
+
   //
   // Statics
   //
@@ -210,18 +228,28 @@ export class Rational {
 
     return r;
   }
-  static fromInts(p: number, q: number) {
+  static fromInts(p: number, q: number): Rational {
     return new this(p, q);
   }
-  static fromString(str: string) {
-    const index = str.indexOf('/');
-    if (index === -1) {
-      return Rational.fromFloat(Number(str));
-    } else {
-      const p = Number(str.slice(0, index));
-      const q = Number(str.slice(index + 1));
-      return Rational.fromInts(p, q);
+
+  static fromString(str: string): Rational {
+    let sum = Rational.zero;
+
+    for (let part of str.split('+')) {
+      part = part.trim();
+      if (!part) continue;
+
+      const index = part.indexOf('/');
+      if (index === -1) {
+        sum = sum.add(Rational.fromFloat(Number(part)));
+      } else {
+        const p = Number(part.slice(0, index));
+        const q = Number(part.slice(index + 1));
+        sum = sum.add(Rational.fromInts(p, q));
+      }
     }
+
+    return sum;
   }
 
   static zero = new Rational(0, 1);
