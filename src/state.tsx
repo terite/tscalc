@@ -118,7 +118,10 @@ export const [StateProvider, useDakpan] = createDakpan(defaultState)({
     });
   },
 
-  updateDefaultMachine: (category, newMachine) => (state) => {
+  updateDefaultMachine: (
+    category: string,
+    newMachine: game.AssemblingMachine
+  ) => (state) => {
     const oldMachine = getDefaultMachine(category, state);
 
     const groups = state.groups.map((group) => {
@@ -152,12 +155,12 @@ export const [StateProvider, useDakpan] = createDakpan(defaultState)({
     return { ...state, activeGroupIdx: groupIdx };
   },
 
-  addGroup: (name) => (state) => {
+  addGroup: (name: string, rows: RecipeRowData[] = []) => (state) => {
     const groups = [
       ...state.groups,
       {
         name,
-        rows: [],
+        rows,
       },
     ];
 

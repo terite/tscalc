@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import Dropdown from 'react-bootstrap/Dropdown';
 
 import { DropResult, DragDropContext, Droppable } from 'react-beautiful-dnd';
 
@@ -68,12 +67,25 @@ class RawRecipeGroup extends React.PureComponent<Props, never> {
     }
   };
 
+  handleClickClone = () => {
+    const i = this.props.state.activeGroupIdx;
+    const group = this.props.state.groups[i];
+    const name = prompt('Whats this new thing called?', group.name);
+    if (name) {
+      this.props.actions.addGroup(name, group.rows);
+    }
+  };
+
   handleClickDelete = () => {
     const i = this.props.state.activeGroupIdx;
     const group = this.props.state.groups[i];
-    if (window.confirm(`Are you sure you want to delete ${group.name}`)) {
-      this.props.actions.removeGroup(i);
+
+    if (group.rows.length) {
+      if (!window.confirm(`Are you sure you want to delete ${group.name}`)) {
+        return;
+      }
     }
+    this.props.actions.removeGroup(i);
   };
 
   render() {
@@ -87,19 +99,17 @@ class RawRecipeGroup extends React.PureComponent<Props, never> {
         <div className="clearfix">
           <h3 className="float-left">{this.props.group.name}</h3>
           <div className="float-right">
-            <Dropdown as={ButtonGroup} size="sm">
+            <ButtonGroup>
               <Button variant="info" onClick={this.handleClickRename}>
                 Rename
               </Button>
-
-              <Dropdown.Toggle split variant="info" id="button-split" />
-
-              <Dropdown.Menu>
-                <Dropdown.Item onClick={this.handleClickDelete}>
-                  Delete
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+              <Button variant="info" onClick={this.handleClickClone}>
+                Clone
+              </Button>
+              <Button variant="danger" onClick={this.handleClickDelete}>
+                Delete
+              </Button>
+            </ButtonGroup>
           </div>
         </div>
         <RecipePicker
