@@ -270,7 +270,7 @@ export class Recipe extends BaseDisplayable {
   }
 
   niceName() {
-    if (this.products.length > 1) {
+    if (this.products.length !== 1) {
       return super.niceName();
     } else if (this.products[0].amount.equal(Rational.one)) {
       return this.products[0].item.niceName();
@@ -313,9 +313,7 @@ type CategoryMap = { [category: string]: AssemblingMachine[] };
 
 const createCategoryMap = (entities: Entity[]) => {
   const catMap: CategoryMap = {};
-  for (let entity of entities) {
-    if (!(entity instanceof AssemblingMachine)) {
-    }
+  for (const entity of entities) {
     for (let category of entity.data.crafting_categories) {
       if (!catMap.hasOwnProperty(category)) {
         catMap[category] = [];
@@ -350,15 +348,18 @@ export class GameData {
     console.groupCollapsed('Game data processing');
     this.raw = raw;
 
-    type Thing<T> = {
+    type EntityConstructor<T> = {
       new (d: T): Entity;
     };
 
-    const addOfType = <S extends schema.BaseEntity, C extends Thing<S>>(
+    const addOfType = <
+      S extends schema.BaseEntity,
+      C extends EntityConstructor<S>
+    >(
       entities: S[],
       ctor: C
     ) => {
-      for (let edata of entities) {
+      for (const edata of entities) {
         const entity = new ctor(edata);
         this.entityMap[edata.name] = entity;
         this.entities.push(entity);
@@ -369,31 +370,81 @@ export class GameData {
     addOfType(values(raw['furnace']), AssemblingMachine);
     addOfType(values(raw['rocket-silo']), AssemblingMachine);
 
-    for (let itemName in raw.items) {
-      const thing = raw.items[itemName];
-      if ('type' in thing && thing.type === 'fluid') {
-        const fluid = new Fluid(thing);
+    for (const rawMiningDrill of Object.values(raw['mining-drill'])) {
+      const rawMachine: schema.AssemblingMachine = {
+        ...rawMiningDrill,
+        crafting_categories: rawMiningDrill.resource_categories.map(
+          (r) => 'resource-' + r
+        ),
+        crafting_speed: rawMiningDrill.mining_speed,
+        ingredient_count: 1,
+      };
+      const machine = new AssemblingMachine(rawMachine);
+      this.entities.push(machine);
+      this.entityMap[rawMachine.name] = machine;
+    }
+
+    for (const rawItem of Object.values(raw.items)) {
+      if ('type' in rawItem && rawItem.type === 'fluid') {
+        const fluid = new Fluid(rawItem);
         this.fluids.push(fluid);
         this.fluidMap[fluid.name] = fluid;
-      } else if ('type' in thing && thing.type === 'module') {
-        const item = new Module(thing);
+      } else if ('type' in rawItem && rawItem.type === 'module') {
+        const item = new Module(rawItem);
         this.items.push(item);
         this.itemMap[item.name] = item;
         this.modules.push(item);
         this.moduleMap[item.name] = item;
       } else {
-        const item = new GenericItem(thing);
+        const item = new GenericItem(rawItem);
         this.items.push(item);
         this.itemMap[item.name] = item;
       }
     }
 
-    for (let recipeName in raw.recipes) {
-      const recipe = new Recipe(raw.recipes[recipeName], this);
+    const recipes: Recipe[] = [];
 
-      for (let entityName in this.entityMap) {
-        const entity = this.entityMap[entityName];
+    // Add real recipes
+    for (const recipeName in raw.recipes) {
+      recipes.push(new Recipe(raw.recipes[recipeName], this));
+    }
 
+    // Add fake recipes for resources
+    for (const rawResource of Object.values(raw.resource)) {
+      const category = `resource-${rawResource.category}`;
+      const ingredients: schema.Ingredient[] = [];
+      const { fluid_amount, required_fluid } = rawResource.minable;
+      if (fluid_amount && required_fluid) {
+        ingredients.push({
+          name: required_fluid,
+          type: 'fluid',
+          // 10 in lua becomes 1 in game. not sure why
+          amount: fluid_amount / 10,
+        });
+      }
+      recipes.push(
+        new Recipe(
+          {
+            name: `resource-${rawResource.name}`,
+            localised_name: rawResource.localised_name,
+            category,
+            energy_required: rawResource.minable.mining_time,
+            group: category, // TODO: better group?
+            subgroup: category, // TODO: better subgroup?
+            icon_col: rawResource.icon_col,
+            icon_row: rawResource.icon_row,
+            ingredients,
+            results: rawResource.minable.results,
+            type: 'recipe',
+            order: 'A',
+          },
+          this
+        )
+      );
+    }
+
+    for (const recipe of recipes) {
+      for (const entity of Object.values(this.entityMap)) {
         if ('canBuildRecipe' in entity && entity.canBuildRecipe(recipe)) {
           recipe.madeIn.push(entity);
         }
@@ -410,15 +461,14 @@ export class GameData {
         continue;
       }
 
-      this.recipeMap[recipe.name] = recipe;
-      this.recipes.push(recipe);
-
-      for (let ingredient of recipe.ingredients) {
+      for (const ingredient of recipe.ingredients) {
         ingredient.item.usedBy.push(recipe);
       }
-      for (let product of recipe.products) {
+      for (const product of recipe.products) {
         product.item.madeBy.push(recipe);
       }
+      this.recipes.push(recipe);
+      this.recipeMap[recipe.name] = recipe;
     }
 
     this.categoryMap = createCategoryMap(this.entities);
