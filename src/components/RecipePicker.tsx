@@ -13,14 +13,22 @@ import styles from './RecipePicker.module.css';
 
 type KeyTypes = 'niceName' | 'name';
 
-function getFn(recipe: game.Recipe, key: string) {
-  switch (key as KeyTypes) {
-    case 'niceName':
-      return recipe.niceName();
-    case 'name':
-      return recipe.name;
+const getFn: Fuse.FuseGetFunction<game.Recipe> = (obj, path) => {
+  if (typeof path === 'string') {
+    throw new Error(`path unexpectedly string: ${path}`);
   }
-}
+  if (path.length !== 1) {
+    throw new Error(`path unexpectedly long/short: ${path}`);
+  }
+  switch (path[0]) {
+    case 'niceName':
+      return obj.niceName();
+    case 'name':
+      return obj.name;
+    default:
+      throw new Error(`Unsupported path: ${path}`);
+  }
+};
 
 const RE_ADVANCED = /((?:produces)|(?:consumes)):([a-z0-9-]+)/g;
 
@@ -152,7 +160,10 @@ export class RecipePicker extends React.PureComponent<Props, State> {
           },
         ],
       });
-      recipes = fuse.search(query);
+      const results = fuse.search(query);
+      console.log('results', results);
+      recipes = results.map((r) => r.item);
+      /* recipes = fuse.search(query); */
     }
     this.setState({ matches: recipes });
   }

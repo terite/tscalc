@@ -30,8 +30,9 @@ class RawAppLoader extends React.PureComponent<Props, State> {
   }
 
   async load() {
-    /* const response = await fetch('assets/seablock-17.json'); */
-    const response = await fetch('assets/kras-18.json');
+    const response = await fetch(
+      `${process.env.PUBLIC_URL}/assets/kras-18.json`
+    );
     if (response.status !== 200) {
       throw new Error(
         `Could not load game data, got HTTP status ${response.status}`
@@ -73,7 +74,7 @@ class RawAppLoader extends React.PureComponent<Props, State> {
     if (!this.state.gameData) {
       return <h1>Loading...</h1>;
     }
-    const sheet = `assets/sprite-sheet-${this.state.gameData.raw.sprites.hash}.png`;
+    const sheet = `${process.env.PUBLIC_URL}/assets/sprite-sheet-${this.state.gameData.raw.sprites.hash}.png`;
     const style = `
         .game-icon {
             background-image: url(${sheet});
