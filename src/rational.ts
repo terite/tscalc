@@ -52,7 +52,7 @@ export class Rational {
   //
   // Operations returning Rational
   //
-  floor() {
+  floor(): Rational {
     const divmod = num_divmod(this.p, this.q);
     let result = new Rational(divmod.quotient, 1);
     if (result.less(Rational.zero) && divmod.remainder !== 0) {
@@ -61,19 +61,19 @@ export class Rational {
     return result;
   }
 
-  negate() {
+  negate(): Rational {
     return new Rational(-this.p, this.q);
   }
 
-  invert() {
+  invert(): Rational {
     return new Rational(this.q, this.p);
   }
 
-  add(other: Rational) {
+  add(other: Rational): Rational {
     return new Rational(this.p * other.q + this.q * other.p, this.q * other.q);
   }
 
-  sub(other: Rational) {
+  sub(other: Rational): Rational {
     return new Rational(this.p * other.q - this.q * other.p, this.q * other.q);
   }
 
@@ -84,11 +84,11 @@ export class Rational {
     return new Rational(this.p * other.p, this.q * other.q);
   }
 
-  div(other: Rational) {
+  div(other: Rational): Rational {
     return new Rational(this.p * other.q, this.q * other.p);
   }
 
-  clamp(min: Rational | number, max: Rational | number) {
+  clamp(min: Rational | number, max: Rational | number): Rational {
     if (typeof min == 'number') {
       min = Rational.fromFloat(min);
     }
@@ -104,51 +104,53 @@ export class Rational {
   //
   // Operations NOT returning Rational
   //
-  divmod(other: Rational) {
+  divmod(other: Rational): { quotient: Rational; remainder: Rational } {
     var quotient = this.div(other);
     var div = quotient.floor();
     var mod = this.sub(other.mul(div));
     return { quotient: div, remainder: mod };
   }
 
-  equal(other: Rational) {
+  equal(other: Rational): boolean {
     return this.p === other.p && this.q === other.q;
   }
 
-  isNegative() {
+  isNegative(): boolean {
     return this.p < 0;
   }
-  isPositive() {
+  isPositive(): boolean {
     return this.p > 0;
   }
 
-  isOne() {
+  isOne(): boolean {
     return this.p === 1;
   }
 
-  isZero() {
+  isZero(): boolean {
     return this.p === 0;
   }
 
-  less(other: Rational) {
+  less(other: Rational): boolean {
     return this.p * other.q < this.q * other.p;
   }
 
-  toFloat() {
+  toFloat(): number {
     return this.p / this.q;
   }
 
-  // Disabled to force choice between toFraction and toDecimal
-  toString: null;
+  toString(): string {
+    // TODO: smarter to string
+    return this.toFraction();
+  }
 
-  toFraction() {
+  toFraction(): string {
     if (this.q === 1) {
       return this.p.toString();
     }
     return this.p.toString() + '/' + this.q.toString();
   }
 
-  toDecimal(maxDigits?: number, roundingFactor?: Rational) {
+  toDecimal(maxDigits?: number, roundingFactor?: Rational): string {
     if (maxDigits == null) {
       maxDigits = 3;
     }
@@ -208,7 +210,7 @@ export class Rational {
   //
   // Statics
   //
-  static fromFloat(num: number) {
+  static fromFloat(num: number): Rational {
     if (Number.isInteger(num)) {
       return new this(num, 1);
     }
