@@ -22,7 +22,7 @@ export class Signal<T> {
   }
 
   dispatch = (arg: T) => {
-    for (let handler of this.handlers) {
+    for (const handler of this.handlers) {
       handler(arg);
     }
   };

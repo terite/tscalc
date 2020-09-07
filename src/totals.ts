@@ -11,7 +11,7 @@ export class Totals {
   ingredients: game.Ingredient[] = [];
 
   addIngredient = (newIng: game.Ingredient) => {
-    for (let oldIng of this.ingredients) {
+    for (const oldIng of this.ingredients) {
       let match = newIng.type === oldIng.type && newIng.item === oldIng.item;
       if (newIng.type === 'fluid' && oldIng.type === 'fluid') {
         match =
@@ -29,7 +29,7 @@ export class Totals {
   };
 
   addProduct = (newProd: game.Product) => {
-    for (let oldProd of this.products) {
+    for (const oldProd of this.products) {
       let match =
         newProd.type === oldProd.type && newProd.item === oldProd.item;
       if (newProd.type === 'fluid' && oldProd.type === 'fluid') {
@@ -52,7 +52,7 @@ export class Totals {
       speed: Rational.one,
     };
 
-    for (let module of row.modules) {
+    for (const module of row.modules) {
       if (!module) continue;
       effects.consumption = effects.consumption.add(module.effects.consumption);
       effects.pollution = effects.pollution.add(module.effects.pollution);
@@ -111,8 +111,8 @@ export class Totals {
     let ingredients = this.ingredients.map(clone);
     let products = this.products.map(clone);
 
-    for (let product of products) {
-      for (let ingredient of ingredients) {
+    for (const product of products) {
+      for (const ingredient of ingredients) {
         if (product.amount.isZero() || ingredient.amount.isZero()) {
           continue;
         }

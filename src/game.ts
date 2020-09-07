@@ -1,5 +1,5 @@
 import { Rational } from './rational';
-import { assert, values } from './util';
+import { assert } from './util';
 
 import * as schema from './schema';
 
@@ -314,7 +314,7 @@ type CategoryMap = { [category: string]: AssemblingMachine[] };
 const createCategoryMap = (entities: Entity[]) => {
   const catMap: CategoryMap = {};
   for (const entity of entities) {
-    for (let category of entity.data.crafting_categories) {
+    for (const category of entity.data.crafting_categories) {
       if (!catMap.hasOwnProperty(category)) {
         catMap[category] = [];
       }
@@ -366,9 +366,9 @@ export class GameData {
       }
     };
 
-    addOfType(values(raw['assembling-machine']), AssemblingMachine);
-    addOfType(values(raw['furnace']), AssemblingMachine);
-    addOfType(values(raw['rocket-silo']), AssemblingMachine);
+    addOfType(Object.values(raw['assembling-machine']), AssemblingMachine);
+    addOfType(Object.values(raw['furnace']), AssemblingMachine);
+    addOfType(Object.values(raw['rocket-silo']), AssemblingMachine);
 
     for (const rawMiningDrill of Object.values(raw['mining-drill'])) {
       const rawMachine: schema.AssemblingMachine = {

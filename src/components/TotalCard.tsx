@@ -13,7 +13,7 @@ interface Props {
 
 function RawTotalCard(props: Props) {
   const totals = new Totals();
-  for (let row of props.rows) {
+  for (const row of props.rows) {
     totals.addRow(row);
   }
 

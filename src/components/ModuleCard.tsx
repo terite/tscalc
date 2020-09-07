@@ -12,15 +12,15 @@ const niceName = {
 
 export const ModuleCard = ({ module }: { module: Module }) => {
   const bonuses = [];
-  for (let bonusName in module.raw.effect) {
-    const bonus = module.raw.effect[
-      bonusName as keyof typeof module.raw.effect
-    ]!.bonus;
+  for (const [bonusName, bonus] of Object.entries(module.raw.effect)) {
+    if (!bonus || !bonus.bonus) {
+      continue;
+    }
     bonuses.push(
       <div key={bonusName}>
         <b>
           {niceName[bonusName as keyof typeof niceName]}:{' '}
-          {round2(bonus * 100, 2)}%
+          {round2(bonus.bonus * 100, 2)}%
         </b>
       </div>
     );

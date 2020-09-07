@@ -131,12 +131,12 @@ export class RecipePicker extends React.PureComponent<Props, State> {
     let recipes = this.props.recipes;
     if (conditions.consumes.length || conditions.produces.length) {
       recipes = recipes.filter((recipe) => {
-        for (let name of conditions.consumes) {
+        for (const name of conditions.consumes) {
           if (!recipe.ingredients.some((i) => i.name === name)) {
             return false;
           }
         }
-        for (let name of conditions.produces) {
+        for (const name of conditions.produces) {
           if (!recipe.products.some((i) => i.name === name)) {
             return false;
           }

@@ -25,7 +25,7 @@ describe('Rational', () => {
     it('should accurately represent many nums', () => {
       for (let p = 1; p < 10; p++) {
         for (let q = 1; q < 10; q++) {
-          if (p == q) {
+          if (p === q) {
             continue;
           }
           expect(Rational.fromInts(p, q).equal(Rational.fromFloat(p / q))).toBe(
