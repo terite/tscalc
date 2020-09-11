@@ -36,26 +36,28 @@ const GameRecipeCard = (props: Props) => {
   return (
     <div className="recipe-tooltip card" onClick={handleClick}>
       <div className="card-header">
-        <Icon obj={recipe} text={recipe.niceName()} />
+        <Icon obj={recipe} text={`${recipe.niceName()} (Recipe)`} />
       </div>
       <div className="card-body">
+        <b>Ingredients:</b>
+        {ingredients}
         <Icon
           obj={props.gameData.raw.sprites.extra['clock']}
-          text={recipe.crafting_time.toDecimal()}
+          text={
+            <span>
+              <b>{recipe.crafting_time.toDecimal()} s</b> Crafting time
+            </span>
+          }
         />
-        <div style={{ float: 'left' }}>
-          Ingredients:
-          {ingredients}
-        </div>
-        <div style={{ display: 'inline-block' }}>
-          Products:
-          {products}
-        </div>
-        <div style={{ clear: 'both' }} />
-        <div style={{ lineHeight: '32px' }}>
-          Made In:
-          {madeIn}
-        </div>
+      </div>
+      <div className="card-body">
+        <b>Products:</b>
+        {products}
+      </div>
+      <div className="card-body">
+        <b>Made In:</b>
+        <br />
+        {madeIn}
       </div>
     </div>
   );
