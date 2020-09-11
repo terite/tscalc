@@ -21,7 +21,7 @@ class RawAppLoader extends React.PureComponent<Props, State> {
       gameData: null,
     };
   }
-  componentDidMount() {
+  componentDidMount(): void {
     this.load().catch((err) => {
       this.setState(() => {
         throw err;
@@ -29,7 +29,7 @@ class RawAppLoader extends React.PureComponent<Props, State> {
     });
   }
 
-  async load() {
+  async load(): Promise<void> {
     const response = await fetch(
       `${process.env.PUBLIC_URL}/assets/kras-18.json`
     );
@@ -70,7 +70,7 @@ class RawAppLoader extends React.PureComponent<Props, State> {
     this.setState({ gameData });
   }
 
-  render() {
+  render(): React.ReactNode {
     if (!this.state.gameData) {
       return <h1>Loading...</h1>;
     }

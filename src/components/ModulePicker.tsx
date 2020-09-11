@@ -15,26 +15,35 @@ interface ModulePickerProps {
   onChange(m: Module | null): void;
 }
 
-const GameModulePicker = (props: ModulePickerProps) => {
-  const icon = props.gameData.raw.sprites.extra.slot_icon_module;
-  const nomod = new Module({
-    type: 'module',
-    name: 'no_module',
-    localised_name: { en: 'No Module' },
-    category: 'speed',
-    effect: {},
-    limitation: [],
-    rocket_launch_products: [],
+let _nomodule: Module | undefined;
+function getNoMod(gameData: GameData): Module {
+  // TODO: Technically, this should return a different icon if gameData changed
+  const icon = gameData.raw.sprites.extra.slot_icon_module;
+  if (!_nomodule) {
+    _nomodule = new Module({
+      type: 'module',
+      name: 'no_module',
+      localised_name: { en: 'No Module' },
+      category: 'speed',
+      effect: {},
+      limitation: [],
+      rocket_launch_products: [],
 
-    icon_row: icon.icon_row,
-    icon_col: icon.icon_col,
+      icon_row: icon.icon_row,
+      icon_col: icon.icon_col,
 
-    group: '',
-    subgroup: '',
-    order: '',
-  });
+      group: '',
+      subgroup: '',
+      order: '',
+    });
+  }
 
-  const renderSelected = (module: Module | null) => {
+  return _nomodule;
+}
+
+const GameModulePicker: React.FC<ModulePickerProps> = (props) => {
+  const nomod = getNoMod(props.gameData);
+  const renderSelected = (module: Module | null): React.ReactNode => {
     if (module) {
       return <Icon obj={module} tooltip={<ModuleCard module={module} />} />;
     } else {
@@ -42,7 +51,7 @@ const GameModulePicker = (props: ModulePickerProps) => {
     }
   };
 
-  const renderOption = (module: Module | null) => {
+  const renderOption = (module: Module | null): React.ReactNode => {
     if (module) {
       return (
         <Icon

@@ -25,7 +25,7 @@ export class BaseDisplayable {
     this.icon_row = data.icon_row;
   }
 
-  niceName() {
+  niceName(): string {
     return this.localised_name.en;
   }
 }
@@ -72,7 +72,7 @@ export class Module extends BaseItem<schema.ModuleItem> {
     };
   }
 
-  canUseWith(recipe: Recipe) {
+  canUseWith(recipe: Recipe): boolean {
     if (this.limitedTo.size === 0) {
       return true;
     }
@@ -116,7 +116,7 @@ export class ItemIngredient extends BaseIngredient {
     this.item = gd.itemMap[d.name];
   }
 
-  niceName() {
+  niceName(): string {
     return `${this.amount.toDecimal()} × ${this.item.niceName()}`;
   }
 }
@@ -142,7 +142,7 @@ export class FluidIngredient extends BaseIngredient {
     }
   }
 
-  niceName() {
+  niceName(): string {
     const min = this.minimum_temperature;
     const max = this.maximum_temperature;
     let range = '';
@@ -195,11 +195,11 @@ export class ItemProduct extends BaseProduct {
     this.item = gd.itemMap[d.name];
   }
 
-  niceName() {
+  niceName(): string {
     return `${this.amount.toDecimal()} × ${this.item.niceName()}`;
   }
 
-  satisfies(ingredient: Ingredient) {
+  satisfies(ingredient: Ingredient): boolean {
     return ingredient.type === 'item' && ingredient.item === this.item;
   }
 }
@@ -218,7 +218,7 @@ export class FluidProduct extends BaseProduct {
     this.temperature = d.temperature || this.item.default_temperature;
   }
 
-  niceName() {
+  niceName(): string {
     let temp = '';
     if (this.temperature !== this.item.default_temperature) {
       temp = ` (${this.temperature}°)`;
@@ -226,7 +226,7 @@ export class FluidProduct extends BaseProduct {
     return `${this.amount.toDecimal()} × ${this.item.niceName()}${temp}`;
   }
 
-  satisfies(ingredient: Ingredient) {
+  satisfies(ingredient: Ingredient): boolean {
     return (
       ingredient.type === 'fluid' &&
       ingredient.item === this.item &&
@@ -269,7 +269,7 @@ export class Recipe extends BaseDisplayable {
     });
   }
 
-  niceName() {
+  niceName(): string {
     if (this.products.length !== 1) {
       return super.niceName();
     } else if (this.products[0].amount.equal(Rational.one)) {
@@ -286,13 +286,13 @@ export abstract class BaseEntity<T extends schema.BaseEntity> {
     this.data = data;
   }
 
-  niceName() {
+  niceName(): string {
     return this.data.localised_name.en;
   }
 }
 
 export class AssemblingMachine extends BaseEntity<schema.AssemblingMachine> {
-  canBuildRecipe(recipe: Recipe) {
+  canBuildRecipe(recipe: Recipe): boolean {
     // TODO: this needs to account for entity fluid boxes
     if (this.data.crafting_categories.indexOf(recipe.category) === -1) {
       return false;
@@ -311,7 +311,7 @@ export type Entity = AssemblingMachine;
 
 type CategoryMap = { [category: string]: AssemblingMachine[] };
 
-const createCategoryMap = (entities: Entity[]) => {
+const createCategoryMap = (entities: Entity[]): CategoryMap => {
   const catMap: CategoryMap = {};
   for (const entity of entities) {
     for (const category of entity.data.crafting_categories) {
@@ -358,7 +358,7 @@ export class GameData {
     >(
       entities: S[],
       ctor: C
-    ) => {
+    ): void => {
       for (const edata of entities) {
         const entity = new ctor(edata);
         this.entityMap[edata.name] = entity;
@@ -479,7 +479,7 @@ export class GameData {
     console.groupEnd();
   }
 
-  getItemOrder(item: Item | Fluid) {
+  getItemOrder(item: Item | Fluid): [string, string, string, string] {
     let groupOrder = '';
     let subgroupOrder = '';
     const group = this.raw.groups[item.raw.group];
@@ -496,7 +496,7 @@ export class GameData {
   // 3. item order string
   // 4. item name
   sortByItem<T>(collection: T[], keyFn: (obj: T) => Item | Fluid): void {
-    const sortFn = (a: T, b: T) => {
+    collection.sort((a: T, b: T) => {
       const ordersA = this.getItemOrder(keyFn(a));
       const ordersB = this.getItemOrder(keyFn(b));
 
@@ -511,8 +511,6 @@ export class GameData {
       }
 
       return 0;
-    };
-
-    collection.sort(sortFn);
+    });
   }
 }

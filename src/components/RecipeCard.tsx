@@ -12,8 +12,8 @@ interface Props {
   onClick?(r: game.Recipe): void;
 }
 
-const GameRecipeCard = (props: Props) => {
-  const handleClick = () => {
+const GameRecipeCard: React.FC<Props> = (props) => {
+  const handleClick = (): void => {
     props.onClick && props.onClick(props.recipe);
   };
   const recipe = props.recipe;

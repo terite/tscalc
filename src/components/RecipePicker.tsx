@@ -50,18 +50,18 @@ export class RecipePicker extends React.PureComponent<Props, State> {
     matches: [],
   };
 
-  componentDidMount() {
+  componentDidMount(): void {
     signal.addIngredientFilter.addHandler(this.handleIngredientClick);
     signal.addProductFilter.addHandler(this.handleProductClick);
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     this.debCalculateMatches.cancel();
     signal.addIngredientFilter.removeHandler(this.handleIngredientClick);
     signal.addProductFilter.removeHandler(this.handleProductClick);
   }
 
-  handleIngredientClick = (ingredient: game.Ingredient) => {
+  handleIngredientClick = (ingredient: game.Ingredient): void => {
     const term = `produces:${ingredient.name}`;
     if (!this.state.query.includes(term)) {
       this.setQuery(`${this.state.query} ${term}`, () => {
@@ -71,7 +71,7 @@ export class RecipePicker extends React.PureComponent<Props, State> {
     }
   };
 
-  handleProductClick = (product: game.Product) => {
+  handleProductClick = (product: game.Product): void => {
     const term = `consumes:${product.name}`;
     if (!this.state.query.includes(term)) {
       this.setQuery(`${this.state.query} ${term}`, () => {
@@ -81,17 +81,17 @@ export class RecipePicker extends React.PureComponent<Props, State> {
     }
   };
 
-  handleQueryInput = (event: React.FormEvent<HTMLInputElement>) => {
+  handleQueryInput = (event: React.FormEvent<HTMLInputElement>): void=> {
     const target = event.target as HTMLInputElement;
     this.setQuery(target.value);
   };
 
-  handleRecipeClick = (recipe: game.Recipe) => {
+  handleRecipeClick = (recipe: game.Recipe): void => {
     this.props.onPickRecipe(recipe);
     this.setQuery('');
   };
 
-  setQuery = (query: string, callback?: () => void) => {
+  setQuery = (query: string, callback?: () => void): void => {
     if (!query.trim()) {
       this.debCalculateMatches.cancel();
       this.setState(
@@ -107,7 +107,7 @@ export class RecipePicker extends React.PureComponent<Props, State> {
     }
   };
 
-  calculateMatches() {
+  calculateMatches(): void {
     let query = this.state.query.trim().toLowerCase();
     if (!query) {
       this.setState({ matches: [] });
@@ -168,7 +168,7 @@ export class RecipePicker extends React.PureComponent<Props, State> {
 
   debCalculateMatches = debounce(this.calculateMatches.bind(this), 200);
 
-  renderMatches() {
+  renderMatches(): React.ReactNode {
     if (!this.state.matches.length) {
       return '';
     }
@@ -199,7 +199,7 @@ export class RecipePicker extends React.PureComponent<Props, State> {
     );
   }
 
-  render() {
+  render(): React.ReactNode {
     return (
       <div className={styles.RecipePicker}>
         <div>
@@ -224,11 +224,11 @@ interface RecipeMatchProps {
 }
 
 class RecipeMatch extends React.PureComponent<RecipeMatchProps, never> {
-  handleClickAdd = () => {
+  handleClickAdd = (): void => {
     this.props.onClick(this.props.recipe);
   };
 
-  render() {
+  render(): React.ReactNode {
     const recipe = this.props.recipe;
     const ingredients = recipe.ingredients.map((ing, i) => (
       <Icon key={i} obj={ing.item} tooltip={<IngredientCard obj={ing} />} />

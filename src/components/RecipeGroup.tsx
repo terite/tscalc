@@ -26,15 +26,15 @@ interface Props {
 }
 
 class RawRecipeGroup extends React.PureComponent<Props, never> {
-  componentDidMount() {
+  componentDidMount(): void {
     signal.addRecipeRow.addHandler(this.handlePickRecipe);
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     signal.addRecipeRow.removeHandler(this.handlePickRecipe);
   }
 
-  handlePickRecipe = (recipe: game.Recipe) => {
+  handlePickRecipe = (recipe: game.Recipe): void => {
     this.props.actions.addRow({
       recipe: recipe,
       machine: su.getDefaultMachine(recipe, this.props.state),
@@ -45,18 +45,18 @@ class RawRecipeGroup extends React.PureComponent<Props, never> {
     });
   };
 
-  handleDragEnd = (result: DropResult) => {
+  handleDragEnd = (result: DropResult): void => {
     if (!result.destination) {
       return;
     }
     this.props.actions.moveRow(result.source.index, result.destination.index);
   };
 
-  renderRow = (data: RecipeRowData, index: number) => {
+  renderRow = (data: RecipeRowData, index: number): React.ReactNode => {
     return <RecipeRow key={data.recipe.name} index={index} {...data} />;
   };
 
-  handleClickRename = () => {
+  handleClickRename = (): void => {
     const i = this.props.state.activeGroupIdx;
     const name = prompt(
       'Whatcha wanna call it now?',
@@ -67,7 +67,7 @@ class RawRecipeGroup extends React.PureComponent<Props, never> {
     }
   };
 
-  handleClickClone = () => {
+  handleClickClone = (): void => {
     const i = this.props.state.activeGroupIdx;
     const group = this.props.state.groups[i];
     const name = prompt('Whats this new thing called?', group.name);
@@ -76,7 +76,7 @@ class RawRecipeGroup extends React.PureComponent<Props, never> {
     }
   };
 
-  handleClickDelete = () => {
+  handleClickDelete = (): void => {
     const i = this.props.state.activeGroupIdx;
     const group = this.props.state.groups[i];
 
@@ -88,7 +88,7 @@ class RawRecipeGroup extends React.PureComponent<Props, never> {
     this.props.actions.removeGroup(i);
   };
 
-  render() {
+  render(): React.ReactNode {
     const gd = this.props.state.gameData;
     const availableRecipes = gd.recipes.filter((recipe) => {
       return !this.props.group.rows.some((row) => row.recipe === recipe);

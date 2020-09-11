@@ -18,7 +18,7 @@ export class IntegerInput extends React.PureComponent<Props, State> {
     };
   }
 
-  componentDidUpdate(oldProps: Props) {
+  componentDidUpdate(oldProps: Props): void {
     if (oldProps.value !== this.props.value) {
       this.setState((state) => ({
         txtValue:
@@ -29,7 +29,7 @@ export class IntegerInput extends React.PureComponent<Props, State> {
     }
   }
 
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const value = event.target.value;
     this.setState({ txtValue: value }, () => {
       if (!value.trim()) {
@@ -52,7 +52,7 @@ export class IntegerInput extends React.PureComponent<Props, State> {
     });
   };
 
-  render() {
+  render(): React.ReactNode {
     return (
       <input
         className="form-control"

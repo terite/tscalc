@@ -59,11 +59,14 @@ export const defaultState: AppState = {
   recipeTarget: undefined,
 };
 
-function getActiveGroup(state: AppState) {
+function getActiveGroup(state: AppState): RecipeGroupData {
   return state.groups[state.activeGroupIdx];
 }
 
-function updateGroup(state: AppState, newGroup: Partial<RecipeGroupData>) {
+function updateGroup(
+  state: AppState,
+  newGroup: Partial<RecipeGroupData>
+): AppState {
   const groups = state.groups.map((oldGroup, index) => {
     return index === state.activeGroupIdx
       ? { ...oldGroup, ...newGroup }
@@ -216,7 +219,9 @@ export type AppActions = NonNullable<ReturnType<typeof useDakpan>[1]>;
 
 export const withBoth = <T extends React.ComponentType<any>>(
   OldComponent: T
-) => {
+): React.FC<
+  Pick<PropsOf<T>, Exclude<keyof PropsOf<T>, 'state' | 'actions'>>
+> => {
   type NewProps = Omit<PropsOf<T>, 'state' | 'actions'>;
 
   const WrappedComponent: React.FC<NewProps> = (props: any) => {
@@ -233,7 +238,7 @@ type PropsOf<
 
 export const withGame = <T extends React.ComponentType<any>>(
   OldComponent: T
-) => {
+): React.FC<Pick<PropsOf<T>, Exclude<keyof PropsOf<T>, 'gameData'>>> => {
   type NewProps = Omit<PropsOf<T>, 'gameData'>;
 
   const WrappedComponent: React.FC<NewProps> = (props: any) => {
@@ -246,7 +251,7 @@ export const withGame = <T extends React.ComponentType<any>>(
 
 export const withActions = <T extends React.ComponentType<any>>(
   OldComponent: T
-) => {
+): React.FC<Pick<PropsOf<T>, Exclude<keyof PropsOf<T>, 'actions'>>> => {
   type NewProps = Omit<PropsOf<T>, 'actions'>;
 
   const WrappedComponent: React.FC<NewProps> = (props: any) => {

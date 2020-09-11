@@ -146,7 +146,7 @@ interface SerializedSettings {
   };
 }
 
-export function setLocalStorageState(state: AppState) {
+export function setLocalStorageState(state: AppState): void {
   localStorage.setItem('appstate', JSON.stringify(serialize(state)));
 }
 
@@ -163,7 +163,7 @@ export function getLocalStorageState(gameData: game.GameData): AppState | null {
   return deserialize(gameData, stateobj);
 }
 
-export function setUrlState(state: AppState) {
+export function setUrlState(state: AppState): void {
   const serialized = serialize(state);
   const version = serialized.version;
   let str = JSON.stringify(serialized.data);
@@ -213,7 +213,7 @@ function serialize(state: AppState): SerializedAppState {
 
 const reStateUrl = /^#(\d+)?(?:-)?(.+)$/;
 
-export function getUrlState(gameData: game.GameData) {
+export function getUrlState(gameData: game.GameData): AppState | null {
   const matches = reStateUrl.exec(document.location.hash);
   if (!matches) {
     return null;

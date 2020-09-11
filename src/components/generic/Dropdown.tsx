@@ -39,27 +39,27 @@ export class Dropdown<T> extends React.PureComponent<Props<T>, State> {
     isOpen: false,
   };
 
-  handleToggle = () => {
+  handleToggle = (): void => {
     this.setState((state) => ({
       ...state,
       isOpen: !state.isOpen,
     }));
   };
 
-  handleSelect = (selected: T) => {
+  handleSelect = (selected: T): void => {
     this.props.onSelect(selected);
     this.setState({
       isOpen: false,
     });
   };
 
-  handleWantClose = () => {
+  handleWantClose = (): void => {
     this.setState({
       isOpen: false,
     });
   };
 
-  render() {
+  render(): React.ReactNode {
     const canToggle = this.props.options.some((option) => {
       return 'option' in option && !option.disabled;
     });
@@ -125,14 +125,14 @@ class DropdownMenu<T> extends React.PureComponent<
     style: {},
   };
 
-  popperUpdate = (data: Popper.Data) => {
+  popperUpdate = (data: Popper.Data): Popper.Data => {
     this.setState({
       style: data.styles as React.CSSProperties,
     });
     return data;
   };
 
-  handleBodyClick = (event: MouseEvent) => {
+  handleBodyClick = (event: MouseEvent): void => {
     if (!this.menuRef.current) {
       throw new Error(
         'Click event without menu rendered. This should not happen.'
@@ -151,13 +151,13 @@ class DropdownMenu<T> extends React.PureComponent<
     }
   };
 
-  handleKeyEvent = (event: KeyboardEvent) => {
+  handleKeyEvent = (event: KeyboardEvent): void => {
     if (event.keyCode === ESC_KEYCODE) {
       this.props.onWantClose();
     }
   };
 
-  componentDidMount() {
+  componentDidMount(): void {
     if (this.popperInstance) {
       throw new Error('Component mounted twice?');
     }
@@ -186,7 +186,7 @@ class DropdownMenu<T> extends React.PureComponent<
     document.body.addEventListener('keyup', this.handleKeyEvent);
   }
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     if (this.popperInstance) {
       this.popperInstance.disableEventListeners();
       this.popperInstance = null;
@@ -195,7 +195,7 @@ class DropdownMenu<T> extends React.PureComponent<
     document.body.removeEventListener('keyup', this.handleKeyEvent);
   }
 
-  renderOptions = () => {
+  renderOptions = (): React.ReactNode => {
     return this.props.options.map((option, i) => {
       if ('header' in option) {
         return (
@@ -225,7 +225,7 @@ class DropdownMenu<T> extends React.PureComponent<
     });
   };
 
-  render() {
+  render(): React.ReactNode {
     return (
       <div
         className="dropdown-menu show"

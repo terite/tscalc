@@ -23,7 +23,7 @@ export class RationalInput extends React.PureComponent<Props, State> {
     };
   }
 
-  componentDidUpdate(oldProps: Props) {
+  componentDidUpdate(oldProps: Props): void {
     if (!this.props.value.equal(oldProps.value)) {
       let parsed: Rational;
       try {
@@ -40,7 +40,7 @@ export class RationalInput extends React.PureComponent<Props, State> {
     }
   }
 
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const str = event.target.value;
 
     let errmsg: string | undefined;
@@ -63,7 +63,7 @@ export class RationalInput extends React.PureComponent<Props, State> {
     });
   };
 
-  render() {
+  render(): React.ReactNode {
     return (
       <input
         className={classNames('form-control', {

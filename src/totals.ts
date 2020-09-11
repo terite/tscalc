@@ -7,10 +7,10 @@ import { Rational } from './rational';
 import { RecipeRowData } from './state';
 
 export class Totals {
-  products: game.Product[] = [];
   ingredients: game.Ingredient[] = [];
+  products: game.Product[] = [];
 
-  addIngredient = (newIng: game.Ingredient) => {
+  addIngredient = (newIng: game.Ingredient): void => {
     for (const oldIng of this.ingredients) {
       let match = newIng.type === oldIng.type && newIng.item === oldIng.item;
       if (newIng.type === 'fluid' && oldIng.type === 'fluid') {
@@ -28,7 +28,7 @@ export class Totals {
     this.ingredients.push(newIng);
   };
 
-  addProduct = (newProd: game.Product) => {
+  addProduct = (newProd: game.Product): void => {
     for (const oldProd of this.products) {
       let match =
         newProd.type === oldProd.type && newProd.item === oldProd.item;
@@ -44,7 +44,7 @@ export class Totals {
     this.products.push(newProd);
   };
 
-  addRow(row: RecipeRowData) {
+  addRow(row: RecipeRowData): void {
     const effects = {
       consumption: Rational.one,
       pollution: Rational.one,
@@ -107,7 +107,10 @@ export class Totals {
       .forEach(this.addProduct);
   }
 
-  reduce() {
+  reduce(): {
+    ingredients: game.Ingredient[];
+    products: game.Product[];
+  } {
     let ingredients = this.ingredients.map(clone);
     let products = this.products.map(clone);
 

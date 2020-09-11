@@ -4,7 +4,10 @@ function num_gcd(a: number, b: number): number {
   return !b ? a : num_gcd(b, a % b);
 }
 
-function num_divmod(a: number, b: number) {
+function num_divmod(a: number, b: number): {
+  quotient: number,
+  remainder: number,
+} {
   assert(Number.isSafeInteger(a));
   assert(Number.isSafeInteger(b));
 

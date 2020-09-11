@@ -25,7 +25,7 @@ export class Tooltip extends React.PureComponent<Props, State> {
     };
   }
 
-  initPopper() {
+  initPopper(): void {
     if (this.popperInstance) {
       return;
     }
@@ -55,14 +55,14 @@ export class Tooltip extends React.PureComponent<Props, State> {
     });
   }
 
-  cleanupPopper() {
+  cleanupPopper(): void {
     if (this.popperInstance) {
       this.popperInstance.disableEventListeners();
       this.popperInstance = null;
     }
   }
 
-  componentDidUpdate(_: Props, prevState: State) {
+  componentDidUpdate(_: Props, prevState: State): void {
     if (prevState.showSelf !== this.state.showSelf) {
       if (this.state.showSelf) {
         this.initPopper();
@@ -72,7 +72,7 @@ export class Tooltip extends React.PureComponent<Props, State> {
     }
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     const referenceEl = this.props.relativeTo.current;
     if (!referenceEl) {
       throw new Error('Invalid relativeTo');
@@ -82,19 +82,19 @@ export class Tooltip extends React.PureComponent<Props, State> {
     referenceEl.addEventListener('mouseleave', this.handleMouseLeave);
   }
 
-  handleMouseEnter = () => {
+  handleMouseEnter = (): void => {
     this.setState({
       showSelf: true,
     });
   };
 
-  handleMouseLeave = () => {
+  handleMouseLeave = (): void => {
     this.setState({
       showSelf: false,
     });
   };
 
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     const referenceEl = this.props.relativeTo.current;
     if (referenceEl) {
       referenceEl.removeEventListener('mouseenter', this.handleMouseEnter);
@@ -102,7 +102,7 @@ export class Tooltip extends React.PureComponent<Props, State> {
     }
   }
 
-  render() {
+  render(): React.ReactNode {
     if (!this.state.showSelf) {
       return null;
     }

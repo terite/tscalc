@@ -1,6 +1,6 @@
 import { Rational } from './rational';
 
-function expectToEqualRational(actual: Rational, expected: Rational) {
+function expectToEqualRational(actual: Rational, expected: Rational): void {
   return expect(actual.toFraction()).toEqual(expected.toFraction());
 }
 

@@ -7,21 +7,21 @@ interface SignalHandler<T> {
 export class Signal<T> {
   handlers: SignalHandler<T>[] = [];
 
-  addHandler(handler: SignalHandler<T>) {
+  addHandler(handler: SignalHandler<T>): void {
     const index = this.handlers.indexOf(handler);
     if (index === -1) {
       this.handlers.push(handler);
     }
   }
 
-  removeHandler(handler: SignalHandler<T>) {
+  removeHandler(handler: SignalHandler<T>): void {
     const index = this.handlers.indexOf(handler);
     if (index !== -1) {
       this.handlers.splice(index, 1);
     }
   }
 
-  dispatch = (arg: T) => {
+  dispatch = (arg: T): void => {
     for (const handler of this.handlers) {
       handler(arg);
     }

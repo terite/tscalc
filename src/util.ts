@@ -23,7 +23,7 @@ export function clone<T>(orig: T): T {
   return Object.assign(Object.create(Object.getPrototypeOf(orig)), orig);
 }
 
-export function round2(num: number, places: number) {
+export function round2(num: number, places: number): number {
   const mag = Math.pow(10, places);
   return Math.round(num * mag) / mag;
 }

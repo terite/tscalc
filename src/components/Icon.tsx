@@ -25,7 +25,7 @@ export class Icon extends React.PureComponent<Props, State> {
     this.iconRef = React.createRef();
   }
 
-  render() {
+  render(): React.ReactNode {
     const x = -this.props.obj.icon_col * 32;
     const y = -this.props.obj.icon_row * 32;
 

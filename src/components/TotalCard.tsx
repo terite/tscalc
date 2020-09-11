@@ -11,7 +11,7 @@ interface Props {
   rows: RecipeRowData[];
 }
 
-function RawTotalCard(props: Props) {
+const RawTotalCard: React.FC<Props> = (props) => {
   const totals = new Totals();
   for (const row of props.rows) {
     totals.addRow(row);
@@ -45,6 +45,6 @@ function RawTotalCard(props: Props) {
       </div>
     </div>
   );
-}
+};
 
 export const TotalCard = withGame(RawTotalCard);

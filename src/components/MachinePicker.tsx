@@ -14,13 +14,13 @@ interface MachinePickerProps {
   onChange(m: Machine): void;
 }
 
-const renderSelected = (machine: Machine) => {
+const renderSelected = (machine: Machine): React.ReactNode => {
   return (
     <Icon obj={machine.data} tooltip={<MachineCard machine={machine} />} />
   );
 };
 
-const renderOption = (machine: Machine) => {
+const renderOption = (machine: Machine): React.ReactNode => {
   return (
     <Icon
       obj={machine.data}
@@ -30,7 +30,7 @@ const renderOption = (machine: Machine) => {
   );
 };
 
-export const MachinePicker = (props: MachinePickerProps) => {
+export const MachinePicker: React.FC<MachinePickerProps> = (props) => {
   const options = props.machines.map((machine) => ({
     key: machine.data.name,
     option: machine,

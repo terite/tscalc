@@ -23,11 +23,11 @@ interface Props extends RecipeRowData {
 }
 
 class RawRecipeRow extends React.PureComponent<Props, never> {
-  handleRemoveClick = () => {
+  handleRemoveClick = (): void => {
     this.props.actions.removeRow(this.props.index);
   };
 
-  handleMachineChange = (machine: game.AssemblingMachine) => {
+  handleMachineChange = (machine: game.AssemblingMachine): void => {
     this.applyChange({
       machine: machine,
       modules: this.props.modules
@@ -36,15 +36,15 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
     });
   };
 
-  handleNumMachinesChange = (num: Rational) => {
+  handleNumMachinesChange = (num: Rational): void => {
     this.applyChange({ numMachines: num });
   };
 
-  handleNumBeaconsChange = (num: number) => {
+  handleNumBeaconsChange = (num: number): void => {
     this.applyChange({ numBeacons: num });
   };
 
-  handleSetAllModules = () => {
+  handleSetAllModules = (): void => {
     this.applyChange({
       modules: new Array(this.props.machine.data.module_slots).fill(
         this.props.modules[0]
@@ -52,17 +52,17 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
     });
   };
 
-  handleSetModule = (index: number, module: game.Module | null) => {
+  handleSetModule = (index: number, module: game.Module | null): void => {
     const modules = this.props.modules.slice();
     modules[index] = module;
     this.applyChange({ modules: modules });
   };
 
-  handleSetBeaconModule = (module: game.Module | null) => {
+  handleSetBeaconModule = (module: game.Module | null): void => {
     this.applyChange({ beaconModule: module });
   };
 
-  handleInputGroupClick: React.MouseEventHandler<any> = (event) => {
+  handleInputGroupClick: React.MouseEventHandler<any> = (event): void => {
     const { recipeTarget } = this.props.state;
     if (!event.shiftKey || !recipeTarget) {
       return;
@@ -102,20 +102,17 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
     });
   };
 
-  applyChange(change: Partial<RecipeRowData>) {
+  applyChange(change: Partial<RecipeRowData>): void {
     this.props.actions.updateRow(this.props.index, change);
   }
 
-  getOutput() {
+  getOutput(): Totals {
     const t = new Totals();
     t.addRow(this.props);
-    return {
-      ingredients: t.ingredients,
-      products: t.products,
-    };
+    return t;
   }
 
-  renderModules() {
+  renderModules(): React.ReactNode {
     const numSlots = this.props.machine.data.module_slots;
 
     const slots = [];
@@ -148,7 +145,7 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
     return slots;
   }
 
-  renderBeacons() {
+  renderBeacons(): React.ReactNode {
     return (
       <div className="btn-toolbar">
         <div className="input-group">
@@ -173,7 +170,7 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
     );
   }
 
-  renderMachines() {
+  renderMachines(): React.ReactNode {
     return (
       <div className="btn-toolbar mb-3">
         <div className="input-group" onClick={this.handleInputGroupClick}>
@@ -194,7 +191,7 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
     );
   }
 
-  render() {
+  render(): React.ReactNode {
     const recipe = this.props.recipe;
     const output = this.getOutput();
 

@@ -5,7 +5,7 @@ interface Props {
   machine: game.AssemblingMachine;
 }
 
-export const MachineCard = (props: Props) => {
+export const MachineCard: React.FC<Props> = (props) => {
   return (
     <div className="machine-card card">
       <div className="card-body">

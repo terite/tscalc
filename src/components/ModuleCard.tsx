@@ -10,7 +10,11 @@ const niceName = {
   pollution: 'Pollution',
 };
 
-export const ModuleCard = ({ module }: { module: Module }) => {
+interface Props {
+  module: Module;
+}
+
+export const ModuleCard: React.FC<Props> = ({ module }) => {
   const bonuses = [];
   for (const [bonusName, bonus] of Object.entries(module.raw.effect)) {
     if (!bonus || !bonus.bonus) {

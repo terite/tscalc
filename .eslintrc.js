@@ -10,6 +10,9 @@ module.exports = {
       "files": ["**/*.ts?(x)"],
       "rules": {
         "@typescript-eslint/await-thenable": "warn",
+        "@typescript-eslint/explicit-function-return-type": ["warn", {
+          "allowExpressions": true,
+        }],
       },
     },
   ],

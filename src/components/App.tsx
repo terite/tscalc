@@ -37,34 +37,34 @@ class RawApp extends React.PureComponent<Props, State> {
     };
   }
 
-  componentDidMount() {
+  componentDidMount(): void {
     document.addEventListener('keydown', this.handleKeyDown);
     document.addEventListener('keyup', this.handleKeyUp);
   }
-  componentWillUnmount() {
+  componentWillUnmount(): void {
     document.removeEventListener('keydown', this.handleKeyDown);
     document.removeEventListener('keyup', this.handleKeyUp);
   }
 
-  handleKeyDown = (event: KeyboardEvent) => {
+  handleKeyDown = (event: KeyboardEvent): void => {
     if (event.key === 'Shift') {
       document.body.classList.add('shift-down');
     }
   };
-  handleKeyUp = (event: KeyboardEvent) => {
+  handleKeyUp = (event: KeyboardEvent): void => {
     if (event.key === 'Shift') {
       document.body.classList.remove('shift-down');
     }
   };
 
-  handleClickGroup = (i: number) => {
+  handleClickGroup = (i: number): void => {
     this.setState({
       activePage: ActivePage.Factory,
     });
     this.props.actions.setActiveGroup(i);
   };
 
-  handleClickAddGroup: React.MouseEventHandler<any> = (event) => {
+  handleClickAddGroup: React.MouseEventHandler<any> = (event): void => {
     event.preventDefault();
     const defaultName = `Factory ${this.props.state.groups.length + 1}`;
     const name = prompt('What do you want to name this group?', defaultName);
@@ -74,13 +74,13 @@ class RawApp extends React.PureComponent<Props, State> {
     this.props.actions.addGroup(name);
   };
 
-  handleClickSettings = () => {
+  handleClickSettings = (): void => {
     this.setState({
       activePage: ActivePage.Settings,
     });
   };
 
-  renderNavbar() {
+  renderNavbar(): React.ReactNode {
     const settingsActive = this.state.activePage === ActivePage.Settings;
 
     const activeKey = settingsActive
@@ -129,21 +129,21 @@ class RawApp extends React.PureComponent<Props, State> {
     );
   }
 
-  renderFactory = () => {
+  renderFactory = (): React.ReactNode => {
     const group = this.props.state.groups[this.props.state.activeGroupIdx];
 
     return <RecipeGroup group={group} />;
   };
 
-  renderSettings = () => {
+  renderSettings = (): React.ReactNode => {
     return <Settings />;
   };
 
-  render() {
+  render(): React.ReactNode {
     if (!this.props.state.gameData.raw) {
       return null;
     }
-    let body: JSX.Element;
+    let body: React.ReactNode;
     if (this.state.activePage === ActivePage.Factory) {
       body = this.renderFactory();
     } else if (this.state.activePage === ActivePage.Settings) {

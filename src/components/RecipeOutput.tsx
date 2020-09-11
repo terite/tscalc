@@ -15,7 +15,7 @@ interface Props {
 }
 
 class RawRecipeOutput extends React.PureComponent<Props, never> {
-  handleClick = (event: React.MouseEvent) => {
+  handleClick = (event: React.MouseEvent): void => {
     const { obj } = this.props;
 
     if (event.shiftKey) {
@@ -43,7 +43,7 @@ class RawRecipeOutput extends React.PureComponent<Props, never> {
     }
   };
 
-  render() {
+  render(): React.ReactNode {
     const { obj, showName } = this.props;
 
     let text = perSecond(obj.amount);

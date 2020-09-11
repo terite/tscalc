@@ -17,7 +17,7 @@ export class ErrorCatcher extends React.PureComponent<Props, State> {
     };
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
     // Catch errors in any components below and re-render with error message
     this.crash(
       [
@@ -36,13 +36,13 @@ export class ErrorCatcher extends React.PureComponent<Props, State> {
     });
   }
 
-  crash(msg: string) {
+  crash(msg: string): void {
     this.setState({
       crashMsg: msg,
     });
   }
 
-  render() {
+  render(): React.ReactNode {
     if (typeof this.state.crashMsg !== 'undefined') {
       return (
         <div className={styles.crashed}>

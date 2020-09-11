@@ -12,7 +12,7 @@ interface RawSettingsProps {
 }
 
 class RawSettings extends React.PureComponent<RawSettingsProps, never> {
-  render() {
+  render(): React.ReactNode {
     const categoryNames = Object.entries(this.props.gameData.categoryMap)
       .filter((entry) => entry[1].length > 1)
       .map((entry) => entry[0]);
@@ -37,11 +37,11 @@ interface CategoryRowProps {
 }
 
 class RawCategoryRow extends React.PureComponent<CategoryRowProps, never> {
-  handleChange = (machine: game.AssemblingMachine) => {
+  handleChange = (machine: game.AssemblingMachine): void => {
     this.props.actions.updateDefaultMachine(this.props.category, machine);
   };
 
-  render() {
+  render(): React.ReactNode {
     const machines = this.props.state.gameData.categoryMap[this.props.category];
     const selected = getDefaultMachine(this.props.category, this.props.state);
     return (
