@@ -161,9 +161,7 @@ export class RecipePicker extends React.PureComponent<Props, State> {
         ],
       });
       const results = fuse.search(query);
-      console.log('results', results);
       recipes = results.map((r) => r.item);
-      /* recipes = fuse.search(query); */
     }
     this.setState({ matches: recipes });
   }
