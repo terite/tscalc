@@ -35,7 +35,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "prettier-all": "prettier --write src/{**/,}*",
-    "lint-all": "eslint src --ext .js,.jsx,.ts,.tsx",
+    "lint-all": "eslint -c .eslintrc.js --ext .js,.jsx,.ts,.tsx src",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
