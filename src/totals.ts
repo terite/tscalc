@@ -10,39 +10,48 @@ export class Totals {
   ingredients: game.Ingredient[] = [];
   products: game.Product[] = [];
 
-  addIngredient = (newIng: game.Ingredient): void => {
+  constructor(rows?: RecipeRowData[]) {
+    if (rows && rows.length) {
+      for (const row of rows) {
+        this.addRow(row);
+      }
+    }
+  }
+
+  addIngredient(ingredient: game.Ingredient): void {
     for (const oldIng of this.ingredients) {
-      let match = newIng.type === oldIng.type && newIng.item === oldIng.item;
-      if (newIng.type === 'fluid' && oldIng.type === 'fluid') {
+      let match =
+        ingredient.type === oldIng.type && ingredient.item === oldIng.item;
+      if (ingredient.type === 'fluid' && oldIng.type === 'fluid') {
         match =
           match &&
-          newIng.maximum_temperature === oldIng.maximum_temperature &&
-          newIng.minimum_temperature === oldIng.minimum_temperature;
+          ingredient.maximum_temperature === oldIng.maximum_temperature &&
+          ingredient.minimum_temperature === oldIng.minimum_temperature;
       }
 
       if (match) {
-        oldIng.amount = oldIng.amount.add(newIng.amount);
+        oldIng.amount = oldIng.amount.add(ingredient.amount);
         return;
       }
     }
-    this.ingredients.push(newIng);
-  };
+    this.ingredients.push(ingredient);
+  }
 
-  addProduct = (newProd: game.Product): void => {
+  addProduct(product: game.Product): void {
     for (const oldProd of this.products) {
       let match =
-        newProd.type === oldProd.type && newProd.item === oldProd.item;
-      if (newProd.type === 'fluid' && oldProd.type === 'fluid') {
-        match = match && newProd.temperature === oldProd.temperature;
+        product.type === oldProd.type && product.item === oldProd.item;
+      if (product.type === 'fluid' && oldProd.type === 'fluid') {
+        match = match && product.temperature === oldProd.temperature;
       }
 
       if (match) {
-        oldProd.amount = oldProd.amount.add(newProd.amount);
+        oldProd.amount = oldProd.amount.add(product.amount);
         return;
       }
     }
-    this.products.push(newProd);
-  };
+    this.products.push(product);
+  }
 
   addRow(row: RecipeRowData): void {
     const effects = {
@@ -90,21 +99,21 @@ export class Totals {
 
     const productMult = ingredientMult.mul(effects.productivity);
 
-    row.recipe.ingredients
-      .map((ingredient) => {
-        ingredient = clone(ingredient);
-        ingredient.amount = ingredient.amount.mul(ingredientMult);
-        return ingredient;
-      })
-      .forEach(this.addIngredient);
+    for (const ingredient of row.recipe.ingredients.map((ingredient) => {
+      ingredient = clone(ingredient);
+      ingredient.amount = ingredient.amount.mul(ingredientMult);
+      return ingredient;
+    })) {
+      this.addIngredient(ingredient);
+    }
 
-    row.recipe.products
-      .map((product) => {
-        product = clone(product);
-        product.amount = product.amount.mul(productMult);
-        return product;
-      })
-      .forEach(this.addProduct);
+    for (const product of row.recipe.products.map((product) => {
+      product = clone(product);
+      product.amount = product.amount.mul(productMult);
+      return product;
+    })) {
+      this.addProduct(product);
+    }
   }
 
   reduce(): {

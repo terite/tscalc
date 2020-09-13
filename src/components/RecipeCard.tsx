@@ -4,19 +4,19 @@ import * as game from '../game';
 
 import { Icon } from './Icon';
 import { MachineCard } from './MachineCard';
-import { withGame } from '../state';
+import { useGameData } from '../atoms';
 
 interface Props {
-  gameData: game.GameData;
   recipe: game.Recipe;
   onClick?(r: game.Recipe): void;
 }
 
-const GameRecipeCard: React.FC<Props> = (props) => {
+export const RecipeCard: React.FC<Props> = ({ recipe, onClick }) => {
+  const gameData = useGameData();
+
   const handleClick = (): void => {
-    props.onClick && props.onClick(props.recipe);
+    onClick && onClick(recipe);
   };
-  const recipe = props.recipe;
 
   const ingredients = recipe.ingredients.map((ingredient, i) => (
     <Icon key={i} obj={ingredient.item} text={ingredient.niceName()} />
@@ -38,29 +38,29 @@ const GameRecipeCard: React.FC<Props> = (props) => {
       <div className="card-header">
         <Icon obj={recipe} text={`${recipe.niceName()} (Recipe)`} />
       </div>
-      <div className="card-body">
-        <b>Ingredients:</b>
-        {ingredients}
-        <Icon
-          obj={props.gameData.raw.sprites.extra['clock']}
-          text={
-            <span>
-              <b>{recipe.crafting_time.toDecimal()} s</b> Crafting time
-            </span>
-          }
-        />
-      </div>
-      <div className="card-body">
-        <b>Products:</b>
-        {products}
-      </div>
-      <div className="card-body">
-        <b>Made In:</b>
-        <br />
-        {madeIn}
-      </div>
+      <ul className="list-group list-group-flush">
+        <li className="list-group-item">
+          <b>Ingredients:</b>
+          {ingredients}
+          <Icon
+            obj={gameData.raw.sprites.extra['clock']}
+            text={
+              <span>
+                <b>{recipe.crafting_time.toDecimal()} s</b> Crafting time
+              </span>
+            }
+          />
+        </li>
+        <li className="list-group-item">
+          <b>Products:</b>
+          {products}
+        </li>
+        <li className="list-group-item">
+          <b>Made In:</b>
+          <br />
+          {madeIn}
+        </li>
+      </ul>
     </div>
   );
 };
-
-export const RecipeCard = withGame(GameRecipeCard);

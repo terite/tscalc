@@ -81,7 +81,7 @@ export class RecipePicker extends React.PureComponent<Props, State> {
     }
   };
 
-  handleQueryInput = (event: React.FormEvent<HTMLInputElement>): void=> {
+  handleQueryInput = (event: React.FormEvent<HTMLInputElement>): void => {
     const target = event.target as HTMLInputElement;
     this.setQuery(target.value);
   };

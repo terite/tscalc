@@ -1,10 +1,14 @@
 import * as React from 'react';
+import { useRecoilValue } from 'recoil';
 import { Draggable } from 'react-beautiful-dnd';
 
 import Button from 'react-bootstrap/Button';
 
 import * as game from '../game';
 import { Rational } from '../rational';
+import { Totals } from '../totals';
+import { RecipeRowData, AppActions } from '../state';
+import { recipeTargetAtom, RecipeTarget } from '../atoms';
 
 import { Icon } from './Icon';
 import { RecipeOutput } from './RecipeOutput';
@@ -13,13 +17,13 @@ import { MachinePicker } from './MachinePicker';
 import { ModulePicker } from './ModulePicker';
 import { IntegerInput, RationalInput } from './generic';
 
-import { Totals } from '../totals';
-import { withBoth, RecipeRowData, AppActions, AppState } from '../state';
+import styles from './RecipeRow.module.css';
 
-interface Props extends RecipeRowData {
+interface Props {
   index: number;
   actions: AppActions;
-  state: AppState;
+  recipeTarget: RecipeTarget | undefined;
+  data: RecipeRowData;
 }
 
 class RawRecipeRow extends React.PureComponent<Props, never> {
@@ -30,7 +34,7 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
   handleMachineChange = (machine: game.AssemblingMachine): void => {
     this.applyChange({
       machine: machine,
-      modules: this.props.modules
+      modules: this.props.data.modules
         .filter((module) => module !== null)
         .slice(0, machine.data.module_slots),
     });
@@ -46,14 +50,14 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
 
   handleSetAllModules = (): void => {
     this.applyChange({
-      modules: new Array(this.props.machine.data.module_slots).fill(
-        this.props.modules[0]
+      modules: new Array(this.props.data.machine.data.module_slots).fill(
+        this.props.data.modules[0]
       ),
     });
   };
 
   handleSetModule = (index: number, module: game.Module | null): void => {
-    const modules = this.props.modules.slice();
+    const modules = this.props.data.modules.slice();
     modules[index] = module;
     this.applyChange({ modules: modules });
   };
@@ -63,7 +67,7 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
   };
 
   handleInputGroupClick: React.MouseEventHandler<any> = (event): void => {
-    const { recipeTarget } = this.props.state;
+    const { recipeTarget } = this.props;
     if (!event.shiftKey || !recipeTarget) {
       return;
     }
@@ -72,7 +76,7 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
 
     const output = new Totals();
     output.addRow({
-      ...this.props,
+      ...this.props.data,
       numMachines: Rational.one,
     });
 
@@ -108,20 +112,20 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
 
   getOutput(): Totals {
     const t = new Totals();
-    t.addRow(this.props);
+    t.addRow(this.props.data);
     return t;
   }
 
   renderModules(): React.ReactNode {
-    const numSlots = this.props.machine.data.module_slots;
+    const numSlots = this.props.data.machine.data.module_slots;
 
     const slots = [];
     for (let i = 0; i < numSlots; i++) {
-      const module = this.props.modules[i];
+      const module = this.props.data.modules[i];
       slots.push(
         <ModulePicker
           key={i}
-          recipe={this.props.recipe}
+          recipe={this.props.data.recipe}
           selected={module}
           onChange={(m) => this.handleSetModule(i, m)}
         />
@@ -153,15 +157,15 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
             <span className="input-group-text">Beacon Modules</span>
           </div>
           <IntegerInput
-            value={this.props.numBeacons}
+            value={this.props.data.numBeacons}
             onChange={this.handleNumBeaconsChange}
             min={0}
           />
           <div className="input-group-append btn-icon-wrapper">
             <ModulePicker
               isBeacon={true}
-              recipe={this.props.recipe}
-              selected={this.props.beaconModule}
+              recipe={this.props.data.recipe}
+              selected={this.props.data.beaconModule}
               onChange={this.handleSetBeaconModule}
             />
           </div>
@@ -175,14 +179,14 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
       <div className="btn-toolbar mb-3">
         <div className="input-group" onClick={this.handleInputGroupClick}>
           <RationalInput
-            value={this.props.numMachines}
+            value={this.props.data.numMachines}
             onChange={this.handleNumMachinesChange}
             positiveOnly={true}
           />
           <div className="input-group-append btn-icon-wrapper">
             <MachinePicker
-              machines={this.props.recipe.madeIn}
-              selected={this.props.machine}
+              machines={this.props.data.recipe.madeIn}
+              selected={this.props.data.machine}
               onChange={this.handleMachineChange}
             />
           </div>
@@ -192,7 +196,7 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
   }
 
   render(): React.ReactNode {
-    const recipe = this.props.recipe;
+    const recipe = this.props.data.recipe;
     const output = this.getOutput();
 
     const ingredients = output.ingredients.map((ingredient, i) => (
@@ -209,7 +213,7 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
       <Draggable draggableId={recipe.name} index={this.props.index}>
         {(provided) => (
           <div
-            className="recipe-row card mb-3"
+            className={`${styles.RecipeRow} recipe-row card mb-3`}
             ref={provided.innerRef}
             {...provided.draggableProps}
           >
@@ -272,4 +276,18 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
   }
 }
 
-export const RecipeRow = withBoth(RawRecipeRow);
+export const RecipeRow: React.FC<{
+  index: number;
+  actions: AppActions;
+  data: RecipeRowData;
+}> = ({ index, data, actions }) => {
+  const recipeTarget = useRecoilValue(recipeTargetAtom);
+  return (
+    <RawRecipeRow
+      index={index}
+      data={data}
+      actions={actions}
+      recipeTarget={recipeTarget}
+    />
+  );
+};

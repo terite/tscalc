@@ -2,7 +2,8 @@ import * as React from 'react';
 
 import * as game from '../game';
 
-import { AppActions, AppState, withGame, withBoth } from '../state';
+import { useGameData } from '../atoms';
+import { AppActions, AppState, withBoth } from '../state';
 import { getDefaultMachine } from '../stateutil';
 
 import { MachinePicker } from './MachinePicker';
@@ -11,27 +12,28 @@ interface RawSettingsProps {
   gameData: game.GameData;
 }
 
-class RawSettings extends React.PureComponent<RawSettingsProps, never> {
-  render(): React.ReactNode {
-    const categoryNames = Object.entries(this.props.gameData.categoryMap)
-      .filter((entry) => entry[1].length > 1)
-      .map((entry) => entry[0]);
+export const Settings: React.FC<{}> = () => {
+  const gameData = useGameData();
 
-    categoryNames.sort((a, b) => a.localeCompare(b));
+  const categoryNames = Object.entries(gameData.categoryMap)
+    .filter((entry) => entry[1].length > 1)
+    .map((entry) => entry[0]);
 
-    return (
-      <div>
-        <h3>Default Assemblers</h3>
-        {categoryNames.map((name) => (
-          <CategoryRow key={name} category={name} />
-        ))}
-      </div>
-    );
-  }
-}
+  categoryNames.sort((a, b) => a.localeCompare(b));
+
+  return (
+    <div>
+      <h3>Default Assemblers</h3>
+      {categoryNames.map((name) => (
+        <CategoryRow gameData={gameData} key={name} category={name} />
+      ))}
+    </div>
+  );
+};
 
 interface CategoryRowProps {
   category: string;
+  gameData: game.GameData;
   state: AppState;
   actions: AppActions;
 }
@@ -42,8 +44,12 @@ class RawCategoryRow extends React.PureComponent<CategoryRowProps, never> {
   };
 
   render(): React.ReactNode {
-    const machines = this.props.state.gameData.categoryMap[this.props.category];
-    const selected = getDefaultMachine(this.props.category, this.props.state);
+    const machines = this.props.gameData.categoryMap[this.props.category];
+    const selected = getDefaultMachine(
+      this.props.category,
+      this.props.state,
+      this.props.gameData
+    );
     return (
       <div className="btn-toolbar mb-3" key={this.props.category}>
         <div className="input-group">
@@ -64,5 +70,3 @@ class RawCategoryRow extends React.PureComponent<CategoryRowProps, never> {
 }
 
 const CategoryRow = withBoth(RawCategoryRow);
-
-export const Settings = withGame(RawSettings);

@@ -1,0 +1,7 @@
+/* .RecipeRow { */
+/*   border: 1px solid red; */
+/* } */
+
+:global(.shift-down) .RecipeRow :global(.input-group) input {
+  border: 1px solid green;
+}

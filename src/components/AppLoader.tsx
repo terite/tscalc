@@ -9,72 +9,57 @@ import { App } from './App';
 
 interface Props {
   actions: AppActions;
+  gameData: game.GameData;
 }
+
 interface State {
-  gameData: game.GameData | null;
+  loaded: boolean;
 }
 
 class RawAppLoader extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      gameData: null,
-    };
-  }
+  state: State = {
+    loaded: false,
+  };
+
   componentDidMount(): void {
-    this.load().catch((err) => {
-      this.setState(() => {
-        throw err;
-      });
-    });
+    this.load().then(
+      () => {
+        this.setState({ loaded: true });
+      },
+      (err) => {
+        this.setState(() => {
+          throw err;
+        });
+      }
+    );
   }
 
   async load(): Promise<void> {
-    const response = await fetch(
-      `${process.env.PUBLIC_URL}/assets/kras-18.json`
-    );
-    if (response.status !== 200) {
-      throw new Error(
-        `Could not load game data, got HTTP status ${response.status}`
-      );
-    }
-
-    let parsed;
-    try {
-      parsed = await response.json();
-    } catch (err) {
-      throw new Error(`Could not parse game data: ${err}`);
-    }
-
-    const gameData = new game.GameData(parsed);
-
-    this.props.actions.replaceState({ gameData });
-
-    const urlState = serialization.getUrlState(gameData);
+    const urlState = serialization.getUrlState(this.props.gameData);
     if (urlState) {
       // everything comes from url state
-      this.props.actions.replaceState(urlState);
+      await this.props.actions.replaceState(urlState);
     } else {
       // Load just settings
       try {
-        const storageState = serialization.getLocalStorageState(gameData);
+        const storageState = serialization.getLocalStorageState(
+          this.props.gameData
+        );
         if (storageState) {
           // everything comes from url state
-          this.props.actions.replaceState(storageState);
+          await this.props.actions.replaceState(storageState);
         }
       } catch (err) {
         console.error('Failed to load local storage state', err);
       }
     }
-
-    this.setState({ gameData });
   }
 
   render(): React.ReactNode {
-    if (!this.state.gameData) {
+    if (!this.state.loaded) {
       return <h1>Loading...</h1>;
     }
-    const sheet = `${process.env.PUBLIC_URL}/assets/sprite-sheet-${this.state.gameData.raw.sprites.hash}.png`;
+    const sheet = `${process.env.PUBLIC_URL}/assets/sprite-sheet-${this.props.gameData.raw.sprites.hash}.png`;
     const style = `
         .game-icon {
             background-image: url(${sheet});
@@ -82,22 +67,22 @@ class RawAppLoader extends React.PureComponent<Props, State> {
         `;
     return (
       <>
-        <StateWriter />
+        <StateWriter gameData={this.props.gameData} />
         <Prefetch href={sheet} />
         <style>{style}</style>
-        <App />
+        <App gameData={this.props.gameData} />
       </>
     );
   }
 }
 
-const StateWriter: React.FC = () => {
+const StateWriter: React.FC<{ gameData: game.GameData }> = ({ gameData }) => {
   const [state] = useDakpan();
 
   useEffect(() => {
-    serialization.setUrlState(state);
-    serialization.setLocalStorageState(state);
-  }, [state]);
+    serialization.setUrlState(state, gameData);
+    serialization.setLocalStorageState(state, gameData);
+  }, [gameData, state]);
 
   return null;
 };

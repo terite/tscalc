@@ -10,6 +10,7 @@ import { RecipeGroup } from './RecipeGroup';
 import { Settings } from './Settings';
 
 import { AppActions, AppState, withBoth } from '../state';
+import { GameData } from '../game';
 import { assertNever } from '../util';
 
 import styles from './App.module.css';
@@ -17,6 +18,7 @@ import styles from './App.module.css';
 interface Props {
   state: AppState;
   actions: AppActions;
+  gameData: GameData;
 }
 
 interface State {
@@ -132,7 +134,7 @@ class RawApp extends React.PureComponent<Props, State> {
   renderFactory = (): React.ReactNode => {
     const group = this.props.state.groups[this.props.state.activeGroupIdx];
 
-    return <RecipeGroup group={group} />;
+    return <RecipeGroup gameData={this.props.gameData} group={group} />;
   };
 
   renderSettings = (): React.ReactNode => {
@@ -140,7 +142,7 @@ class RawApp extends React.PureComponent<Props, State> {
   };
 
   render(): React.ReactNode {
-    if (!this.props.state.gameData.raw) {
+    if (!this.props.gameData.raw) {
       return null;
     }
     let body: React.ReactNode;

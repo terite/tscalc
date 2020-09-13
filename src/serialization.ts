@@ -146,8 +146,11 @@ interface SerializedSettings {
   };
 }
 
-export function setLocalStorageState(state: AppState): void {
-  localStorage.setItem('appstate', JSON.stringify(serialize(state)));
+export function setLocalStorageState(
+  state: AppState,
+  gameData: game.GameData
+): void {
+  localStorage.setItem('appstate', JSON.stringify(serialize(state, gameData)));
 }
 
 export function getLocalStorageState(gameData: game.GameData): AppState | null {
@@ -163,8 +166,8 @@ export function getLocalStorageState(gameData: game.GameData): AppState | null {
   return deserialize(gameData, stateobj);
 }
 
-export function setUrlState(state: AppState): void {
-  const serialized = serialize(state);
+export function setUrlState(state: AppState, gameData: game.GameData): void {
+  const serialized = serialize(state, gameData);
   const version = serialized.version;
   let str = JSON.stringify(serialized.data);
   // compress
@@ -173,13 +176,16 @@ export function setUrlState(state: AppState): void {
   window.history.replaceState('', '', `#${version}-${str}`);
 }
 
-function serialize(state: AppState): SerializedAppState {
+function serialize(
+  state: AppState,
+  gameData: game.GameData
+): SerializedAppState {
   const groups = state.groups.map((group) => {
     return {
       name: group.name,
       rows: group.rows.map((row) => {
         let machineName: string | null = row.machine.data.name;
-        const defaultMachine = getDefaultMachine(row.recipe, state);
+        const defaultMachine = getDefaultMachine(row.recipe, state, gameData);
 
         if (defaultMachine.data.name === machineName) {
           machineName = null;
@@ -266,13 +272,10 @@ function deserialize(
   const migrated = migrateSerializedState(unmigrated).data;
 
   const state: AppState = {
-    gameData: gameData,
-
     settings: deserializeSettings(gameData, migrated.settings),
     groups: [],
 
     activeGroupIdx: 0,
-    recipeTarget: undefined,
   };
 
   state.groups = migrated.groups.map((group) => {
@@ -291,7 +294,7 @@ function deserialize(
 
           const machine = machineName
             ? gameData.entityMap[machineName]
-            : getDefaultMachine(recipe, state);
+            : getDefaultMachine(recipe, state, gameData);
 
           return {
             recipe: recipe,

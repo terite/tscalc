@@ -1,26 +1,30 @@
 import * as React from 'react';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
-
 import { DropResult, DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import * as signal from '../signal';
 import * as game from '../game';
+import * as su from '../stateutil';
 import { Rational } from '../rational';
 
 import { RecipeRow } from './RecipeRow';
 import { RecipePicker } from './RecipePicker';
 import { TotalCard } from './TotalCard';
 
-import { RecipeGroupData, RecipeRowData } from '../state';
-
-import { AppActions, AppState, withBoth } from '../state';
-import * as su from '../stateutil';
+import {
+  AppActions,
+  AppState,
+  RecipeGroupData,
+  RecipeRowData,
+  withBoth,
+} from '../state';
 
 import styles from './RecipeGroup.module.css';
 
 interface Props {
   group: RecipeGroupData;
+  gameData: game.GameData;
   state: AppState;
   actions: AppActions;
 }
@@ -37,7 +41,11 @@ class RawRecipeGroup extends React.PureComponent<Props, never> {
   handlePickRecipe = (recipe: game.Recipe): void => {
     this.props.actions.addRow({
       recipe: recipe,
-      machine: su.getDefaultMachine(recipe, this.props.state),
+      machine: su.getDefaultMachine(
+        recipe,
+        this.props.state,
+        this.props.gameData
+      ),
       numMachines: Rational.one,
       modules: [],
       beaconModule: null,
@@ -53,7 +61,14 @@ class RawRecipeGroup extends React.PureComponent<Props, never> {
   };
 
   renderRow = (data: RecipeRowData, index: number): React.ReactNode => {
-    return <RecipeRow key={data.recipe.name} index={index} {...data} />;
+    return (
+      <RecipeRow
+        key={data.recipe.name}
+        index={index}
+        actions={this.props.actions}
+        data={data}
+      />
+    );
   };
 
   handleClickRename = (): void => {
@@ -89,7 +104,7 @@ class RawRecipeGroup extends React.PureComponent<Props, never> {
   };
 
   render(): React.ReactNode {
-    const gd = this.props.state.gameData;
+    const gd = this.props.gameData;
     const availableRecipes = gd.recipes.filter((recipe) => {
       return !this.props.group.rows.some((row) => row.recipe === recipe);
     });

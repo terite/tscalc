@@ -1,28 +1,30 @@
-import * as React from 'react';
+import React, { useMemo } from 'react';
 import { RecipeOutput } from './RecipeOutput';
-import { withGame, RecipeRowData } from '../state';
+import { RecipeRowData } from '../state';
+import { useGameData } from '../atoms';
 import { Totals } from '../totals';
-import * as game from '../game';
 
 import styles from './TotalCard.module.css';
 
 interface Props {
-  gameData: game.GameData;
   rows: RecipeRowData[];
 }
 
-const RawTotalCard: React.FC<Props> = (props) => {
-  const totals = new Totals();
-  for (const row of props.rows) {
-    totals.addRow(row);
-  }
+export const TotalCard: React.FC<Props> = ({ rows }) => {
+  const gameData = useGameData();
 
-  const { ingredients, products } = totals.reduce();
+  const { ingredients, products } = useMemo(() => {
+    const totals = new Totals(rows);
+
+    const reduced = totals.reduce();
+    gameData.sortByItem(reduced.ingredients, (p) => p.item);
+    gameData.sortByItem(reduced.products, (p) => p.item);
+    return reduced;
+  }, [gameData, rows]);
+
   if (!ingredients.length && !products.length) {
     return <div />;
   }
-
-  props.gameData.sortByItem(products, (p) => p.item);
 
   return (
     <div className={`card ${styles.TotalCard}`}>
@@ -46,5 +48,3 @@ const RawTotalCard: React.FC<Props> = (props) => {
     </div>
   );
 };
-
-export const TotalCard = withGame(RawTotalCard);

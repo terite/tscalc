@@ -3,7 +3,7 @@ import { createDakpan } from 'dakpan';
 
 import * as game from './game';
 import { Rational } from './rational';
-import { getDefaultMachine } from './stateutil';
+export { withGame } from './atoms';
 
 export interface RecipeRowData {
   recipe: game.Recipe;
@@ -25,26 +25,16 @@ export interface AppSettingsData {
   };
 }
 
-export interface RecipeTarget {
-  item: game.Item | game.Fluid;
-  amount: Rational;
-}
-
 export interface AppState {
-  // Loaded automatically
-  gameData: game.GameData;
-
   // Preserved via url/localstorage
   groups: RecipeGroupData[];
   settings: AppSettingsData;
 
   // unsaved state
   activeGroupIdx: number;
-  recipeTarget: RecipeTarget | undefined;
 }
 
 export const defaultState: AppState = {
-  gameData: ({ fakeGameData: true } as any) as game.GameData, // set early by apploader
   groups: [
     {
       name: 'Factory 1',
@@ -56,7 +46,6 @@ export const defaultState: AppState = {
   },
 
   activeGroupIdx: 0,
-  recipeTarget: undefined,
 };
 
 function getActiveGroup(state: AppState): RecipeGroupData {
@@ -125,11 +114,9 @@ export const [StateProvider, useDakpan] = createDakpan(defaultState)({
     category: string,
     newMachine: game.AssemblingMachine
   ) => (state) => {
-    const oldMachine = getDefaultMachine(category, state);
-
     const groups = state.groups.map((group) => {
       const rows = group.rows.map((row) => {
-        if (row.recipe.category !== category || row.machine !== oldMachine) {
+        if (row.recipe.category !== category) {
           return row;
         }
         return {
@@ -206,13 +193,6 @@ export const [StateProvider, useDakpan] = createDakpan(defaultState)({
       activeGroupIdx,
     };
   },
-
-  setRecipeTarget: (recipeTarget: RecipeTarget) => (state) => {
-    return {
-      ...state,
-      recipeTarget,
-    };
-  },
 });
 
 export type AppActions = NonNullable<ReturnType<typeof useDakpan>[1]>;
@@ -226,7 +206,11 @@ export const withBoth = <T extends React.ComponentType<any>>(
 
   const WrappedComponent: React.FC<NewProps> = (props: any) => {
     const [state, actions] = useDakpan();
-    return <OldComponent state={state} actions={actions} {...props} />;
+    return React.createElement(OldComponent, {
+      state,
+      actions,
+      ...props,
+    });
   };
 
   return WrappedComponent;
@@ -236,19 +220,6 @@ type PropsOf<
   T extends React.ComponentType<any>
 > = T extends React.ComponentType<infer P> ? P : never;
 
-export const withGame = <T extends React.ComponentType<any>>(
-  OldComponent: T
-): React.FC<Pick<PropsOf<T>, Exclude<keyof PropsOf<T>, 'gameData'>>> => {
-  type NewProps = Omit<PropsOf<T>, 'gameData'>;
-
-  const WrappedComponent: React.FC<NewProps> = (props: any) => {
-    const [state] = useDakpan();
-    return <OldComponent gameData={state.gameData} {...props} />;
-  };
-
-  return WrappedComponent;
-};
-
 export const withActions = <T extends React.ComponentType<any>>(
   OldComponent: T
 ): React.FC<Pick<PropsOf<T>, Exclude<keyof PropsOf<T>, 'actions'>>> => {
@@ -256,7 +227,10 @@ export const withActions = <T extends React.ComponentType<any>>(
 
   const WrappedComponent: React.FC<NewProps> = (props: any) => {
     const [, actions] = useDakpan();
-    return <OldComponent actions={actions} {...props} />;
+    return React.createElement(OldComponent, {
+      actions,
+      ...props,
+    });
   };
 
   return WrappedComponent;

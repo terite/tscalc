@@ -4,9 +4,12 @@ function num_gcd(a: number, b: number): number {
   return !b ? a : num_gcd(b, a % b);
 }
 
-function num_divmod(a: number, b: number): {
-  quotient: number,
-  remainder: number,
+function num_divmod(
+  a: number,
+  b: number
+): {
+  quotient: number;
+  remainder: number;
 } {
   assert(Number.isSafeInteger(a));
   assert(Number.isSafeInteger(b));
@@ -20,8 +23,8 @@ function num_divmod(a: number, b: number): {
 const FLOAT_CONVERT_PRECISION = 10000;
 
 export class Rational {
-  p: number;
-  q: number;
+  readonly p: number;
+  readonly q: number;
 
   constructor(p: number, q: number) {
     assert(

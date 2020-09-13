@@ -5,10 +5,9 @@ import { GameData, Module, Recipe } from '../game';
 import { Icon } from './Icon';
 import { ModuleCard } from './ModuleCard';
 import { Dropdown } from './generic';
-import { withGame } from '../state';
+import { useGameData } from '../atoms';
 
 interface ModulePickerProps {
-  gameData: GameData;
   recipe: Recipe;
   isBeacon?: boolean;
   selected: Module | null;
@@ -41,8 +40,9 @@ function getNoMod(gameData: GameData): Module {
   return _nomodule;
 }
 
-const GameModulePicker: React.FC<ModulePickerProps> = (props) => {
-  const nomod = getNoMod(props.gameData);
+export const ModulePicker: React.FC<ModulePickerProps> = (props) => {
+  const gameData = useGameData();
+  const nomod = getNoMod(gameData);
   const renderSelected = (module: Module | null): React.ReactNode => {
     if (module) {
       return <Icon obj={module} tooltip={<ModuleCard module={module} />} />;
@@ -65,7 +65,7 @@ const GameModulePicker: React.FC<ModulePickerProps> = (props) => {
     }
   };
 
-  const options = props.gameData.modules
+  const options = gameData.modules
     .filter((m) => {
       // TODO: what is the actual logic for which modules are allowed in beacons?
       if (props.isBeacon && m.effects.productivity.isPositive()) {
@@ -95,5 +95,3 @@ const GameModulePicker: React.FC<ModulePickerProps> = (props) => {
     />
   );
 };
-
-export const ModulePicker = withGame(GameModulePicker);

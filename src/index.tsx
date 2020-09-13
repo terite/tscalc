@@ -1,12 +1,16 @@
 import * as Sentry from '@sentry/browser';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { RecoilRoot } from 'recoil';
 
 import { ErrorCatcher } from './components/ErrorCatcher';
 import { AppLoader } from './components/AppLoader';
+import { GameDataLoader } from './components/GameDataLoader';
 import { StateProvider } from './state';
 
 import './index.css';
+
+const JSON_PATH = `${process.env.PUBLIC_URL}/assets/kras-18.json`;
 
 if (process.env.NODE_ENV === 'production') {
   Sentry.init({
@@ -16,9 +20,14 @@ if (process.env.NODE_ENV === 'production') {
 
 ReactDOM.render(
   <ErrorCatcher>
-    <StateProvider>
-      <AppLoader />
-    </StateProvider>
+    <RecoilRoot>
+      <StateProvider>
+        <GameDataLoader
+          jsonPath={JSON_PATH}
+          child={(gameData) => <AppLoader gameData={gameData} />}
+        />
+      </StateProvider>
+    </RecoilRoot>
   </ErrorCatcher>,
   document.getElementById('root')
 );
