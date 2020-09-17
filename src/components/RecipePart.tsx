@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 
 import { Rational } from '../rational';
 import * as game from '../game';
@@ -10,13 +10,15 @@ import { IngredientCard } from './IngredientCard';
 
 import { recipeTargetAtom } from '../atoms';
 
+import styles from './RecipePart.module.css';
+
 interface Props {
   obj: game.Ingredient | game.Product;
   showName?: boolean;
 }
 
-export const RecipeOutput: React.FC<Props> = ({ obj, showName }) => {
-  const setRecipeTarget = useSetRecoilState(recipeTargetAtom);
+export const RecipePart: React.FC<Props> = ({ obj, showName }) => {
+  const [recipeTarget, setRecipeTarget] = useRecoilState(recipeTargetAtom);
 
   const handleClick = useCallback(
     (event: React.MouseEvent): void => {
@@ -56,8 +58,15 @@ export const RecipeOutput: React.FC<Props> = ({ obj, showName }) => {
     );
   }
 
+  const isTarget =
+    recipeTarget &&
+    recipeTarget.item === obj.item &&
+    recipeTarget.amount.equal(obj.amount);
+  const copySource = isTarget ? 'copy-source' : '';
+
   return (
     <Icon
+      className={`${styles.RecipePart} ${copySource}`}
       onClick={handleClick}
       tooltip={<IngredientCard obj={obj} />}
       obj={obj.item}

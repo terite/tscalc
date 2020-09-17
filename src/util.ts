@@ -48,3 +48,41 @@ export function format_watts(watts: number): string {
 export function format_joules(joules: number): string {
   return format_magnitude(joules, ['J', 'kJ', 'MJ', 'GJ', 'TJ', 'PJ']);
 }
+
+interface Func<T extends any[]> {
+  (...args: T): void;
+}
+
+interface DebouncedFunc<T extends any[]> extends Func<T> {
+  cancel(): void;
+}
+
+export function debounce<T extends any[]>(
+  fn: Func<T>,
+  ms: number
+): DebouncedFunc<T> {
+  let pendingId: any; // TODO: number when node is removed
+
+  function debounced(...args: T): void {
+    if (pendingId !== undefined) {
+      return;
+    }
+    pendingId = setTimeout(() => {
+      pendingId = undefined;
+      fn(...args);
+    }, ms);
+  }
+
+  function cancel(): void {
+    if (pendingId !== undefined) {
+      clearTimeout(pendingId);
+      pendingId = undefined;
+    }
+  }
+
+  Object.defineProperty(debounced, 'cancel', {
+    value: cancel,
+  });
+
+  return debounced as DebouncedFunc<T>;
+}

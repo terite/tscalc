@@ -18,16 +18,20 @@ export const RecipeCard: React.FC<Props> = ({ recipe, onClick }) => {
     onClick && onClick(recipe);
   };
 
-  const ingredients = recipe.ingredients.map((ingredient, i) => (
-    <Icon key={i} obj={ingredient.item} text={ingredient.niceName()} />
+  const ingredients = recipe.ingredients.map((ingredient) => (
+    <Icon
+      key={ingredient.name}
+      obj={ingredient.item}
+      text={ingredient.niceName()}
+    />
   ));
-  const products = recipe.products.map((product, i) => (
-    <Icon key={i} obj={product.item} text={product.niceName()} />
+  const products = recipe.products.map((product) => (
+    <Icon key={product.name} obj={product.item} text={product.niceName()} />
   ));
 
-  const madeIn = recipe.madeIn.map((machine, i) => (
+  const madeIn = recipe.madeIn.map((machine) => (
     <Icon
-      key={i}
+      key={machine.data.name}
       obj={machine.data}
       tooltip={<MachineCard machine={machine} />}
     />

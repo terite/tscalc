@@ -1,9 +1,10 @@
-import * as React from 'react';
+import React, { useCallback } from 'react';
+import { useRecoilState } from 'recoil';
 
 import * as game from '../game';
 
-import { useGameData } from '../atoms';
-import { AppActions, AppState, withBoth } from '../state';
+import { settingsAtom, useGameData } from '../atoms';
+import { AppSettingsData } from '../state';
 import { getDefaultMachine } from '../stateutil';
 
 import { MachinePicker } from './MachinePicker';
@@ -14,6 +15,20 @@ interface RawSettingsProps {
 
 export const Settings: React.FC<{}> = () => {
   const gameData = useGameData();
+  const [settings, setSettings] = useRecoilState(settingsAtom);
+
+  const handleSetDefaultMachine = useCallback(
+    (category: string, machine: game.AssemblingMachine) => {
+      setSettings((settings) => ({
+        ...settings,
+        assemblerOverrides: {
+          ...settings.assemblerOverrides,
+          [category]: machine,
+        },
+      }));
+    },
+    [setSettings]
+  );
 
   const categoryNames = Object.entries(gameData.categoryMap)
     .filter((entry) => entry[1].length > 1)
@@ -25,7 +40,13 @@ export const Settings: React.FC<{}> = () => {
     <div>
       <h3>Default Assemblers</h3>
       {categoryNames.map((name) => (
-        <CategoryRow gameData={gameData} key={name} category={name} />
+        <CategoryRow
+          gameData={gameData}
+          settings={settings}
+          key={name}
+          category={name}
+          onSetDefaultMachine={handleSetDefaultMachine}
+        />
       ))}
     </div>
   );
@@ -34,20 +55,20 @@ export const Settings: React.FC<{}> = () => {
 interface CategoryRowProps {
   category: string;
   gameData: game.GameData;
-  state: AppState;
-  actions: AppActions;
+  settings: AppSettingsData;
+  onSetDefaultMachine(category: string, machine: game.AssemblingMachine): void;
 }
 
-class RawCategoryRow extends React.PureComponent<CategoryRowProps, never> {
+class CategoryRow extends React.PureComponent<CategoryRowProps, never> {
   handleChange = (machine: game.AssemblingMachine): void => {
-    this.props.actions.updateDefaultMachine(this.props.category, machine);
+    this.props.onSetDefaultMachine(this.props.category, machine);
   };
 
   render(): React.ReactNode {
     const machines = this.props.gameData.categoryMap[this.props.category];
     const selected = getDefaultMachine(
       this.props.category,
-      this.props.state,
+      this.props.settings,
       this.props.gameData
     );
     return (
@@ -68,5 +89,3 @@ class RawCategoryRow extends React.PureComponent<CategoryRowProps, never> {
     );
   }
 }
-
-const CategoryRow = withBoth(RawCategoryRow);

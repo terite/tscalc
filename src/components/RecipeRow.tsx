@@ -1,17 +1,15 @@
-import * as React from 'react';
+import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { Draggable } from 'react-beautiful-dnd';
-
-import Button from 'react-bootstrap/Button';
 
 import * as game from '../game';
 import { Rational } from '../rational';
 import { Totals } from '../totals';
-import { RecipeRowData, AppActions } from '../state';
+import { RecipeRowData } from '../state';
 import { recipeTargetAtom, RecipeTarget } from '../atoms';
 
 import { Icon } from './Icon';
-import { RecipeOutput } from './RecipeOutput';
+import { RecipePart } from './RecipePart';
 import { RecipeCard } from './RecipeCard';
 import { MachinePicker } from './MachinePicker';
 import { ModulePicker } from './ModulePicker';
@@ -21,14 +19,16 @@ import styles from './RecipeRow.module.css';
 
 interface Props {
   index: number;
-  actions: AppActions;
   recipeTarget: RecipeTarget | undefined;
   data: RecipeRowData;
+
+  onUpdateRow(row: RecipeRowData): void;
+  onRemoveRow(recipe: game.Recipe): void;
 }
 
 class RawRecipeRow extends React.PureComponent<Props, never> {
-  handleRemoveClick = (): void => {
-    this.props.actions.removeRow(this.props.index);
+  handleRemoveRow = (): void => {
+    this.props.onRemoveRow(this.props.data.recipe);
   };
 
   handleMachineChange = (machine: game.AssemblingMachine): void => {
@@ -107,7 +107,10 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
   };
 
   applyChange(change: Partial<RecipeRowData>): void {
-    this.props.actions.updateRow(this.props.index, change);
+    this.props.onUpdateRow({
+      ...this.props.data,
+      ...change,
+    });
   }
 
   getOutput(): Totals {
@@ -199,14 +202,14 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
     const recipe = this.props.data.recipe;
     const output = this.getOutput();
 
-    const ingredients = output.ingredients.map((ingredient, i) => (
-      <div className="mb-1" key={i}>
-        <RecipeOutput obj={ingredient} />
+    const ingredients = output.ingredients.map((ingredient) => (
+      <div className="mb-1" key={ingredient.name}>
+        <RecipePart obj={ingredient} />
       </div>
     ));
-    const products = output.products.map((product, i) => (
-      <div className="mb-1" key={i}>
-        <RecipeOutput obj={product} />
+    const products = output.products.map((product) => (
+      <div className="mb-1" key={product.name}>
+        <RecipePart obj={product} />
       </div>
     ));
     return (
@@ -226,19 +229,18 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
                 />
               </div>
               <div className="float-right">
-                <Button
-                  variant="danger"
-                  onClick={this.handleRemoveClick}
-                  size="sm"
+                <button
+                  className="btn btn-danger btn-sm"
+                  onClick={this.handleRemoveRow}
                 >
                   Remove
-                </Button>
+                </button>
               </div>
             </div>
             <div className="card-body clearfix">
               <div className="float-left">
                 {this.renderMachines()}
-                <div className="mb-3 btn-group btn-icon-wrapper">
+                <div className="mb-3 btn-group btn-icon-wrapper" role="group">
                   {this.renderModules()}
                 </div>
                 {this.renderBeacons()}
@@ -278,16 +280,19 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
 
 export const RecipeRow: React.FC<{
   index: number;
-  actions: AppActions;
   data: RecipeRowData;
-}> = ({ index, data, actions }) => {
+  onUpdateRow(data: RecipeRowData): void;
+  onRemoveRow(recipe: game.Recipe): void;
+}> = ({ index, data, onRemoveRow, onUpdateRow }) => {
   const recipeTarget = useRecoilValue(recipeTargetAtom);
+
   return (
     <RawRecipeRow
       index={index}
       data={data}
-      actions={actions}
       recipeTarget={recipeTarget}
+      onUpdateRow={onUpdateRow}
+      onRemoveRow={onRemoveRow}
     />
   );
 };

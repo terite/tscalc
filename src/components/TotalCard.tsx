@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { RecipeOutput } from './RecipeOutput';
+import { RecipePart } from './RecipePart';
 import { RecipeRowData } from '../state';
 import { useGameData } from '../atoms';
 import { Totals } from '../totals';
@@ -33,14 +33,14 @@ export const TotalCard: React.FC<Props> = ({ rows }) => {
         <div className="row">
           <div className="col">
             Ingredients:
-            {ingredients.map((ing, i) => (
-              <RecipeOutput key={i} obj={ing} showName />
+            {ingredients.map((ing) => (
+              <RecipePart key={ing.name} obj={ing} showName />
             ))}
           </div>
           <div className="col">
             Products:
-            {products.map((prod, i) => (
-              <RecipeOutput key={i} obj={prod} showName />
+            {products.map((prod) => (
+              <RecipePart key={prod.name} obj={prod} showName />
             ))}
           </div>
         </div>

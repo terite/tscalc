@@ -1,22 +1,24 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import * as ReactDOM from 'react-dom';
+import { atom, useRecoilValue, useSetRecoilState } from 'recoil';
 
 import * as game from '../game';
-import { AppActions, withBoth, useDakpan } from '../state';
+import { groupsState, groupAtomsAtom, settingsAtom } from '../atoms';
+import { CompleteState, RecipeGroupData } from '../state';
 import * as serialization from '../serialization';
 
 import { App } from './App';
 
-interface Props {
-  actions: AppActions;
+interface RawAppLoaderProps {
   gameData: game.GameData;
+  onSetPreviousState(state: CompleteState): void;
 }
 
 interface State {
   loaded: boolean;
 }
 
-class RawAppLoader extends React.PureComponent<Props, State> {
+class RawAppLoader extends React.PureComponent<RawAppLoaderProps, State> {
   state: State = {
     loaded: false,
   };
@@ -34,25 +36,25 @@ class RawAppLoader extends React.PureComponent<Props, State> {
     );
   }
 
-  async load(): Promise<void> {
+  getPreviousState(): CompleteState | undefined {
     const urlState = serialization.getUrlState(this.props.gameData);
-    if (urlState) {
-      // everything comes from url state
-      await this.props.actions.replaceState(urlState);
-    } else {
-      // Load just settings
-      try {
-        const storageState = serialization.getLocalStorageState(
-          this.props.gameData
-        );
-        if (storageState) {
-          // everything comes from url state
-          await this.props.actions.replaceState(storageState);
-        }
-      } catch (err) {
-        console.error('Failed to load local storage state', err);
-      }
+    if (urlState) return urlState;
+
+    try {
+      const storageState = serialization.getLocalStorageState(
+        this.props.gameData
+      );
+      if (storageState) return storageState;
+    } catch (err) {
+      console.error('Failed to load local storage state', err);
     }
+  }
+
+  async load(): Promise<void> {
+    const previousState = this.getPreviousState();
+    if (!previousState) return;
+
+    this.props.onSetPreviousState(previousState);
   }
 
   render(): React.ReactNode {
@@ -77,12 +79,17 @@ class RawAppLoader extends React.PureComponent<Props, State> {
 }
 
 const StateWriter: React.FC<{ gameData: game.GameData }> = ({ gameData }) => {
-  const [state] = useDakpan();
+  const groups = useRecoilValue(groupsState);
+  const settings = useRecoilValue(settingsAtom);
+  const completeState: CompleteState = {
+    groups,
+    settings: settings,
+  };
 
   useEffect(() => {
-    serialization.setUrlState(state, gameData);
-    serialization.setLocalStorageState(state, gameData);
-  }, [gameData, state]);
+    serialization.setUrlState(completeState, gameData);
+    serialization.setLocalStorageState(completeState, gameData);
+  }, [gameData, completeState]);
 
   return null;
 };
@@ -94,4 +101,34 @@ const Prefetch: React.FC<{ href: string }> = (props) => {
   );
 };
 
-export const AppLoader = withBoth(RawAppLoader);
+interface AppLoaderProps {
+  gameData: game.GameData;
+}
+
+export const AppLoader: React.FC<AppLoaderProps> = ({ gameData }) => {
+  const setGroupAtoms = useSetRecoilState(groupAtomsAtom);
+  const setSettings = useSetRecoilState(settingsAtom);
+
+  const handleSetPreviousState = useCallback(
+    (state: CompleteState) => {
+      let i = 0;
+      setGroupAtoms(
+        state.groups.map((group) => {
+          return atom<RecipeGroupData>({
+            key: `group-${Date.now()}-${i++}`,
+            default: group,
+          });
+        })
+      );
+      setSettings(state.settings);
+    },
+    [setGroupAtoms, setSettings]
+  );
+
+  return (
+    <RawAppLoader
+      gameData={gameData}
+      onSetPreviousState={handleSetPreviousState}
+    />
+  );
+};

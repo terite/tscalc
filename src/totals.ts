@@ -72,9 +72,7 @@ export class Totals {
     }
 
     if (row.beaconModule && row.numBeacons > 0) {
-      // TODO: export and use "distribution_effectivity" from beacon entities
-      // assume the common value of 0.5 for now
-
+      // assumes "distribution_effectivity" of 0.5 from default beacons
       const be = row.beaconModule.effects;
       const num = Rational.fromInts(row.numBeacons, 2);
       effects.consumption = effects.consumption.add(be.consumption.mul(num));

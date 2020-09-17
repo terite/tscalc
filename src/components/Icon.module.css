@@ -1,3 +1,11 @@
 .Icon {
   margin: 1px;
 }
+
+:global(.shift-down .copy-source) {
+  border: 1px solid green;
+}
+
+:global(.shift-down .copy-target) {
+  border: 1px solid yellow;
+}

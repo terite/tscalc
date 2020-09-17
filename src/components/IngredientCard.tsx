@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Card from 'react-bootstrap/Card';
 
 import { format_joules, format_watts } from '../util';
 import * as game from '../game';
@@ -42,20 +41,20 @@ export const IngredientCard: React.FC<Props> = (props) => {
   let body: React.ReactNode = '';
   if (extras.length) {
     body = (
-      <Card.Body>
+      <div className="card-body">
         {extras.map((extra, i) => (
           <div key={i} children={extra} />
         ))}
-      </Card.Body>
+      </div>
     );
   }
 
   return (
-    <Card>
-      <Card.Header>
+    <div className="card">
+      <div className="card-header">
         {obj.item.niceName()} ({obj.item.name})
-      </Card.Header>
+      </div>
       {body}
-    </Card>
+    </div>
   );
 };

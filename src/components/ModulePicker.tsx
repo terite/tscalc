@@ -16,7 +16,7 @@ interface ModulePickerProps {
 
 let _nomodule: Module | undefined;
 function getNoMod(gameData: GameData): Module {
-  // TODO: Technically, this should return a different icon if gameData changed
+  // TODO: cache based on gameData
   const icon = gameData.raw.sprites.extra.slot_icon_module;
   if (!_nomodule) {
     _nomodule = new Module({

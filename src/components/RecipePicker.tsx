@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Fuse from 'fuse.js';
-import debounce from 'lodash/debounce';
+
+import { debounce } from '../util';
 
 import * as game from '../game';
 import * as signal from '../signal';
@@ -230,11 +231,19 @@ class RecipeMatch extends React.PureComponent<RecipeMatchProps, never> {
 
   render(): React.ReactNode {
     const recipe = this.props.recipe;
-    const ingredients = recipe.ingredients.map((ing, i) => (
-      <Icon key={i} obj={ing.item} tooltip={<IngredientCard obj={ing} />} />
+    const ingredients = recipe.ingredients.map((ing) => (
+      <Icon
+        key={ing.name}
+        obj={ing.item}
+        tooltip={<IngredientCard obj={ing} />}
+      />
     ));
-    const products = recipe.products.map((prod, i) => (
-      <Icon key={i} obj={prod.item} tooltip={<IngredientCard obj={prod} />} />
+    const products = recipe.products.map((prod) => (
+      <Icon
+        key={prod.name}
+        obj={prod.item}
+        tooltip={<IngredientCard obj={prod} />}
+      />
     ));
     return (
       <tr onClick={this.handleClickAdd}>

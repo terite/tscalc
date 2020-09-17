@@ -17,8 +17,21 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "types": []
   },
+  "__files": [
+    "src/react-app-env.d.ts",
+    "src/index.tsx"
+  ],
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx"
+  ],
   "include": [
     "src"
   ]

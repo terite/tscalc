@@ -1,4 +1,6 @@
-export type LocalisedName = { [locale: string]: string };
+export interface LocalisedName {
+  [locale: string]: string;
+}
 
 interface Effectable {
   allowed_effects: ('consumption' | 'pollution' | 'productivity' | 'speed')[];

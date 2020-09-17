@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as Sentry from '@sentry/browser';
 
 import styles from './ErrorCatcher.module.css';
 
@@ -27,13 +26,6 @@ export class ErrorCatcher extends React.PureComponent<Props, State> {
         error && error.stack,
       ].join('\n')
     );
-
-    Sentry.withScope((scope) => {
-      Object.keys(errorInfo).forEach((key) => {
-        scope.setExtra(key, errorInfo[key as keyof React.ErrorInfo]);
-      });
-      Sentry.captureException(error);
-    });
   }
 
   crash(msg: string): void {

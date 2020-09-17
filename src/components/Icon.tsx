@@ -8,6 +8,7 @@ import styles from './Icon.module.css';
 interface Props {
   obj: { icon_row: number; icon_col: number };
 
+  className?: string;
   title?: string;
   onClick?(event: React.MouseEvent<HTMLDivElement, MouseEvent>): void;
   style?: React.CSSProperties;
@@ -42,7 +43,7 @@ export class Icon extends React.PureComponent<Props, State> {
         ref={this.iconRef}
         onClick={this.props.onClick}
         title={this.props.title}
-        className={classNames(styles.Icon, 'game-icon')}
+        className={classNames(styles.Icon, 'game-icon', this.props.className)}
         style={divStyle}
       >
         &nbsp;

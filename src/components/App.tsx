@@ -1,43 +1,41 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import classNames from 'classnames';
-
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Nav from 'react-bootstrap/Nav';
-import Col from 'react-bootstrap/Col';
+import { useRecoilValue, useRecoilState, RecoilState } from 'recoil';
 
 import { RecipeGroup } from './RecipeGroup';
 import { Settings } from './Settings';
 
-import { AppActions, AppState, withBoth } from '../state';
+import { useGroupAdd, AddGroupAction } from '../actions';
+import { groupAtomsAtom, groupsState } from '../atoms';
+import { RecipeGroupData } from '../state';
 import { GameData } from '../game';
 import { assertNever } from '../util';
 
 import styles from './App.module.css';
 
 interface Props {
-  state: AppState;
-  actions: AppActions;
   gameData: GameData;
+  groupAtoms: RecoilState<RecipeGroupData>[];
+  groups: RecipeGroupData[];
+  onAddGroup: AddGroupAction;
+  onRemoveGroup(groupAtom: RecoilState<RecipeGroupData>): void;
 }
 
 interface State {
   activePage: ActivePage;
+  activeGroupIdx: number;
 }
 
 enum ActivePage {
-  Factory = 'FACTORY',
-  Settings = 'SETTINGS',
+  Factory,
+  Settings,
 }
 
 class RawApp extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      activePage: ActivePage.Factory,
-    };
-  }
+  state: State = {
+    activePage: ActivePage.Factory,
+    activeGroupIdx: 0,
+  };
 
   componentDidMount(): void {
     document.addEventListener('keydown', this.handleKeyDown);
@@ -62,18 +60,18 @@ class RawApp extends React.PureComponent<Props, State> {
   handleClickGroup = (i: number): void => {
     this.setState({
       activePage: ActivePage.Factory,
+      activeGroupIdx: i,
     });
-    this.props.actions.setActiveGroup(i);
   };
 
   handleClickAddGroup: React.MouseEventHandler<any> = (event): void => {
     event.preventDefault();
-    const defaultName = `Factory ${this.props.state.groups.length + 1}`;
+    const defaultName = `Factory ${this.props.groups.length + 1}`;
     const name = prompt('What do you want to name this group?', defaultName);
     if (!name || !name.trim()) {
       return;
     }
-    this.props.actions.addGroup(name);
+    this.props.onAddGroup({ name, rows: [] });
   };
 
   handleClickSettings = (): void => {
@@ -85,56 +83,74 @@ class RawApp extends React.PureComponent<Props, State> {
   renderNavbar(): React.ReactNode {
     const settingsActive = this.state.activePage === ActivePage.Settings;
 
-    const activeKey = settingsActive
-      ? 'settings'
-      : this.props.state.activeGroupIdx;
+    const activeKey = settingsActive ? 'settings' : this.state.activeGroupIdx;
 
-    const factoryPills = this.props.state.groups.map((group, i) => {
+    const factoryPills = this.props.groups.map((group, i) => {
       const active = activeKey === i;
       return (
-        <Nav.Item onClick={() => this.handleClickGroup(i)} key={i}>
-          <Nav.Link active={active}>{group.name}</Nav.Link>
-        </Nav.Item>
+        <button
+          key={i}
+          type="button"
+          className={`list-group-item list-group-item-action ${
+            active ? 'active' : ''
+          }`}
+          onClick={() => this.handleClickGroup(i)}
+        >
+          {group.name}
+        </button>
       );
     });
 
     return (
       <>
-        <Nav className="flex-column">
-          <Nav.Item>
-            <Nav.Link disabled>
-              <span role="img" aria-label="Factory icon">
-                🏭
-              </span>{' '}
-              Factories
-            </Nav.Link>
-          </Nav.Item>
+        <ul className="list-group mt-3">
+          <li className="list-group-item">
+            <span role="img" aria-label="Factory icon">
+              🏭
+            </span>{' '}
+            Factories
+          </li>
+
           {factoryPills}
-          <Nav.Item>
-            <Nav.Link onClick={this.handleClickAddGroup}>
-              Add A Factory
-            </Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link
-              active={activeKey === 'settings'}
-              onClick={this.handleClickSettings}
-            >
-              <span role="img" aria-label="Gear icon">
-                ⚙️
-              </span>{' '}
-              Settings
-            </Nav.Link>
-          </Nav.Item>
-        </Nav>
+
+          <button
+            type="button"
+            className="list-group-item list-group-item-action"
+            onClick={this.handleClickAddGroup}
+          >
+            <span role="img" aria-label="Factory icon">
+              ＋
+            </span>{' '}
+            Add a Factory
+          </button>
+        </ul>
+
+        <ul className="list-group mt-3">
+          <button
+            type="button"
+            className={`list-group-item list-group-item-action ${
+              settingsActive ? 'active' : ''
+            }`}
+            onClick={this.handleClickSettings}
+          >
+            <span role="img" aria-label="Gear icon">
+              ⚙️
+            </span>{' '}
+            Settings
+          </button>
+        </ul>
       </>
     );
   }
 
   renderFactory = (): React.ReactNode => {
-    const group = this.props.state.groups[this.props.state.activeGroupIdx];
-
-    return <RecipeGroup gameData={this.props.gameData} group={group} />;
+    const groupAtom = this.props.groupAtoms[this.state.activeGroupIdx];
+    return (
+      <RecipeGroup
+        groupAtom={groupAtom}
+        onRemoveGroup={this.props.onRemoveGroup}
+      />
+    );
   };
 
   renderSettings = (): React.ReactNode => {
@@ -155,16 +171,42 @@ class RawApp extends React.PureComponent<Props, State> {
     }
 
     return (
-      <Container fluid>
-        <Row>
-          <Col xs="2" className={classNames('bg-primary', styles.Sidebar)}>
+      <div className="container-fluid">
+        <div className="row">
+          <div className={classNames('col col-2 bg-primary', styles.Sidebar)}>
             {this.renderNavbar()}
-          </Col>
-          <Col className="pt-3">{body}</Col>
-        </Row>
-      </Container>
+          </div>
+          <div className="col pt-3">{body}</div>
+        </div>
+      </div>
     );
   }
 }
 
-export const App = withBoth(RawApp);
+export const App: React.FC<{
+  gameData: GameData;
+}> = ({ gameData }) => {
+  const groups = useRecoilValue(groupsState);
+
+  const [groupAtoms, setGroupAtoms] = useRecoilState(groupAtomsAtom);
+
+  const handleAddGroup = useGroupAdd();
+
+  const handleRemoveGroup = useCallback(
+    (groupAtom: RecoilState<RecipeGroupData>) => {
+      console.log('removing group atom', groupAtom);
+      setGroupAtoms((atoms) => atoms.filter((a) => a !== groupAtom));
+    },
+    [setGroupAtoms]
+  );
+
+  return (
+    <RawApp
+      gameData={gameData}
+      groups={groups}
+      groupAtoms={groupAtoms}
+      onAddGroup={handleAddGroup}
+      onRemoveGroup={handleRemoveGroup}
+    />
+  );
+};

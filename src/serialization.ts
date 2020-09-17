@@ -1,6 +1,6 @@
 import * as game from './game';
 import { Rational } from './rational';
-import { AppState, AppSettingsData } from './state';
+import { CompleteState, AppSettingsData } from './state';
 import { getDefaultMachine } from './stateutil';
 import { mapValues } from './util';
 
@@ -147,13 +147,15 @@ interface SerializedSettings {
 }
 
 export function setLocalStorageState(
-  state: AppState,
+  state: CompleteState,
   gameData: game.GameData
 ): void {
   localStorage.setItem('appstate', JSON.stringify(serialize(state, gameData)));
 }
 
-export function getLocalStorageState(gameData: game.GameData): AppState | null {
+export function getLocalStorageState(
+  gameData: game.GameData
+): CompleteState | null {
   const statestr = localStorage.getItem('appstate');
   if (!statestr) {
     return null;
@@ -166,7 +168,10 @@ export function getLocalStorageState(gameData: game.GameData): AppState | null {
   return deserialize(gameData, stateobj);
 }
 
-export function setUrlState(state: AppState, gameData: game.GameData): void {
+export function setUrlState(
+  state: CompleteState,
+  gameData: game.GameData
+): void {
   const serialized = serialize(state, gameData);
   const version = serialized.version;
   let str = JSON.stringify(serialized.data);
@@ -177,7 +182,7 @@ export function setUrlState(state: AppState, gameData: game.GameData): void {
 }
 
 function serialize(
-  state: AppState,
+  state: CompleteState,
   gameData: game.GameData
 ): SerializedAppState {
   const groups = state.groups.map((group) => {
@@ -185,7 +190,11 @@ function serialize(
       name: group.name,
       rows: group.rows.map((row) => {
         let machineName: string | null = row.machine.data.name;
-        const defaultMachine = getDefaultMachine(row.recipe, state, gameData);
+        const defaultMachine = getDefaultMachine(
+          row.recipe,
+          state.settings,
+          gameData
+        );
 
         if (defaultMachine.data.name === machineName) {
           machineName = null;
@@ -219,7 +228,7 @@ function serialize(
 
 const reStateUrl = /^#(\d+)?(?:-)?(.+)$/;
 
-export function getUrlState(gameData: game.GameData): AppState | null {
+export function getUrlState(gameData: game.GameData): CompleteState | null {
   const matches = reStateUrl.exec(document.location.hash);
   if (!matches) {
     return null;
@@ -268,14 +277,12 @@ function migrateSerializedState(
 function deserialize(
   gameData: game.GameData,
   unmigrated: MultiSerializedAppState
-): AppState {
+): CompleteState {
   const migrated = migrateSerializedState(unmigrated).data;
 
-  const state: AppState = {
+  const state: CompleteState = {
     settings: deserializeSettings(gameData, migrated.settings),
     groups: [],
-
-    activeGroupIdx: 0,
   };
 
   state.groups = migrated.groups.map((group) => {
@@ -294,7 +301,7 @@ function deserialize(
 
           const machine = machineName
             ? gameData.entityMap[machineName]
-            : getDefaultMachine(recipe, state, gameData);
+            : getDefaultMachine(recipe, state.settings, gameData);
 
           return {
             recipe: recipe,

@@ -145,7 +145,6 @@ export class Rational {
   }
 
   toString(): string {
-    // TODO: smarter to string
     return this.toFraction();
   }
 

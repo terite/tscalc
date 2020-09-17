@@ -1,17 +1,17 @@
 import * as game from './game';
-import { AppState } from './state';
+import { AppSettingsData } from './state';
 import { assert } from './util';
 
 export function getDefaultMachine(
   input: game.Recipe | string,
-  state: AppState,
+  settings: AppSettingsData,
   gameData: game.GameData
 ): game.AssemblingMachine {
   const category = input instanceof game.Recipe ? input.category : input;
 
   let defaultMachine: game.AssemblingMachine;
-  if (category in state.settings.assemblerOverrides) {
-    defaultMachine = state.settings.assemblerOverrides[category];
+  if (category in settings.assemblerOverrides) {
+    defaultMachine = settings.assemblerOverrides[category];
   } else {
     defaultMachine = gameData.categoryMap[category][0];
   }
