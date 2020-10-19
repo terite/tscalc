@@ -225,7 +225,7 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
                 <Icon
                   obj={recipe}
                   text={recipe.niceName}
-                  tooltip={<RecipeCard recipe={recipe} />}
+                  tooltip={() => <RecipeCard recipe={recipe} />}
                 />
               </div>
               <div className="float-right">

@@ -4,14 +4,16 @@ import Popper from 'popper.js';
 
 interface Props {
   relativeTo: React.RefObject<HTMLElement>;
+  content: () => React.ReactNode;
 }
 
 interface State {
   showSelf: boolean;
-  style: React.CSSProperties;
 }
 
-export class Tooltip extends React.PureComponent<Props, State> {
+const ontop: React.CSSProperties = { zIndex: 1001 };
+
+export class Tooltip extends React.Component<Props, State> {
   selfRef: React.RefObject<any>;
   popperInstance: Popper | null;
 
@@ -21,8 +23,20 @@ export class Tooltip extends React.PureComponent<Props, State> {
     this.popperInstance = null;
     this.state = {
       showSelf: false,
-      style: { zIndex: 1001 },
     };
+  }
+
+  shouldComponentUpdate(oldProps: Props, oldState: State): boolean {
+    // universal props
+    if (
+      this.props.relativeTo !== oldProps.relativeTo ||
+      this.state.showSelf !== oldState.showSelf
+    ) {
+      return true;
+    }
+
+    // Only re-render due to props.content changes if we're displaying that content
+    return this.state.showSelf && this.props.content !== oldProps.content;
   }
 
   initPopper(): void {
@@ -108,8 +122,8 @@ export class Tooltip extends React.PureComponent<Props, State> {
     }
 
     return ReactDOM.createPortal(
-      <div style={this.state.style} ref={this.selfRef}>
-        {this.props.children}
+      <div style={ontop} ref={this.selfRef}>
+        {this.props.content()}
       </div>,
       document.body
     );

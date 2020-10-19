@@ -18,7 +18,9 @@ export const ModulePicker: React.FC<ModulePickerProps> = (props) => {
   const gameData = useGameData();
   const renderSelected = (module: Module | null): React.ReactNode => {
     if (module) {
-      return <Icon obj={module} tooltip={<ModuleCard module={module} />} />;
+      return (
+        <Icon obj={module} tooltip={() => <ModuleCard module={module} />} />
+      );
     } else {
       return <Icon obj={gameData.noModuleModule} />;
     }
@@ -29,7 +31,7 @@ export const ModulePicker: React.FC<ModulePickerProps> = (props) => {
       return (
         <Icon
           obj={module}
-          tooltip={<ModuleCard module={module} />}
+          tooltip={() => <ModuleCard module={module} />}
           text={module.niceName}
         />
       );

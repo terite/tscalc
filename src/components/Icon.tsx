@@ -12,7 +12,7 @@ interface Props {
   className?: string;
   title?: string;
   onClick?(event: React.MouseEvent<HTMLDivElement, MouseEvent>): void;
-  tooltip?: React.ReactNode;
+  tooltip?: () => React.ReactNode;
   text?: React.ReactNode;
 }
 
@@ -45,7 +45,7 @@ export class Icon extends React.PureComponent<Props, State> {
       icon = (
         <>
           {icon}
-          <Tooltip children={this.props.tooltip} relativeTo={this.iconRef} />
+          <Tooltip content={this.props.tooltip} relativeTo={this.iconRef} />
         </>
       );
     }

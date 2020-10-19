@@ -33,7 +33,7 @@ export const RecipeCard: React.FC<Props> = ({ recipe, onClick }) => {
     <Icon
       key={machine.name}
       obj={machine}
-      tooltip={<MachineCard machine={machine} />}
+      tooltip={() => <MachineCard machine={machine} />}
     />
   ));
 

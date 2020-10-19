@@ -68,7 +68,7 @@ export const RecipePart: React.FC<Props> = ({ obj, showName }) => {
     <Icon
       className={`${styles.RecipePart} ${copySource}`}
       onClick={handleClick}
-      tooltip={<IngredientCard obj={obj} />}
+      tooltip={() => <IngredientCard obj={obj} />}
       obj={obj.item}
       text={text}
     />

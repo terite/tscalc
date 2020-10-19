@@ -192,7 +192,6 @@ export const App: React.FC<{
 
   const handleRemoveGroup = useCallback(
     (groupAtom: RecoilState<RecipeGroupData>) => {
-      console.log('removing group atom', groupAtom);
       setGroupAtoms((atoms) => atoms.filter((a) => a !== groupAtom));
     },
     [setGroupAtoms]

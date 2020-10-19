@@ -235,14 +235,14 @@ class RecipeMatch extends React.PureComponent<RecipeMatchProps, never> {
       <Icon
         key={ing.name}
         obj={ing.item}
-        tooltip={<IngredientCard obj={ing} />}
+        tooltip={() => <IngredientCard obj={ing} />}
       />
     ));
     const products = recipe.products.map((prod) => (
       <Icon
         key={prod.name}
         obj={prod.item}
-        tooltip={<IngredientCard obj={prod} />}
+        tooltip={() => <IngredientCard obj={prod} />}
       />
     ));
     return (
@@ -251,7 +251,7 @@ class RecipeMatch extends React.PureComponent<RecipeMatchProps, never> {
           <Icon
             obj={recipe}
             text={recipe.niceName}
-            tooltip={<RecipeCard recipe={recipe} />}
+            tooltip={() => <RecipeCard recipe={recipe} />}
           />
         </td>
         <td>{recipe.craftingTime.toDecimal()}</td>
