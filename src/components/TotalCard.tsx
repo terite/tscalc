@@ -13,16 +13,14 @@ interface Props {
 export const TotalCard: React.FC<Props> = ({ rows }) => {
   const gameData = useGameData();
 
-  const { ingredients, products } = useMemo(() => {
-    const totals = new Totals(rows);
-
-    const reduced = totals.reduce();
-    gameData.sortByItem(reduced.ingredients, (p) => p.item);
-    gameData.sortByItem(reduced.products, (p) => p.item);
-    return reduced;
+  const totals: Totals = useMemo(() => {
+    const t = new Totals(rows);
+    gameData.sortByItem(t.ingredients, (p) => p.item);
+    gameData.sortByItem(t.products, (p) => p.item);
+    return t;
   }, [gameData, rows]);
 
-  if (!ingredients.length && !products.length) {
+  if (!totals.ingredients.length && !totals.products.length) {
     return <div />;
   }
 
@@ -33,13 +31,13 @@ export const TotalCard: React.FC<Props> = ({ rows }) => {
         <div className="row">
           <div className="col">
             Ingredients:
-            {ingredients.map((ing) => (
+            {totals.ingredients.map((ing) => (
               <RecipePart key={ing.name} obj={ing} showName />
             ))}
           </div>
           <div className="col">
             Products:
-            {products.map((prod) => (
+            {totals.products.map((prod) => (
               <RecipePart key={prod.name} obj={prod} showName />
             ))}
           </div>

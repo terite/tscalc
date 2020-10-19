@@ -1,38 +1,34 @@
-import * as React from 'react';
+import React from 'react';
 
-import * as game from '../game';
+import { AssemblingMachine } from '../game';
 
 import { Icon } from './Icon';
 import { MachineCard } from './MachineCard';
 import { Dropdown } from './generic';
 
-type Machine = game.AssemblingMachine;
-
 interface MachinePickerProps {
-  machines: Machine[];
-  selected: Machine;
-  onChange(m: Machine): void;
+  machines: AssemblingMachine[];
+  selected: AssemblingMachine;
+  onChange(m: AssemblingMachine): void;
 }
 
-const renderSelected = (machine: Machine): React.ReactNode => {
-  return (
-    <Icon obj={machine.data} tooltip={<MachineCard machine={machine} />} />
-  );
+const renderSelected = (machine: AssemblingMachine): React.ReactNode => {
+  return <Icon obj={machine} tooltip={<MachineCard machine={machine} />} />;
 };
 
-const renderOption = (machine: Machine): React.ReactNode => {
+const renderOption = (machine: AssemblingMachine): React.ReactNode => {
   return (
     <Icon
-      obj={machine.data}
+      obj={machine}
       tooltip={<MachineCard machine={machine} />}
-      text={machine.niceName()}
+      text={machine.niceName}
     />
   );
 };
 
 export const MachinePicker: React.FC<MachinePickerProps> = (props) => {
   const options = props.machines.map((machine) => ({
-    key: machine.data.name,
+    key: machine.name,
     option: machine,
     active: machine === props.selected,
   }));

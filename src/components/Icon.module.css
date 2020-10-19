@@ -1,5 +1,16 @@
 .Icon {
+  display: inline-block;
   margin: 1px;
+  width: 32px;
+  height: 32px;
+}
+
+.IconTextWrapper {
+  line-height: 32px;
+}
+
+.IconText {
+  margin-left: 9px;
 }
 
 :global(.shift-down .copy-source) {

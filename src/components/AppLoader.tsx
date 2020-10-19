@@ -61,7 +61,7 @@ class RawAppLoader extends React.PureComponent<RawAppLoaderProps, State> {
     if (!this.state.loaded) {
       return <h1>Loading...</h1>;
     }
-    const sheet = `${process.env.PUBLIC_URL}/assets/sprite-sheet-${this.props.gameData.raw.sprites.hash}.png`;
+    const sheet = `${process.env.PUBLIC_URL}/assets/sprite-sheet-${this.props.gameData.spriteHash}.png`;
     const style = `
         .game-icon {
             background-image: url(${sheet});

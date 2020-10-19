@@ -3,52 +3,54 @@ import { assert } from './util';
 
 import * as schema from './schema';
 
-type LocalisedName = schema.LocalisedName;
-
 interface IBaseDisplayable {
   name: string;
-  localised_name: LocalisedName;
+  localised_name: schema.LocalisedName;
   icon_col: number;
   icon_row: number;
 }
 
 export class BaseDisplayable {
-  name: string;
-  localised_name: LocalisedName;
-  icon_col: number;
-  icon_row: number;
+  readonly name: string;
+  readonly localisedName: schema.LocalisedName;
+  readonly iconCol: number;
+  readonly iconRow: number;
 
   constructor(data: IBaseDisplayable) {
     this.name = data.name;
-    this.localised_name = data.localised_name;
-    this.icon_col = data.icon_col;
-    this.icon_row = data.icon_row;
+    this.localisedName = data.localised_name;
+    this.iconCol = data.icon_col;
+    this.iconRow = data.icon_row;
   }
 
-  niceName(): string {
-    return this.localised_name.en;
+  get niceName(): string {
+    return this.localisedName.en;
   }
 }
 
-abstract class BaseItem<T extends schema.Item> extends BaseDisplayable {
-  raw: T;
-  usedBy: Recipe[] = [];
-  madeBy: Recipe[] = [];
+export class Item extends BaseDisplayable {
+  readonly group: string;
+  readonly subgroup: string;
+  readonly order: string;
+  readonly fuelValue: number | null;
 
-  constructor(d: T) {
+  readonly usedBy: Recipe[] = [];
+  readonly madeBy: Recipe[] = [];
+
+  constructor(d: schema.Item) {
     super(d);
-    this.raw = d;
-    this.name = d.name;
-    this.localised_name = d.localised_name;
-    this.icon_col = d.icon_col;
-    this.icon_row = d.icon_row;
+
+    this.group = d.group;
+    this.subgroup = d.subgroup;
+    this.order = d.order;
+    this.fuelValue = d.fuel_value ?? null;
   }
 }
 
-export class Module extends BaseItem<schema.ModuleItem> {
-  type: 'module';
-  limitedTo: Set<string>;
-  effects: {
+export class Module extends Item {
+  readonly type: 'module';
+  readonly limitedTo: Set<string>;
+  readonly effects: {
     speed: Rational;
     productivity: Rational;
     consumption: Rational;
@@ -81,70 +83,58 @@ export class Module extends BaseItem<schema.ModuleItem> {
   }
 }
 
-class GenericItem extends BaseItem<schema.Item> {
-  type: 'generic' = 'generic';
-}
-
-export type Item = Module | GenericItem;
-
-export class Fluid extends BaseItem<schema.FluidItem> {
-  default_temperature: number;
-  type: 'fluid' = 'fluid';
+export class Fluid extends Item {
+  readonly defaultTemperature: number;
+  readonly type: 'fluid' = 'fluid';
 
   constructor(d: schema.FluidItem) {
     super(d);
-    this.default_temperature = d.default_temperature;
+    this.defaultTemperature = d.default_temperature;
   }
 }
 
-export abstract class BaseIngredient {
-  name: string;
-  amount: Rational;
+export class Ingredient {
+  readonly type: 'item' | 'fluid';
+  readonly name: string;
+  amount: Rational; // TODO: readonly
+  readonly item: Item;
 
-  constructor(d: schema.Ingredient) {
+  constructor(d: schema.Ingredient, gd: GameData) {
     this.name = d.name;
     this.amount = Rational.fromFloat(d.amount);
+    this.type = d.type ?? 'item';
+    this.item = gd.getItem(d.name);
+  }
+
+  get niceName(): string {
+    return `${this.amount.toDecimal()} × ${this.item.niceName}`;
   }
 }
 
-export class ItemIngredient extends BaseIngredient {
-  type: 'item' = 'item';
-  item: Item;
+export class FluidIngredient extends Ingredient {
+  readonly type: 'fluid' = 'fluid';
+  readonly item: Fluid;
+  readonly minimumTemperature: number;
+  readonly maximumTemperature: number;
 
   constructor(d: schema.Ingredient, gd: GameData) {
-    super(d);
-    this.item = gd.itemMap[d.name];
-  }
+    super(d, gd);
+    this.item = gd.getFluid(d.name);
 
-  niceName(): string {
-    return `${this.amount.toDecimal()} × ${this.item.niceName()}`;
-  }
-}
+    this.minimumTemperature = d.minimum_temperature || -Infinity;
+    this.maximumTemperature = d.maximum_temperature || Infinity;
 
-export class FluidIngredient extends BaseIngredient {
-  type: 'fluid' = 'fluid';
-  item: Fluid;
-  minimum_temperature: number;
-  maximum_temperature: number;
-
-  constructor(d: schema.Ingredient, gd: GameData) {
-    super(d);
-    this.item = gd.fluidMap[d.name];
-
-    this.minimum_temperature = d.minimum_temperature || -Infinity;
-    this.maximum_temperature = d.maximum_temperature || Infinity;
-
-    if (this.maximum_temperature >= 1.797e308) {
-      this.maximum_temperature = Infinity;
+    if (this.maximumTemperature >= 1.797e308) {
+      this.maximumTemperature = Infinity;
     }
-    if (this.minimum_temperature <= -1.797e308) {
-      this.minimum_temperature = -Infinity;
+    if (this.minimumTemperature <= -1.797e308) {
+      this.minimumTemperature = -Infinity;
     }
   }
 
-  niceName(): string {
-    const min = this.minimum_temperature;
-    const max = this.maximum_temperature;
+  get niceName(): string {
+    const min = this.minimumTemperature;
+    const max = this.maximumTemperature;
     let range = '';
     if (min !== -Infinity && max !== Infinity) {
       range = ` (${min}° – ${max}°)`;
@@ -153,18 +143,18 @@ export class FluidIngredient extends BaseIngredient {
     } else if (min !== -Infinity) {
       range = ` (≥ ${max}°)`;
     }
-    return `${this.amount.toDecimal()} × ${this.item.niceName()}${range}`;
+    return `${this.amount.toDecimal()} × ${this.item.niceName}${range}`;
   }
 }
 
-export type Ingredient = ItemIngredient | FluidIngredient;
-
-abstract class BaseProduct {
-  name: string;
+export class Product {
+  readonly name: string;
+  readonly item: Item;
   amount: Rational;
 
-  constructor(d: schema.Product) {
+  constructor(d: schema.Product, gd: GameData) {
     this.name = d.name;
+    this.item = gd.getItem(d.name);
 
     let amount;
     if ('amount' in d) {
@@ -184,79 +174,62 @@ abstract class BaseProduct {
     }
     this.amount = amount;
   }
-}
 
-export class ItemProduct extends BaseProduct {
-  type: 'item' = 'item';
-  item: Item;
-
-  constructor(d: schema.Product, gd: GameData) {
-    super(d);
-    this.item = gd.itemMap[d.name];
-  }
-
-  niceName(): string {
-    return `${this.amount.toDecimal()} × ${this.item.niceName()}`;
+  get niceName(): string {
+    return `${this.amount.toDecimal()} × ${this.item.niceName}`;
   }
 
   satisfies(ingredient: Ingredient): boolean {
-    return ingredient.type === 'item' && ingredient.item === this.item;
+    return ingredient.item === this.item;
   }
 }
 
-export class FluidProduct extends BaseProduct {
-  type: 'fluid' = 'fluid';
-  item: Fluid;
-  temperature: number;
+export class FluidProduct extends Product {
+  readonly item: Fluid;
+  readonly temperature: number;
 
   constructor(d: schema.Product, gd: GameData) {
-    super(d);
-    this.item = gd.fluidMap[d.name];
-    if (!this.item) {
-      console.error('could not find item', d);
-    }
-    this.temperature = d.temperature || this.item.default_temperature;
+    super(d, gd);
+    this.item = gd.getFluid(d.name);
+    this.temperature = d.temperature || this.item.defaultTemperature;
   }
 
-  niceName(): string {
+  get niceName(): string {
     let temp = '';
-    if (this.temperature !== this.item.default_temperature) {
+    if (this.temperature !== this.item.defaultTemperature) {
       temp = ` (${this.temperature}°)`;
     }
-    return `${this.amount.toDecimal()} × ${this.item.niceName()}${temp}`;
+    return `${this.amount.toDecimal()} × ${this.item.niceName}${temp}`;
   }
 
   satisfies(ingredient: Ingredient): boolean {
     return (
-      ingredient.type === 'fluid' &&
       ingredient.item === this.item &&
-      ingredient.maximum_temperature >= this.temperature &&
-      ingredient.minimum_temperature <= this.temperature
+      ingredient instanceof FluidIngredient &&
+      ingredient.maximumTemperature >= this.temperature &&
+      ingredient.minimumTemperature <= this.temperature
     );
   }
 }
 
-export type Product = ItemProduct | FluidProduct;
-
 export class Recipe extends BaseDisplayable {
-  category: string;
-  ingredients: Ingredient[];
-  products: Product[];
-  crafting_time: Rational;
+  readonly category: string;
+  readonly ingredients: Ingredient[];
+  readonly products: Product[];
+  readonly craftingTime: Rational;
 
-  madeIn: AssemblingMachine[] = [];
+  readonly madeIn: AssemblingMachine[] = [];
 
   constructor(d: schema.Recipe, gd: GameData) {
     super(d);
-    this.name = d.name;
     this.category = d.category;
-    this.crafting_time = Rational.fromFloat(d.energy_required);
+    this.craftingTime = Rational.fromFloat(d.energy_required);
 
     this.ingredients = d.ingredients.map((ingredient) => {
       if (ingredient.type === 'fluid') {
         return new FluidIngredient(ingredient, gd);
       } else {
-        return new ItemIngredient(ingredient, gd);
+        return new Ingredient(ingredient, gd);
       }
     });
 
@@ -264,37 +237,45 @@ export class Recipe extends BaseDisplayable {
       if (result.type === 'fluid') {
         return new FluidProduct(result, gd);
       } else {
-        return new ItemProduct(result, gd);
+        return new Product(result, gd);
       }
     });
   }
 
-  niceName(): string {
+  get niceName(): string {
     if (this.products.length !== 1) {
-      return super.niceName();
+      return super.niceName;
     } else if (this.products[0].amount.equal(Rational.one)) {
-      return this.products[0].item.niceName();
+      return this.products[0].item.niceName;
     } else {
-      return this.products[0].niceName();
+      return this.products[0].niceName;
     }
   }
 }
 
-export abstract class BaseEntity<T extends schema.BaseEntity> {
-  data: T;
-  constructor(data: T) {
-    this.data = data;
-  }
-
-  niceName(): string {
-    return this.data.localised_name.en;
+export abstract class BaseEntity extends BaseDisplayable {
+  // constructor exists to constrain type
+  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
+  constructor(data: schema.BaseEntity) {
+    super(data);
   }
 }
 
-export class AssemblingMachine extends BaseEntity<schema.AssemblingMachine> {
+export class AssemblingMachine extends BaseEntity {
+  readonly craftingCategories: string[];
+  readonly craftingSpeed: number;
+  readonly moduleSlots: number;
+
+  constructor(data: schema.AssemblingMachine) {
+    super(data);
+    this.craftingCategories = data.crafting_categories;
+    this.craftingSpeed = data.crafting_speed;
+    this.moduleSlots = data.module_slots;
+  }
+
   canBuildRecipe(recipe: Recipe): boolean {
     // TODO: this needs to account for entity fluid boxes
-    if (this.data.crafting_categories.indexOf(recipe.category) === -1) {
+    if (this.craftingCategories.indexOf(recipe.category) === -1) {
       return false;
     }
 
@@ -311,10 +292,10 @@ export type Entity = AssemblingMachine;
 
 type CategoryMap = { [category: string]: AssemblingMachine[] };
 
-const createCategoryMap = (entities: Entity[]): CategoryMap => {
+const createCategoryMap = (entities: Iterable<Entity>): CategoryMap => {
   const catMap: CategoryMap = {};
   for (const entity of entities) {
-    for (const category of entity.data.crafting_categories) {
+    for (const category of entity.craftingCategories) {
       if (!catMap.hasOwnProperty(category)) {
         catMap[category] = [];
       }
@@ -325,50 +306,44 @@ const createCategoryMap = (entities: Entity[]): CategoryMap => {
 };
 
 export class GameData {
-  raw: schema.Root;
+  readonly itemMap = new Map<string, Item>();
 
-  items: Item[] = [];
-  itemMap: { [name: string]: Item } = {};
+  readonly fluids: Fluid[] = [];
+  readonly fluidMap = new Map<string, Fluid>();
 
-  fluids: Fluid[] = [];
-  fluidMap: { [name: string]: Fluid } = {};
+  readonly modules: Module[] = [];
+  readonly moduleMap = new Map<string, Module>();
 
-  modules: Module[] = [];
-  moduleMap: { [name: string]: Module } = {};
+  readonly recipes: Recipe[] = [];
+  readonly recipeMap = new Map<string, Recipe>();
 
-  recipes: Recipe[] = [];
-  recipeMap: { [name: string]: Recipe } = {};
+  readonly entityMap = new Map<string, Entity>();
 
-  entities: Entity[] = [];
-  entityMap: { [name: string]: Entity } = {};
+  readonly categoryMap: CategoryMap;
+  readonly groups: schema.Groups;
 
-  categoryMap: CategoryMap;
+  readonly clockSprite: BaseDisplayable;
+  readonly noModuleModule: Module;
+
+  readonly spriteHash: string;
 
   constructor(raw: schema.Root) {
-    console.groupCollapsed('Game data processing');
-    this.raw = raw;
+    this.spriteHash = raw.sprites.hash;
 
-    type EntityConstructor<T> = {
-      new (d: T): Entity;
-    };
+    for (const edata of Object.values(raw['assembling-machine'])) {
+      const entity = new AssemblingMachine(edata);
+      this.entityMap.set(entity.name, entity);
+    }
 
-    const addOfType = <
-      S extends schema.BaseEntity,
-      C extends EntityConstructor<S>
-    >(
-      entities: S[],
-      ctor: C
-    ): void => {
-      for (const edata of entities) {
-        const entity = new ctor(edata);
-        this.entityMap[edata.name] = entity;
-        this.entities.push(entity);
-      }
-    };
+    for (const edata of Object.values(raw['furnace'])) {
+      const entity = new AssemblingMachine(edata);
+      this.entityMap.set(entity.name, entity);
+    }
 
-    addOfType(Object.values(raw['assembling-machine']), AssemblingMachine);
-    addOfType(Object.values(raw['furnace']), AssemblingMachine);
-    addOfType(Object.values(raw['rocket-silo']), AssemblingMachine);
+    for (const edata of Object.values(raw['rocket-silo'])) {
+      const entity = new AssemblingMachine(edata);
+      this.entityMap.set(entity.name, entity);
+    }
 
     for (const rawMiningDrill of Object.values(raw['mining-drill'])) {
       const rawMachine: schema.AssemblingMachine = {
@@ -380,33 +355,31 @@ export class GameData {
         ingredient_count: 1,
       };
       const machine = new AssemblingMachine(rawMachine);
-      this.entities.push(machine);
-      this.entityMap[rawMachine.name] = machine;
+      this.entityMap.set(rawMachine.name, machine);
     }
 
     for (const rawItem of Object.values(raw.items)) {
       if ('type' in rawItem && rawItem.type === 'fluid') {
         const fluid = new Fluid(rawItem);
+        this.itemMap.set(fluid.name, fluid);
         this.fluids.push(fluid);
-        this.fluidMap[fluid.name] = fluid;
+        this.fluidMap.set(fluid.name, fluid);
       } else if ('type' in rawItem && rawItem.type === 'module') {
         const item = new Module(rawItem);
-        this.items.push(item);
-        this.itemMap[item.name] = item;
+        this.itemMap.set(item.name, item);
         this.modules.push(item);
-        this.moduleMap[item.name] = item;
+        this.moduleMap.set(item.name, item);
       } else {
-        const item = new GenericItem(rawItem);
-        this.items.push(item);
-        this.itemMap[item.name] = item;
+        const item = new Item(rawItem);
+        this.itemMap.set(item.name, item);
       }
     }
 
     const recipes: Recipe[] = [];
 
     // Add real recipes
-    for (const recipeName in raw.recipes) {
-      recipes.push(new Recipe(raw.recipes[recipeName], this));
+    for (const rawRecipe of Object.values(raw.recipes)) {
+      recipes.push(new Recipe(rawRecipe, this));
     }
 
     // Add fake recipes for resources
@@ -444,20 +417,19 @@ export class GameData {
     }
 
     for (const recipe of recipes) {
-      for (const entity of Object.values(this.entityMap)) {
+      for (const entity of this.entityMap.values()) {
         if ('canBuildRecipe' in entity && entity.canBuildRecipe(recipe)) {
           recipe.madeIn.push(entity);
         }
       }
       if (!recipe.madeIn.length) {
         // Filter to only recipes buildable by knonwn assembling machines
-        console.warn('Ignoring uncraftable recipe', recipe.name, recipe);
+        console.warn(`Ignoring uncraftable recipe: ${recipe.name}`);
         continue;
       }
 
       const hasProducts = recipe.products.some((p) => p.amount.isPositive());
       if (!hasProducts) {
-        console.debug('Ignoring void recipe', recipe.name, recipe);
         continue;
       }
 
@@ -468,26 +440,73 @@ export class GameData {
         product.item.madeBy.push(recipe);
       }
       this.recipes.push(recipe);
-      this.recipeMap[recipe.name] = recipe;
+      this.recipeMap.set(recipe.name, recipe);
     }
 
-    this.categoryMap = createCategoryMap(this.entities);
-    console.log(`Processed ${this.items.length} items`);
-    console.log(`Processed ${this.fluids.length} fluids`);
-    console.log(`Processed ${this.recipes.length} recipes`);
-    console.log(`Processed ${this.entities.length} entities`);
-    console.groupEnd();
+    this.categoryMap = createCategoryMap(this.entityMap.values());
+    this.groups = raw.groups;
+
+    this.clockSprite = new BaseDisplayable({
+      ...raw.sprites.extra['clock'],
+      name: 'clock',
+      localised_name: { en: 'Clock' },
+    });
+
+    this.noModuleModule = new Module({
+      ...raw.sprites.extra['slot_icon_module'],
+      type: 'module',
+      name: 'no_module',
+      localised_name: { en: 'No Module' },
+      category: 'speed',
+      effect: {},
+      limitation: [],
+      rocket_launch_products: [],
+
+      group: '',
+      subgroup: '',
+      order: '',
+    });
+  }
+
+  getEntity(name: string): Entity {
+    const entity = this.entityMap.get(name);
+    assert(entity, `no entity with name: ${name}`);
+    return entity;
+  }
+
+  getFluid(name: string): Fluid {
+    const fluid = this.fluidMap.get(name);
+    assert(fluid, `no fluid with name: ${name}`);
+    return fluid;
+  }
+
+  getItem(name: string): Item {
+    const item = this.itemMap.get(name);
+    assert(item, `no item with name: ${name}`);
+    return item;
+  }
+
+  getModule(name: string): Module {
+    const module = this.moduleMap.get(name);
+    assert(module, `no module with name: ${name}`);
+    return module;
+  }
+
+  getRecipe(name: string): Recipe {
+    const recipe = this.recipeMap.get(name);
+    assert(recipe, `no recipe with name: ${name}`);
+    return recipe;
   }
 
   getItemOrder(item: Item | Fluid): [string, string, string, string] {
     let groupOrder = '';
     let subgroupOrder = '';
-    const group = this.raw.groups[item.raw.group];
+    const group = this.groups[item.group];
     if (group) {
       groupOrder = group.order;
-      subgroupOrder = group.subgroups[item.raw.subgroup] || '';
+      subgroupOrder = group.subgroups[item.subgroup] || '';
     }
-    return [groupOrder, subgroupOrder, item.raw.order, item.raw.name];
+    return [groupOrder, subgroupOrder, item.order, item.name];
   }
 
   // Sort by

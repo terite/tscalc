@@ -1,17 +1,17 @@
 import React from 'react';
 import classNames from 'classnames';
 
+import { BaseDisplayable } from '../game';
 import { Tooltip } from './generic';
 
 import styles from './Icon.module.css';
 
 interface Props {
-  obj: { icon_row: number; icon_col: number };
+  obj: BaseDisplayable;
 
   className?: string;
   title?: string;
   onClick?(event: React.MouseEvent<HTMLDivElement, MouseEvent>): void;
-  style?: React.CSSProperties;
   tooltip?: React.ReactNode;
   text?: React.ReactNode;
 }
@@ -19,23 +19,14 @@ interface Props {
 interface State {}
 
 export class Icon extends React.PureComponent<Props, State> {
-  iconRef: React.RefObject<HTMLDivElement>;
-
-  constructor(props: Props) {
-    super(props);
-    this.iconRef = React.createRef();
-  }
+  iconRef = React.createRef<HTMLDivElement>();
 
   render(): React.ReactNode {
-    const x = -this.props.obj.icon_col * 32;
-    const y = -this.props.obj.icon_row * 32;
+    const x = -this.props.obj.iconCol * 32;
+    const y = -this.props.obj.iconRow * 32;
 
-    const divStyle = {
-      display: 'inline-block',
+    const divStyle: React.CSSProperties = {
       backgroundPosition: `${x}px ${y}px`,
-      width: '32px',
-      height: '32px',
-      ...this.props.style,
     };
 
     let icon = (
@@ -61,9 +52,9 @@ export class Icon extends React.PureComponent<Props, State> {
 
     if (this.props.text) {
       icon = (
-        <div style={{ lineHeight: '32px' }}>
+        <div className={styles.IconTextWrapper}>
           {icon}
-          <span style={{ marginLeft: '9px' }}>{this.props.text}</span>
+          <span className={styles.IconText}>{this.props.text}</span>
         </div>
       );
     }

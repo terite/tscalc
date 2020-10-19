@@ -23,7 +23,7 @@ const getFn: Fuse.FuseGetFunction<game.Recipe> = (obj, path) => {
   }
   switch (path[0]) {
     case 'niceName':
-      return obj.niceName();
+      return obj.niceName;
     case 'name':
       return obj.name;
     default:
@@ -250,11 +250,11 @@ class RecipeMatch extends React.PureComponent<RecipeMatchProps, never> {
         <td className={styles.ResultName}>
           <Icon
             obj={recipe}
-            text={recipe.niceName()}
+            text={recipe.niceName}
             tooltip={<RecipeCard recipe={recipe} />}
           />
         </td>
-        <td>{recipe.crafting_time.toDecimal()}</td>
+        <td>{recipe.craftingTime.toDecimal()}</td>
         <td>{ingredients}</td>
         <td>{products}</td>
       </tr>

@@ -9,7 +9,7 @@ import { useGroupAdd, AddGroupAction } from '../actions';
 import { groupAtomsAtom, groupsState } from '../atoms';
 import { RecipeGroupData } from '../state';
 import { GameData } from '../game';
-import { assertNever } from '../util';
+import { assert, assertNever } from '../util';
 
 import styles from './App.module.css';
 
@@ -158,9 +158,7 @@ class RawApp extends React.PureComponent<Props, State> {
   };
 
   render(): React.ReactNode {
-    if (!this.props.gameData.raw) {
-      return null;
-    }
+    assert(this.props.gameData, 'falsy gameData, should never happen');
     let body: React.ReactNode;
     if (this.state.activePage === ActivePage.Factory) {
       body = this.renderFactory();

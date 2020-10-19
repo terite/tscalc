@@ -36,7 +36,7 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
       machine: machine,
       modules: this.props.data.modules
         .filter((module) => module !== null)
-        .slice(0, machine.data.module_slots),
+        .slice(0, machine.moduleSlots),
     });
   };
 
@@ -50,7 +50,7 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
 
   handleSetAllModules = (): void => {
     this.applyChange({
-      modules: new Array(this.props.data.machine.data.module_slots).fill(
+      modules: new Array(this.props.data.machine.moduleSlots).fill(
         this.props.data.modules[0]
       ),
     });
@@ -120,7 +120,7 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
   }
 
   renderModules(): React.ReactNode {
-    const numSlots = this.props.data.machine.data.module_slots;
+    const numSlots = this.props.data.machine.moduleSlots;
 
     const slots = [];
     for (let i = 0; i < numSlots; i++) {
@@ -224,7 +224,7 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
               <div className="float-left">
                 <Icon
                   obj={recipe}
-                  text={recipe.niceName()}
+                  text={recipe.niceName}
                   tooltip={<RecipeCard recipe={recipe} />}
                 />
               </div>

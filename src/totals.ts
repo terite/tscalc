@@ -18,39 +18,78 @@ export class Totals {
     }
   }
 
-  addIngredient(ingredient: game.Ingredient): void {
+  addIngredient(newIngredient: game.Ingredient): void {
     for (const oldIng of this.ingredients) {
-      let match =
-        ingredient.type === oldIng.type && ingredient.item === oldIng.item;
-      if (ingredient.type === 'fluid' && oldIng.type === 'fluid') {
-        match =
-          match &&
-          ingredient.maximum_temperature === oldIng.maximum_temperature &&
-          ingredient.minimum_temperature === oldIng.minimum_temperature;
+      if (oldIng.name !== newIngredient.name) {
+        continue;
+      }
+      if (
+        newIngredient instanceof game.FluidIngredient &&
+        oldIng instanceof game.FluidIngredient
+      ) {
+        if (
+          newIngredient.maximumTemperature !== oldIng.maximumTemperature ||
+          newIngredient.minimumTemperature !== oldIng.minimumTemperature
+        ) {
+          continue;
+        }
       }
 
-      if (match) {
-        oldIng.amount = oldIng.amount.add(ingredient.amount);
-        return;
+      oldIng.amount = oldIng.amount.add(newIngredient.amount);
+      return;
+    }
+
+    for (const oldProd of this.products) {
+      if (!oldProd.satisfies(newIngredient)) continue;
+      if (oldProd.amount.less(newIngredient.amount)) {
+        newIngredient.amount = newIngredient.amount.sub(oldProd.amount);
+        oldProd.amount = Rational.zero;
+        if (newIngredient.amount.isZero()) break;
+      } else {
+        oldProd.amount = oldProd.amount.sub(newIngredient.amount);
+        newIngredient.amount = Rational.zero;
+        break;
       }
     }
-    this.ingredients.push(ingredient);
+
+    this.ingredients.push(newIngredient);
+    this.ingredients = this.ingredients.filter((p) => !p.amount.isZero());
+    this.products = this.products.filter((p) => !p.amount.isZero());
   }
 
-  addProduct(product: game.Product): void {
+  addProduct(newProduct: game.Product): void {
     for (const oldProd of this.products) {
-      let match =
-        product.type === oldProd.type && product.item === oldProd.item;
-      if (product.type === 'fluid' && oldProd.type === 'fluid') {
-        match = match && product.temperature === oldProd.temperature;
+      if (newProduct.name !== oldProd.name) continue;
+
+      if (
+        newProduct instanceof game.FluidProduct &&
+        oldProd instanceof game.FluidProduct
+      ) {
+        if (newProduct.temperature !== oldProd.temperature) {
+          continue;
+        }
       }
 
-      if (match) {
-        oldProd.amount = oldProd.amount.add(product.amount);
-        return;
+      oldProd.amount = oldProd.amount.add(newProduct.amount);
+      return;
+    }
+
+    for (const oldIng of this.ingredients) {
+      if (!newProduct.satisfies(oldIng)) continue;
+      if (newProduct.amount.less(oldIng.amount)) {
+        oldIng.amount = oldIng.amount.sub(newProduct.amount);
+        newProduct.amount = Rational.zero;
+        break;
+      } else {
+        newProduct.amount = newProduct.amount.sub(oldIng.amount);
+        oldIng.amount = Rational.zero;
+        if (newProduct.amount.isZero()) break;
       }
     }
-    this.products.push(product);
+
+    this.products.push(newProduct);
+    this.ingredients = this.ingredients.filter((i) => !i.amount.isZero());
+    this.products = this.products.filter((i) => !i.amount.isZero());
   }
 
   addRow(row: RecipeRowData): void {
@@ -90,9 +129,9 @@ export class Totals {
     effects.productivity = effects.productivity.clamp(1, 32767);
 
     const ingredientMult = Rational.one
-      .mul(row.recipe.crafting_time.invert())
+      .mul(row.recipe.craftingTime.invert())
       .mul(row.numMachines)
-      .mul(row.machine.data.crafting_speed)
+      .mul(row.machine.craftingSpeed)
       .mul(effects.speed);
 
     const productMult = ingredientMult.mul(effects.productivity);
@@ -112,41 +151,5 @@ export class Totals {
     })) {
       this.addProduct(product);
     }
-  }
-
-  reduce(): {
-    ingredients: game.Ingredient[];
-    products: game.Product[];
-  } {
-    let ingredients = this.ingredients.map(clone);
-    let products = this.products.map(clone);
-
-    for (const product of products) {
-      for (const ingredient of ingredients) {
-        if (product.amount.isZero() || ingredient.amount.isZero()) {
-          continue;
-        }
-        if (!product.satisfies(ingredient)) {
-          continue;
-        }
-        if (product.amount.less(ingredient.amount)) {
-          // More ingredient than product
-          ingredient.amount = ingredient.amount.sub(product.amount);
-          product.amount = Rational.zero;
-        } else if (ingredient.amount.less(product.amount)) {
-          // More product than ingredient
-          product.amount = product.amount.sub(ingredient.amount);
-          ingredient.amount = Rational.zero;
-        } else {
-          ingredient.amount = Rational.zero;
-          product.amount = Rational.zero;
-        }
-      }
-    }
-
-    ingredients = ingredients.filter((i) => !i.amount.isZero());
-    products = products.filter((p) => !p.amount.isZero());
-
-    return { ingredients, products };
   }
 }

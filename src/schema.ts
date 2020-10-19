@@ -52,6 +52,9 @@ interface BaseItemOrFluid {
   group: string;
   subgroup: string;
   order: string;
+
+  fuel_category?: string;
+  fuel_value?: number;
 }
 
 export interface BaseItem extends BaseItemOrFluid {
@@ -63,11 +66,6 @@ export interface FluidItem extends BaseItemOrFluid {
   default_temperature: number;
   max_temperature: number;
   heat_capacity: number;
-  fuel_value: number;
-}
-
-interface FuelItem extends BaseItem {
-  fuel_category: string;
   fuel_value: number;
 }
 
@@ -83,7 +81,7 @@ export interface ModuleItem extends BaseItem {
   limitation: string[];
 }
 
-export type Item = BaseItem | FuelItem | ModuleItem | FluidItem;
+export type Item = BaseItem | ModuleItem | FluidItem;
 
 export interface Ingredient {
   name: string;
@@ -144,15 +142,17 @@ export interface Resource {
   };
 }
 
+export interface Groups {
+  [groupName: string]: {
+    order: string;
+    subgroups: { [subName: string]: string };
+  };
+}
+
 export interface Root {
   active_mods: { [name: string]: string };
 
-  groups: {
-    [groupName: string]: {
-      order: string;
-      subgroups: { [subName: string]: string };
-    };
-  };
+  groups: Groups;
 
   fluids: string[];
   fuel: string[];

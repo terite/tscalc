@@ -1,41 +1,36 @@
-import * as React from 'react';
+import React from 'react';
 
 import styles from './ErrorCatcher.module.css';
 
 interface Props {}
 
 interface State {
-  crashMsg?: string;
+  crashMsg: string | undefined;
 }
 
-export class ErrorCatcher extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      crashMsg: undefined,
-    };
+export class ErrorCatcher extends React.Component<Props, State> {
+  state: State = {
+    crashMsg: undefined,
+  };
+
+  shouldComponentUpdate(nextProps: Props, nextState: State): boolean {
+    return nextState.crashMsg !== this.state.crashMsg;
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
     // Catch errors in any components below and re-render with error message
-    this.crash(
-      [
+    this.setState({
+      crashMsg: [
         'Component Stack:',
         errorInfo.componentStack,
         '',
         error && error.stack,
-      ].join('\n')
-    );
-  }
-
-  crash(msg: string): void {
-    this.setState({
-      crashMsg: msg,
+      ].join('\n'),
     });
   }
 
   render(): React.ReactNode {
-    if (typeof this.state.crashMsg !== 'undefined') {
+    if (this.state.crashMsg) {
       return (
         <div className={styles.crashed}>
           <h1>Crashed!</h1>

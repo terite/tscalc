@@ -86,3 +86,7 @@ export function debounce<T extends any[]>(
 
   return debounced as DebouncedFunc<T>;
 }
+
+export function sleep(ms: number): Promise<void> {
+  return new Promise(r => setTimeout(r, ms));
+}

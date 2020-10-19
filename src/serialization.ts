@@ -136,7 +136,6 @@ type MultiSerializedAppState =
   | SerializedAppStateV5;
 
 // Latest values
-// type SerializedGroup = SerializedGroupV5;
 type SerializedRow = SerializedRowV5;
 type SerializedAppState = SerializedAppStateV5;
 
@@ -189,14 +188,14 @@ function serialize(
     return {
       name: group.name,
       rows: group.rows.map((row) => {
-        let machineName: string | null = row.machine.data.name;
+        let machineName: string | null = row.machine.name;
         const defaultMachine = getDefaultMachine(
           row.recipe,
           state.settings,
           gameData
         );
 
-        if (defaultMachine.data.name === machineName) {
+        if (defaultMachine.name === machineName) {
           machineName = null;
         }
 
@@ -216,7 +215,7 @@ function serialize(
   const settings = {
     assemblerOverrides: mapValues(
       state.settings.assemblerOverrides,
-      (a) => a.data.name
+      (a) => a.name
     ),
   };
 
@@ -297,19 +296,19 @@ function deserialize(
           beaconModule,
           numBeacons,
         ]) => {
-          const recipe = gameData.recipeMap[recipeName];
+          const recipe = gameData.getRecipe(recipeName);
 
           const machine = machineName
-            ? gameData.entityMap[machineName]
+            ? gameData.getEntity(machineName)
             : getDefaultMachine(recipe, state.settings, gameData);
 
           return {
             recipe: recipe,
             machine: machine,
             numMachines: Rational.fromString(numMachines),
-            modules: modules.map((n) => (n ? gameData.moduleMap[n] : null)),
+            modules: modules.map((n) => (n ? gameData.getModule(n) : null)),
             beaconModule: beaconModule
-              ? gameData.moduleMap[beaconModule]
+              ? gameData.getModule(beaconModule)
               : null,
             numBeacons: numBeacons || 0,
           };
@@ -328,7 +327,7 @@ function deserializeSettings(
   return {
     assemblerOverrides: mapValues(
       serialized.assemblerOverrides,
-      (name) => gameData.entityMap[name]
+      (name) => gameData.getEntity(name)
     ),
   };
 }

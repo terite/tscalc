@@ -1,41 +1,36 @@
-import * as React from 'react';
+import React from 'react';
 
-import { Module } from '../game';
+import type { Rational } from '../rational';
+import type { Module } from '../game';
 import { round2 } from '../util';
-
-const niceName = {
-  consumption: 'Energy Consumption',
-  productivity: 'Productivity',
-  speed: 'Speed',
-  pollution: 'Pollution',
-};
 
 interface Props {
   module: Module;
 }
 
-export const ModuleCard: React.FC<Props> = ({ module }) => {
-  const bonuses = [];
-  for (const [bonusName, bonus] of Object.entries(module.raw.effect)) {
-    if (!bonus || !bonus.bonus) {
-      continue;
-    }
-    bonuses.push(
-      <div key={bonusName}>
-        <b>
-          {niceName[bonusName as keyof typeof niceName]}:{' '}
-          {round2(bonus.bonus * 100, 2)}%
-        </b>
-      </div>
-    );
-  }
+function formatBonus(name: string, bonus: Rational): React.ReactNode {
+  if (bonus.isZero()) return null;
+  return (
+    <div>
+      <b>
+        {name} {round2(bonus.toFloat() * 100, 2)}%
+      </b>
+    </div>
+  );
+}
 
+export const ModuleCard: React.FC<Props> = ({ module }) => {
   return (
     <div className="module-card card">
       <div className="card-header">
-        <b>{module.niceName()}</b>
+        <b>{module.niceName}</b>
       </div>
-      <div className="card-body">{bonuses}</div>
+      <div className="card-body">
+        {formatBonus('Speed', module.effects.speed)}
+        {formatBonus('Productivity', module.effects.productivity)}
+        {formatBonus('Energy Consumption', module.effects.consumption)}
+        {formatBonus('Pollution', module.effects.pollution)}
+      </div>
     </div>
   );
 };

@@ -22,17 +22,17 @@ export const RecipeCard: React.FC<Props> = ({ recipe, onClick }) => {
     <Icon
       key={ingredient.name}
       obj={ingredient.item}
-      text={ingredient.niceName()}
+      text={ingredient.niceName}
     />
   ));
   const products = recipe.products.map((product) => (
-    <Icon key={product.name} obj={product.item} text={product.niceName()} />
+    <Icon key={product.name} obj={product.item} text={product.niceName} />
   ));
 
   const madeIn = recipe.madeIn.map((machine) => (
     <Icon
-      key={machine.data.name}
-      obj={machine.data}
+      key={machine.name}
+      obj={machine}
       tooltip={<MachineCard machine={machine} />}
     />
   ));
@@ -40,17 +40,17 @@ export const RecipeCard: React.FC<Props> = ({ recipe, onClick }) => {
   return (
     <div className="recipe-tooltip card" onClick={handleClick}>
       <div className="card-header">
-        <Icon obj={recipe} text={`${recipe.niceName()} (Recipe)`} />
+        <Icon obj={recipe} text={`${recipe.niceName} (Recipe)`} />
       </div>
       <ul className="list-group list-group-flush">
         <li className="list-group-item">
           <b>Ingredients:</b>
           {ingredients}
           <Icon
-            obj={gameData.raw.sprites.extra['clock']}
+            obj={gameData.clockSprite}
             text={
               <span>
-                <b>{recipe.crafting_time.toDecimal()} s</b> Crafting time
+                <b>{recipe.craftingTime.toDecimal()} s</b> Crafting time
               </span>
             }
           />

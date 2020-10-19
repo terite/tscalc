@@ -10,41 +10,19 @@ interface Props {
 export const IngredientCard: React.FC<Props> = (props) => {
   const { obj } = props;
 
-  let extras: JSX.Element[] = [];
-
-  let fuel_value: number = 0;
-
-  if (obj instanceof game.FluidIngredient || obj instanceof game.FluidProduct) {
-    const { item } = obj;
-    fuel_value = item.raw.fuel_value;
-  } else {
-    if ('fuel_value' in obj.item.raw) {
-      fuel_value = obj.item.raw.fuel_value;
-    }
-  }
-
-  if (fuel_value) {
-    extras.push(
-      <>
-        <b>Fuel value</b>: {format_joules(fuel_value)}
-      </>
+  let fuelValues: React.ReactNode;
+  if (obj.item.fuelValue) {
+    const totalValue = format_watts(
+      obj.amount.mul(obj.item.fuelValue).toFloat()
     );
-
-    let totalValue = format_watts(obj.amount.mul(fuel_value).toFloat());
-    extras.push(
-      <>
-        <b>Total fuel value</b>: {totalValue}
-      </>
-    );
-  }
-
-  let body: React.ReactNode = '';
-  if (extras.length) {
-    body = (
+    fuelValues = (
       <div className="card-body">
-        {extras.map((extra, i) => (
-          <div key={i} children={extra} />
-        ))}
+        <div>
+          <b>Fuel value</b>: {format_joules(obj.item.fuelValue)}
+        </div>
+        <div>
+          <b>Total fuel value</b>: {totalValue}
+        </div>
       </div>
     );
   }
@@ -52,9 +30,9 @@ export const IngredientCard: React.FC<Props> = (props) => {
   return (
     <div className="card">
       <div className="card-header">
-        {obj.item.niceName()} ({obj.item.name})
+        {obj.item.niceName} ({obj.item.name})
       </div>
-      {body}
+      {fuelValues}
     </div>
   );
 };

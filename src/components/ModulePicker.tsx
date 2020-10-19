@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { GameData, Module, Recipe } from '../game';
+import type { Module, Recipe } from '../game';
 
 import { Icon } from './Icon';
 import { ModuleCard } from './ModuleCard';
@@ -14,40 +14,13 @@ interface ModulePickerProps {
   onChange(m: Module | null): void;
 }
 
-let _nomodule: Module | undefined;
-function getNoMod(gameData: GameData): Module {
-  // TODO: cache based on gameData
-  const icon = gameData.raw.sprites.extra.slot_icon_module;
-  if (!_nomodule) {
-    _nomodule = new Module({
-      type: 'module',
-      name: 'no_module',
-      localised_name: { en: 'No Module' },
-      category: 'speed',
-      effect: {},
-      limitation: [],
-      rocket_launch_products: [],
-
-      icon_row: icon.icon_row,
-      icon_col: icon.icon_col,
-
-      group: '',
-      subgroup: '',
-      order: '',
-    });
-  }
-
-  return _nomodule;
-}
-
 export const ModulePicker: React.FC<ModulePickerProps> = (props) => {
   const gameData = useGameData();
-  const nomod = getNoMod(gameData);
   const renderSelected = (module: Module | null): React.ReactNode => {
     if (module) {
       return <Icon obj={module} tooltip={<ModuleCard module={module} />} />;
     } else {
-      return <Icon obj={nomod} />;
+      return <Icon obj={gameData.noModuleModule} />;
     }
   };
 
@@ -57,11 +30,16 @@ export const ModulePicker: React.FC<ModulePickerProps> = (props) => {
         <Icon
           obj={module}
           tooltip={<ModuleCard module={module} />}
-          text={module.niceName()}
+          text={module.niceName}
         />
       );
     } else {
-      return <Icon obj={nomod} text={nomod.niceName()} />;
+      return (
+        <Icon
+          obj={gameData.noModuleModule}
+          text={gameData.noModuleModule.niceName}
+        />
+      );
     }
   };
 

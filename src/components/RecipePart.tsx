@@ -32,7 +32,7 @@ export const RecipePart: React.FC<Props> = ({ obj, showName }) => {
         return;
       }
 
-      if (obj instanceof game.BaseIngredient) {
+      if (obj instanceof game.Ingredient) {
         if (obj.item.madeBy.length === 1) {
           signal.addRecipeRow.dispatch(obj.item.madeBy[0]);
         } else {
@@ -53,7 +53,7 @@ export const RecipePart: React.FC<Props> = ({ obj, showName }) => {
   if (showName) {
     text = (
       <>
-        {obj.item.niceName()} -- {text}
+        {obj.item.niceName} -- {text}
       </>
     );
   }

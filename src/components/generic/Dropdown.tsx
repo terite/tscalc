@@ -111,7 +111,7 @@ interface DropdownMenuProps<T> {
 }
 
 interface DropdownMenuState {
-  style: React.CSSProperties;
+  style: object;
 }
 
 class DropdownMenu<T> extends React.PureComponent<
@@ -127,7 +127,7 @@ class DropdownMenu<T> extends React.PureComponent<
 
   popperUpdate = (data: Popper.Data): Popper.Data => {
     this.setState({
-      style: data.styles as React.CSSProperties,
+      style: data.styles,
     });
     return data;
   };
