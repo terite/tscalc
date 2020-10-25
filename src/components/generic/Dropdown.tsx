@@ -39,7 +39,14 @@ export class Dropdown<T> extends React.PureComponent<Props<T>, State> {
     isOpen: false,
   };
 
-  handleToggle = (): void => {
+  handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    if (!this.getCanToggle()) {
+      return;
+    }
+
+    // Prevent the "opening" click from immediately closing the dropdown
+    e.stopPropagation();
+
     this.setState((state) => ({
       ...state,
       isOpen: !state.isOpen,
@@ -59,13 +66,18 @@ export class Dropdown<T> extends React.PureComponent<Props<T>, State> {
     });
   };
 
-  render(): React.ReactNode {
-    const canToggle = this.props.options.some((option) => {
-      return 'option' in option && !option.disabled;
-    });
+  getCanToggle(): boolean {
+    for (const option of this.props.options) {
+      if ('option' in option && !option.disabled) {
+        return true;
+      }
+    }
+    return false;
+  }
 
+  render(): React.ReactNode {
     const classes = ['btn', 'btn-secondary'];
-    if (canToggle) {
+    if (this.getCanToggle()) {
       classes.push('dropdown-toggle');
     } else {
       classes.push('disabled');
@@ -90,9 +102,7 @@ export class Dropdown<T> extends React.PureComponent<Props<T>, State> {
           ref={this.buttonRef}
           className={classes.join(' ')}
           type="button"
-          onClick={() => {
-            canToggle && this.handleToggle();
-          }}
+          onClick={this.handleClick}
         >
           {this.props.renderSelected(this.props.selected)}
         </button>
