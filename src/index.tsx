@@ -8,15 +8,10 @@ import { GameDataLoader } from './components/GameDataLoader';
 
 import './index.css';
 
-const JSON_PATH = `${process.env.PUBLIC_URL}/assets/kras-18.json`;
-
 ReactDOM.render(
   <ErrorCatcher>
     <RecoilRoot>
-      <GameDataLoader
-        jsonPath={JSON_PATH}
-        child={(gameData) => <AppLoader gameData={gameData} />}
-      />
+      <GameDataLoader child={(gameData) => <AppLoader gameData={gameData} />} />
     </RecoilRoot>
   </ErrorCatcher>,
   document.getElementById('root')

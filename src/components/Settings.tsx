@@ -9,10 +9,6 @@ import { getDefaultMachine } from '../stateutil';
 
 import { MachinePicker } from './MachinePicker';
 
-interface RawSettingsProps {
-  gameData: game.GameData;
-}
-
 export const Settings: React.FC<{}> = () => {
   const gameData = useGameData();
   const [settings, setSettings] = useRecoilState(settingsAtom);

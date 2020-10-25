@@ -12,8 +12,6 @@ import { RecipeCard } from './RecipeCard';
 
 import styles from './RecipePicker.module.css';
 
-type KeyTypes = 'niceName' | 'name';
-
 const getFn: Fuse.FuseGetFunction<game.Recipe> = (obj, path) => {
   if (typeof path === 'string') {
     throw new Error(`path unexpectedly string: ${path}`);

@@ -81,15 +81,15 @@ class RawAppLoader extends React.PureComponent<RawAppLoaderProps, State> {
 const StateWriter: React.FC<{ gameData: game.GameData }> = ({ gameData }) => {
   const groups = useRecoilValue(groupsState);
   const settings = useRecoilValue(settingsAtom);
-  const completeState: CompleteState = {
-    groups,
-    settings: settings,
-  };
 
   useEffect(() => {
+    const completeState: CompleteState = {
+      groups,
+      settings: settings,
+    };
     serialization.setUrlState(completeState, gameData);
     serialization.setLocalStorageState(completeState, gameData);
-  }, [gameData, completeState]);
+  }, [gameData, groups, settings]);
 
   return null;
 };
