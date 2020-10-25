@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useRecoilState } from 'recoil';
 
 import * as game from '../game';
@@ -26,11 +26,14 @@ export const Settings: React.FC<{}> = () => {
     [setSettings]
   );
 
-  const categoryNames = Object.entries(gameData.categoryMap)
-    .filter((entry) => entry[1].length > 1)
-    .map((entry) => entry[0]);
+  const categoryNames: string[] = useMemo(() => {
+    const names = Object.entries(gameData.categoryMap)
+      .filter((entry) => entry[1].length > 1)
+      .map((entry) => entry[0]);
 
-  categoryNames.sort((a, b) => a.localeCompare(b));
+    names.sort((a, b) => a.localeCompare(b));
+    return names;
+  }, [gameData]);
 
   return (
     <div>
@@ -68,7 +71,7 @@ class CategoryRow extends React.PureComponent<CategoryRowProps, never> {
       this.props.gameData
     );
     return (
-      <div className="btn-toolbar mb-3" key={this.props.category}>
+      <div className="btn-toolbar mb-3">
         <div className="input-group">
           <div className="input-group-prepend">
             <span className="input-group-text">{this.props.category}</span>
