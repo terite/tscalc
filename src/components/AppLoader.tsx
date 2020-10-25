@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import * as ReactDOM from 'react-dom';
 import { atom, useRecoilValue, useSetRecoilState } from 'recoil';
 
@@ -81,8 +81,14 @@ class RawAppLoader extends React.PureComponent<RawAppLoaderProps, State> {
 const StateWriter: React.FC<{ gameData: game.GameData }> = ({ gameData }) => {
   const groups = useRecoilValue(groupsState);
   const settings = useRecoilValue(settingsAtom);
+  const initialRender = useRef(true);
 
   useEffect(() => {
+    // don't waste time re-writing state from the initial render
+    if (initialRender.current) {
+      initialRender.current = false;
+      return;
+    }
     const completeState: CompleteState = {
       groups,
       settings: settings,
