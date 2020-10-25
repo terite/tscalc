@@ -50,7 +50,9 @@ class RawRecipeGroup extends React.PureComponent<Props, never> {
     if (!result.destination) {
       return;
     }
-    this.props.onMoveRow(result.source.index, result.destination.index);
+    if (result.source.index !== result.destination.index) {
+      this.props.onMoveRow(result.source.index, result.destination.index);
+    }
   };
 
   renderRow = (data: RecipeRowData, index: number): React.ReactNode => {
