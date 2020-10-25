@@ -64,7 +64,7 @@ class RawApp extends React.PureComponent<Props, State> {
     });
   };
 
-  handleClickAddGroup: React.MouseEventHandler<any> = (event): void => {
+  handleClickAddGroup = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.preventDefault();
     const defaultName = `Factory ${this.props.groups.length + 1}`;
     const name = prompt('What do you want to name this group?', defaultName);
