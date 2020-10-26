@@ -65,7 +65,7 @@ export function debounce<T extends any[]>(
 
   function debounced(...args: T): void {
     if (pendingId !== undefined) {
-      return;
+      clearTimeout(pendingId);
     }
     pendingId = setTimeout(() => {
       pendingId = undefined;
@@ -88,5 +88,5 @@ export function debounce<T extends any[]>(
 }
 
 export function sleep(ms: number): Promise<void> {
-  return new Promise(r => setTimeout(r, ms));
+  return new Promise((r) => setTimeout(r, ms));
 }
