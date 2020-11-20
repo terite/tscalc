@@ -124,7 +124,7 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
 
     const slots = [];
     for (let i = 0; i < numSlots; i++) {
-      const module = this.props.data.modules[i];
+      const module = this.props.data.modules[i] || null;
       slots.push(
         <ModulePicker
           key={i}

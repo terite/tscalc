@@ -7,6 +7,7 @@ import * as game from '../game';
 import * as su from '../stateutil';
 import { Rational } from '../rational';
 import { settingsAtom, useGameData } from '../atoms';
+import { assert } from '../util';
 
 import { RecipeRow } from './RecipeRow';
 import { RecipePicker } from './RecipePicker';
@@ -179,6 +180,7 @@ export const RecipeGroup: React.FC<RecipeGroupProps> = ({
     (oldIndex: number, newIndex: number) => {
       const rows = Array.from(group.rows);
       const [removed] = rows.splice(oldIndex, 1);
+      assert(removed, `Nothing at old index: ${oldIndex}`);
       rows.splice(newIndex, 0, removed);
 
       setGroup((oldGroup) => ({

@@ -234,7 +234,7 @@ export function getUrlState(gameData: game.GameData): CompleteState | null {
   }
   const version = Number(matches[1] || 1);
 
-  let str = decodeURIComponent(matches[2]);
+  let str = decodeURIComponent(matches[2]!);
   if (version > 2) {
     str = inflate(atob(str), { to: 'string' });
   }
@@ -325,9 +325,8 @@ function deserializeSettings(
   serialized: SerializedSettings
 ): AppSettingsData {
   return {
-    assemblerOverrides: mapValues(
-      serialized.assemblerOverrides,
-      (name) => gameData.getEntity(name)
+    assemblerOverrides: mapValues(serialized.assemblerOverrides, (name) =>
+      gameData.getEntity(name)
     ),
   };
 }

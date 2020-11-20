@@ -245,10 +245,13 @@ export class Recipe extends BaseDisplayable {
   get niceName(): string {
     if (this.products.length !== 1) {
       return super.niceName;
-    } else if (this.products[0].amount.equal(Rational.one)) {
-      return this.products[0].item.niceName;
+    }
+    const product = this.products[0];
+    assert(product, 'recipe has no products');
+    if (product.amount.equal(Rational.one)) {
+      return product.item.niceName;
     } else {
-      return this.products[0].niceName;
+      return product.niceName;
     }
   }
 }
@@ -296,10 +299,12 @@ const createCategoryMap = (entities: Iterable<Entity>): CategoryMap => {
   const catMap: CategoryMap = {};
   for (const entity of entities) {
     for (const category of entity.craftingCategories) {
-      if (!catMap.hasOwnProperty(category)) {
-        catMap[category] = [];
+      const machines = catMap[category];
+      if (machines) {
+        machines.push(entity);
+      } else {
+        catMap[category] = [entity];
       }
-      catMap[category].push(entity);
     }
   }
   return catMap;
@@ -446,14 +451,19 @@ export class GameData {
     this.categoryMap = createCategoryMap(this.entityMap.values());
     this.groups = raw.groups;
 
+    const clockSprite = raw.sprites.extra['clock'];
+    assert(clockSprite, 'missing clock sprite');
+    const noModuleIcon = raw.sprites.extra['slot_icon_module'];
+    assert(noModuleIcon, 'missing "no icon" sprite');
+
     this.clockSprite = new BaseDisplayable({
-      ...raw.sprites.extra['clock'],
+      ...clockSprite,
       name: 'clock',
       localised_name: { en: 'Clock' },
     });
 
     this.noModuleModule = new Module({
-      ...raw.sprites.extra['slot_icon_module'],
+      ...noModuleIcon,
       type: 'module',
       name: 'no_module',
       localised_name: { en: 'No Module' },
@@ -520,8 +530,8 @@ export class GameData {
       const ordersB = this.getItemOrder(keyFn(b));
 
       for (const i in ordersA) {
-        const valA = ordersA[i];
-        const valB = ordersB[i];
+        const valA = ordersA[i]!;
+        const valB = ordersB[i]!;
         if (valA > valB) {
           return 1;
         } else if (valA < valB) {

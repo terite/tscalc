@@ -90,7 +90,7 @@ const StateWriter: React.FC<{ gameData: game.GameData }> = ({ gameData }) => {
       return;
     }
     const completeState: CompleteState = {
-      groups,
+      groups: groups.map((g) => g[0]),
       settings: settings,
     };
     serialization.setUrlState(completeState, gameData);

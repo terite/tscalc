@@ -1,4 +1,5 @@
 export interface LocalisedName {
+  en: string;
   [locale: string]: string;
 }
 

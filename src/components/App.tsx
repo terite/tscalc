@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react';
 import classNames from 'classnames';
-import { useRecoilValue, useRecoilState, RecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState, RecoilState } from 'recoil';
 
 import { RecipeGroup } from './RecipeGroup';
 import { Settings } from './Settings';
 
 import { useGroupAdd, AddGroupAction } from '../actions';
-import { groupAtomsAtom, groupsState } from '../atoms';
+import { groupAtomsAtom, groupsState, GroupAtom } from '../atoms';
 import { RecipeGroupData } from '../state';
 import { GameData } from '../game';
 import { assert, assertNever } from '../util';
@@ -15,26 +15,18 @@ import styles from './App.module.css';
 
 interface Props {
   gameData: GameData;
-  groupAtoms: RecoilState<RecipeGroupData>[];
-  groups: RecipeGroupData[];
+  groups: [RecipeGroupData, GroupAtom][];
   onAddGroup: AddGroupAction;
-  onRemoveGroup(groupAtom: RecoilState<RecipeGroupData>): void;
+  onRemoveGroupAtom(groupAtom: GroupAtom): void;
 }
 
 interface State {
-  activePage: ActivePage;
-  activeGroupIdx: number;
-}
-
-enum ActivePage {
-  Factory,
-  Settings,
+  activePage: 'settings' | GroupAtom;
 }
 
 class RawApp extends React.PureComponent<Props, State> {
   state: State = {
-    activePage: ActivePage.Factory,
-    activeGroupIdx: 0,
+    activePage: 'settings',
   };
 
   componentDidMount(): void {
@@ -57,10 +49,9 @@ class RawApp extends React.PureComponent<Props, State> {
     }
   };
 
-  handleClickGroup = (i: number): void => {
+  handleClickGroup = (groupAtom: GroupAtom): void => {
     this.setState({
-      activePage: ActivePage.Factory,
-      activeGroupIdx: i,
+      activePage: groupAtom,
     });
   };
 
@@ -74,19 +65,30 @@ class RawApp extends React.PureComponent<Props, State> {
     this.props.onAddGroup({ name, rows: [] });
   };
 
+  handleRemoveGroupAtom = (groupAtom: GroupAtom): void => {
+    if (this.state.activePage === groupAtom) {
+      for (const xy of this.props.groups) {
+        if (xy[1] !== groupAtom) {
+          this.setState({
+            activePage: xy[1],
+          });
+        }
+      }
+    }
+    this.props.onRemoveGroupAtom(groupAtom);
+  };
+
   handleClickSettings = (): void => {
     this.setState({
-      activePage: ActivePage.Settings,
+      activePage: 'settings',
     });
   };
 
   renderNavbar(): React.ReactNode {
-    const settingsActive = this.state.activePage === ActivePage.Settings;
+    const settingsActive = this.state.activePage === 'settings';
 
-    const activeKey = settingsActive ? 'settings' : this.state.activeGroupIdx;
-
-    const factoryPills = this.props.groups.map((group, i) => {
-      const active = activeKey === i;
+    const factoryPills = this.props.groups.map(([group, groupAtom], i) => {
+      const active = this.state.activePage === groupAtom;
       return (
         <button
           key={i}
@@ -94,7 +96,7 @@ class RawApp extends React.PureComponent<Props, State> {
           className={`list-group-item list-group-item-action ${
             active ? 'active' : ''
           }`}
-          onClick={() => this.handleClickGroup(i)}
+          onClick={() => this.handleClickGroup(groupAtom)}
         >
           {group.name}
         </button>
@@ -143,30 +145,23 @@ class RawApp extends React.PureComponent<Props, State> {
     );
   }
 
-  renderFactory = (): React.ReactNode => {
-    const groupAtom = this.props.groupAtoms[this.state.activeGroupIdx];
-    return (
-      <RecipeGroup
-        groupAtom={groupAtom}
-        onRemoveGroup={this.props.onRemoveGroup}
-      />
-    );
-  };
-
-  renderSettings = (): React.ReactNode => {
-    return <Settings />;
-  };
-
-  render(): React.ReactNode {
-    assert(this.props.gameData, 'falsy gameData, should never happen');
-    let body: React.ReactNode;
-    if (this.state.activePage === ActivePage.Factory) {
-      body = this.renderFactory();
-    } else if (this.state.activePage === ActivePage.Settings) {
-      body = this.renderSettings();
+  renderBody(): React.ReactNode {
+    if (this.state.activePage === 'settings') {
+      return <Settings />;
+    } else if (this.state.activePage) {
+      return (
+        <RecipeGroup
+          groupAtom={this.state.activePage}
+          onRemoveGroup={this.handleRemoveGroupAtom}
+        />
+      );
     } else {
       return assertNever(this.state.activePage);
     }
+  }
+
+  render(): React.ReactNode {
+    assert(this.props.gameData, 'falsy gameData, should never happen');
 
     return (
       <div className="container-fluid">
@@ -174,7 +169,7 @@ class RawApp extends React.PureComponent<Props, State> {
           <div className={classNames('col col-2 bg-primary', styles.Sidebar)}>
             {this.renderNavbar()}
           </div>
-          <div className="col pt-3">{body}</div>
+          <div className="col pt-3">{this.renderBody()}</div>
         </div>
       </div>
     );
@@ -186,11 +181,11 @@ export const App: React.FC<{
 }> = ({ gameData }) => {
   const groups = useRecoilValue(groupsState);
 
-  const [groupAtoms, setGroupAtoms] = useRecoilState(groupAtomsAtom);
+  const setGroupAtoms = useSetRecoilState(groupAtomsAtom);
 
   const handleAddGroup = useGroupAdd();
 
-  const handleRemoveGroup = useCallback(
+  const handleRemoveGroupAtom = useCallback(
     (groupAtom: RecoilState<RecipeGroupData>) => {
       setGroupAtoms((atoms) => atoms.filter((a) => a !== groupAtom));
     },
@@ -201,9 +196,8 @@ export const App: React.FC<{
     <RawApp
       gameData={gameData}
       groups={groups}
-      groupAtoms={groupAtoms}
       onAddGroup={handleAddGroup}
-      onRemoveGroup={handleRemoveGroup}
+      onRemoveGroupAtom={handleRemoveGroupAtom}
     />
   );
 };

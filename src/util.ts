@@ -13,8 +13,8 @@ export function mapValues<T, V>(
   fn: (v: T) => V
 ): { [s: string]: V } {
   let ret: { [key: string]: V } = {};
-  for (const key in obj) {
-    ret[key] = fn(obj[key]);
+  for (const [key, value] of Object.entries(obj)) {
+    ret[key] = fn(value);
   }
   return ret;
 }

@@ -64,7 +64,7 @@ class CategoryRow extends React.PureComponent<CategoryRowProps, never> {
   };
 
   render(): React.ReactNode {
-    const machines = this.props.gameData.categoryMap[this.props.category];
+    const machines = this.props.gameData.categoryMap[this.props.category] || [];
     const selected = getDefaultMachine(
       this.props.category,
       this.props.settings,

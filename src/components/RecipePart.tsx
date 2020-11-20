@@ -34,13 +34,13 @@ export const RecipePart: React.FC<Props> = ({ obj, showName }) => {
 
       if (obj instanceof game.Ingredient) {
         if (obj.item.madeBy.length === 1) {
-          signal.addRecipeRow.dispatch(obj.item.madeBy[0]);
+          signal.addRecipeRow.dispatch(obj.item.madeBy[0]!);
         } else {
           signal.addIngredientFilter.dispatch(obj);
         }
       } else {
         if (obj.item.usedBy.length === 1) {
-          signal.addRecipeRow.dispatch(obj.item.usedBy[0]);
+          signal.addRecipeRow.dispatch(obj.item.usedBy[0]!);
         } else {
           signal.addProductFilter.dispatch(obj);
         }

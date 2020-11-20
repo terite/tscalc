@@ -37,16 +37,17 @@ export const recipeTargetAtom = atom<RecipeTarget | undefined>({
 //
 // Groups
 //
-export const groupAtomsAtom = atom<RecoilState<RecipeGroupData>[]>({
+export type GroupAtom = RecoilState<RecipeGroupData>;
+export const groupAtomsAtom = atom<GroupAtom[]>({
   key: 'groupAtoms',
   default: [],
 });
 
-export const groupsState = selector<RecipeGroupData[]>({
+export const groupsState = selector<[RecipeGroupData, GroupAtom][]>({
   key: 'groupsState',
   get: ({ get }) => {
     const groupAtoms = get(groupAtomsAtom);
-    return groupAtoms.map((groupAtom) => get(groupAtom));
+    return groupAtoms.map((groupAtom) => [get(groupAtom), groupAtom]);
   },
 });
 

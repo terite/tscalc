@@ -9,12 +9,14 @@ export function getDefaultMachine(
 ): game.AssemblingMachine {
   const category = input instanceof game.Recipe ? input.category : input;
 
-  let defaultMachine: game.AssemblingMachine;
+  let defaultMachine: game.AssemblingMachine | undefined;
   if (category in settings.assemblerOverrides) {
     defaultMachine = settings.assemblerOverrides[category];
   } else {
-    defaultMachine = gameData.categoryMap[category][0];
+    defaultMachine = gameData.categoryMap[category]![0];
   }
+
+  assert(defaultMachine);
 
   if (input instanceof game.Recipe) {
     assert(input.madeIn.indexOf(defaultMachine) !== -1);
