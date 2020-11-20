@@ -1,8 +1,9 @@
 import { debounce } from './util';
 
-jest.useFakeTimers();
-
 describe('debounce', () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
   it('should call after expiration time', () => {
     const fn = jest.fn((...args: any[]) => 'ret');
     const deb = debounce(fn, 20);
