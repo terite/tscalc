@@ -69,17 +69,17 @@ class RawRecipeGroup extends React.PureComponent<Props, never> {
   };
 
   handleClickRename = (): void => {
-    const name = prompt(
-      'Whatcha wanna call it now?',
-      `${this.props.group.name} (Clone)`
-    );
+    const name = prompt('Whatcha wanna call it now?', this.props.group.name);
     if (name) {
       this.props.onRenameGroup(name);
     }
   };
 
   handleClickClone = (): void => {
-    const name = prompt('Whatcha wanna call it now?', this.props.group.name);
+    const name = prompt(
+      'Whatcha wanna call it now?',
+      `${this.props.group.name} (Clone)`
+    );
     if (name) {
       this.props.onCloneGroup(name);
     }
