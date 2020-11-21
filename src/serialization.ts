@@ -145,19 +145,28 @@ interface SerializedSettings {
   };
 }
 
+export const STATEKEY = `tscalc-${document.location.pathname}`;
+
 export function setLocalStorageState(
   state: CompleteState,
   gameData: game.GameData
 ): void {
-  localStorage.setItem('appstate', JSON.stringify(serialize(state, gameData)));
+  localStorage.setItem(STATEKEY, JSON.stringify(serialize(state, gameData)));
 }
 
 export function getLocalStorageState(
   gameData: game.GameData
 ): CompleteState | null {
-  const statestr = localStorage.getItem('appstate');
+  let statestr = localStorage.getItem(STATEKEY);
   if (!statestr) {
-    return null;
+    statestr = localStorage.getItem('appstate');
+    if (statestr) {
+      // move to the new key
+      localStorage.setItem(STATEKEY, statestr);
+      localStorage.removeItem('appstate');
+    } else {
+      return null;
+    }
   }
   const stateobj: MultiSerializedAppState = JSON.parse(statestr);
   if (stateobj.version === 1) {
