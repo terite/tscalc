@@ -8,14 +8,26 @@ interface Props {
 
 interface State {
   txtValue: string;
+  errMsg: string | undefined;
 }
 
-export class IntegerInput extends React.PureComponent<Props, State> {
+export class IntegerInput extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
       txtValue: props.value.toString(),
+      errMsg: undefined,
     };
+  }
+
+  shouldComponentUpdate(nextProps: Props, nextState: State): boolean {
+    // props.onChange is not used in rendering
+    return (
+      this.props.value !== nextProps.value ||
+      this.props.min !== nextProps.min ||
+      this.state.txtValue !== nextState.txtValue ||
+      this.state.errMsg !== nextState.errMsg
+    );
   }
 
   componentDidUpdate(oldProps: Props): void {
@@ -30,32 +42,37 @@ export class IntegerInput extends React.PureComponent<Props, State> {
   }
 
   handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    const value = event.target.value;
-    this.setState({ txtValue: value }, () => {
-      if (!value.trim()) {
-        return;
-      }
-      const num = Number(value);
-      if (isNaN(num)) {
-        return;
-      }
-      if (!Number.isInteger(num)) {
-        return;
-      }
+    const txtValue = event.target.value;
+    let errMsg: string | undefined;
 
-      if (typeof this.props.min === 'number' && num < this.props.min) {
-        // TODO: Error
-        return;
-      }
+    const value = txtValue.trim() ? Number(txtValue) : NaN;
+    if (Number.isNaN(value)) {
+      errMsg = 'Improperly formatted number';
+    } else if (!Number.isInteger(value)) {
+      errMsg = 'Must be an integer';
+    } else if (typeof this.props.min === 'number' && value < this.props.min) {
+      errMsg =
+        this.props.min === 0
+          ? 'Must be positive'
+          : `Must be greater than ${this.props.min}`;
+    }
 
-      this.props.onChange(num);
+    this.setState({ txtValue, errMsg }, () => {
+      if (typeof value === 'number' && !errMsg) {
+        this.props.onChange(value);
+      }
     });
   };
 
   render(): React.ReactNode {
+    let className = 'form-control';
+    if (!!this.state.errMsg) {
+      className += ' is-invalid';
+    }
+
     return (
       <input
-        className="form-control"
+        className={className}
         value={this.state.txtValue}
         onChange={this.handleChange}
         type="number"

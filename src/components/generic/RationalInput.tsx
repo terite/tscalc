@@ -18,7 +18,7 @@ export class RationalInput extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      error: '',
+      error: undefined,
       txtValue: rationalToString(props.value),
     };
   }
