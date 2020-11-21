@@ -53,7 +53,7 @@ export const RecipePart: React.FC<Props> = ({ obj, showName }) => {
   if (showName) {
     text = (
       <>
-        {obj.item.niceName} -- {text}
+        {obj.item.niceName} — {text}
       </>
     );
   }
