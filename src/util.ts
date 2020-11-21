@@ -61,7 +61,7 @@ export function debounce<T extends any[]>(
   fn: Func<T>,
   ms: number
 ): DebouncedFunc<T> {
-  let pendingId: any; // TODO: number when node is removed
+  let pendingId: number | undefined;
 
   function debounced(...args: T): void {
     if (pendingId !== undefined) {

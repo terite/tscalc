@@ -277,7 +277,7 @@ export class AssemblingMachine extends BaseEntity {
   }
 
   canBuildRecipe(recipe: Recipe): boolean {
-    // TODO: this needs to account for entity fluid boxes
+    // This does not (but should) account for entity fluid boxes
     if (this.craftingCategories.indexOf(recipe.category) === -1) {
       return false;
     }
