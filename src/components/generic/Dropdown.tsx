@@ -1,6 +1,8 @@
 import * as React from 'react';
 import Popper from 'popper.js';
 
+import { assert } from '../../util';
+
 interface DropdownHeader {
   header: React.ReactNode;
 }
@@ -143,19 +145,13 @@ class DropdownMenu<T> extends React.PureComponent<
   };
 
   handleBodyClick = (event: MouseEvent): void => {
-    if (!this.menuRef.current) {
-      throw new Error(
-        'Click event without menu rendered. This should not happen.'
-      );
+    if (!(event.target instanceof Node)) {
+      console.warn('handleBodyClick called for non-node', event.target);
+      return;
     }
-    if (!event.target) {
-      throw new Error(
-        'Click event without click target. This should not happen.'
-      );
-    }
-    // TODO: why doesnt EventTarget satisfy "Node"
-    const target = event.target as any;
-    if (!this.menuRef.current.contains(target)) {
+    assert(this.menuRef.current);
+
+    if (!this.menuRef.current.contains(event.target)) {
       // Click was outside menu
       this.props.onWantClose();
     }
