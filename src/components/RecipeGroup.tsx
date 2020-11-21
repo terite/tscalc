@@ -1,19 +1,19 @@
 import React, { useCallback } from 'react';
-import { useRecoilState, useRecoilValue, RecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { DropResult, DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 import * as signal from '../signal';
 import * as game from '../game';
 import * as su from '../stateutil';
 import { Rational } from '../rational';
-import { settingsAtom, useGameData } from '../atoms';
+import { settingsAtom, useGameData, GroupAtom } from '../atoms';
 import { assert } from '../util';
+import { useGroupAdd } from '../actions';
+import { RecipeGroupData, RecipeRowData } from '../state';
 
 import { RecipeRow } from './RecipeRow';
 import { RecipePicker } from './RecipePicker';
 import { TotalCard } from './TotalCard';
-
-import { RecipeGroupData, RecipeRowData } from '../state';
 
 import styles from './RecipeGroup.module.css';
 
@@ -69,7 +69,10 @@ class RawRecipeGroup extends React.PureComponent<Props, never> {
   };
 
   handleClickRename = (): void => {
-    const name = prompt('Whatcha wanna call it now?', this.props.group.name);
+    const name = prompt(
+      'Whatcha wanna call it now?',
+      `${this.props.group.name} (Clone)`
+    );
     if (name) {
       this.props.onRenameGroup(name);
     }
@@ -147,8 +150,8 @@ class RawRecipeGroup extends React.PureComponent<Props, never> {
 }
 
 interface RecipeGroupProps {
-  groupAtom: RecoilState<RecipeGroupData>;
-  onRemoveGroup(groupAtom: RecoilState<RecipeGroupData>): void;
+  groupAtom: GroupAtom;
+  onRemoveGroup(groupAtom: GroupAtom): void;
 }
 export const RecipeGroup: React.FC<RecipeGroupProps> = ({
   groupAtom,
@@ -157,6 +160,7 @@ export const RecipeGroup: React.FC<RecipeGroupProps> = ({
   const [group, setGroup] = useRecoilState(groupAtom);
   const settings = useRecoilValue(settingsAtom);
   const gameData = useGameData();
+  const addGroup = useGroupAdd();
 
   const handleRenameGroup = useCallback(
     (newName: string) => {
@@ -168,9 +172,15 @@ export const RecipeGroup: React.FC<RecipeGroupProps> = ({
     [setGroup]
   );
 
-  const handleCloneGroup = useCallback((newName: string) => {
-    alert('TODO: handleCloneGroup');
-  }, []);
+  const handleCloneGroup = useCallback(
+    (newName: string) => {
+      addGroup({
+        ...group,
+        name: newName,
+      });
+    },
+    [addGroup, group]
+  );
 
   const handleRemoveGroup = useCallback(() => {
     onRemoveGroup(groupAtom);
