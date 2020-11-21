@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { format_joules, format_watts } from '../util';
+import { format_joules } from '../util';
 import * as game from '../game';
 
 interface Props {
@@ -12,7 +12,7 @@ export const IngredientCard: React.FC<Props> = (props) => {
 
   let fuelValues: React.ReactNode;
   if (obj.item.fuelValue) {
-    const totalValue = format_watts(
+    const totalValue = format_joules(
       obj.amount.mul(obj.item.fuelValue).toFloat()
     );
     fuelValues = (
@@ -30,7 +30,7 @@ export const IngredientCard: React.FC<Props> = (props) => {
   return (
     <div className="card">
       <div className="card-header">
-        {obj.item.niceName} ({obj.item.name})
+        {obj.niceName} ({obj.item.name})
       </div>
       {fuelValues}
     </div>
