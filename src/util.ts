@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 export function assert(condition: any, message?: string): asserts condition {
   if (!condition) {
     throw new Error(message || 'Assertion failed');
@@ -89,4 +91,41 @@ export function debounce<T extends any[]>(
 
 export function sleep(ms: number): Promise<void> {
   return new Promise((r) => setTimeout(r, ms));
+}
+
+export function relativeTime(when: Date): [string, number] {
+  const whenUnix = when.valueOf();
+  const nowUnix = Date.now();
+  const suffix = nowUnix > whenUnix ? 'ago' : 'from now';
+
+  const secDiff = Math.floor(Math.abs(nowUnix - whenUnix) / 1000);
+  if (secDiff >= 60) {
+    const minDiff = Math.floor(secDiff / 60);
+    const unit = minDiff === 1 ? 'minute' : 'minutes';
+    const changeTime = (60 - (secDiff % 60)) * 1000;
+    return [`${minDiff} ${unit} ${suffix}`, changeTime];
+  } else {
+    const unit = secDiff === 1 ? 'second' : 'seconds';
+    return [`${secDiff} ${unit} ${suffix}`, 1000];
+  }
+}
+
+export function useRelativeTime(when: Date): string {
+  const [reltime, change] = relativeTime(when);
+
+  const [renderInc, setRenderInc] = useState(0);
+  void renderInc;
+
+  useEffect(() => {
+    const tId = setInterval(() => {
+      // Force re-render?
+      setRenderInc((r) => r + 1);
+    }, change);
+
+    return () => {
+      clearInterval(tId);
+    };
+  }, [change]);
+
+  return reltime;
 }

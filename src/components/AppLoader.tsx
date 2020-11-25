@@ -7,6 +7,8 @@ import { groupsState, groupAtomsAtom, settingsAtom } from '../atoms';
 import { CompleteState, RecipeGroupData } from '../state';
 import * as serialization from '../serialization';
 
+import { error } from '../notifications';
+
 import { App } from './App';
 
 interface RawAppLoaderProps {
@@ -37,7 +39,19 @@ class RawAppLoader extends React.PureComponent<RawAppLoaderProps, State> {
   }
 
   getPreviousState(): CompleteState | undefined {
-    const urlState = serialization.getUrlState(this.props.gameData);
+    let urlState: CompleteState | null = null;
+    try {
+      urlState = serialization.getUrlState(this.props.gameData);
+    } catch (err: unknown) {
+      error(
+        <>
+          <b>Error loading from URL</b>
+          <br />
+          <pre>{String(err)}</pre>
+        </>
+      );
+      console.error('error loading from url', err);
+    }
     if (urlState) return urlState;
 
     try {
@@ -45,7 +59,7 @@ class RawAppLoader extends React.PureComponent<RawAppLoaderProps, State> {
         this.props.gameData
       );
       if (storageState) return storageState;
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Failed to load local storage state', err);
     }
   }

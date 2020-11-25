@@ -180,14 +180,16 @@ class RawApp extends React.PureComponent<Props, State> {
     assert(this.props.gameData, 'falsy gameData, should never happen');
 
     return (
-      <div className="container-fluid">
-        <div className="row">
-          <div className={classNames('col col-2 bg-primary', styles.Sidebar)}>
-            {this.renderNavbar()}
+      <>
+        <div className="container-fluid">
+          <div className="row">
+            <div className={classNames('col col-2 bg-primary', styles.Sidebar)}>
+              {this.renderNavbar()}
+            </div>
+            <div className="col pt-3">{this.renderBody()}</div>
           </div>
-          <div className="col pt-3">{this.renderBody()}</div>
         </div>
-      </div>
+      </>
     );
   }
 }

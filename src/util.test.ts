@@ -1,4 +1,4 @@
-import { debounce } from './util';
+import { debounce, relativeTime } from './util';
 
 describe('debounce', () => {
   beforeEach(() => {
@@ -49,5 +49,50 @@ describe('debounce', () => {
     jest.advanceTimersByTime(10);
     expect(fn).toHaveBeenCalledTimes(1);
     expect(fn).toHaveBeenCalledWith('goodnight', 'moon');
+  });
+});
+
+describe.only('relativeTime', () => {
+  it('should support seconds in the past (singular)', () => {
+    const oneSecondAgo = new Date(Date.now() - 1000);
+    const rt = relativeTime(oneSecondAgo);
+    expect(rt[0]).toBe('1 second ago');
+    expect(rt[1]).toBe(1000);
+  });
+
+  it('should support seconds in the past (plural)', () => {
+    const eightSecondsAgo = new Date(Date.now() - 8000);
+    const rt = relativeTime(eightSecondsAgo);
+    expect(rt[0]).toBe('8 seconds ago');
+    expect(rt[1]).toBe(1000);
+  });
+
+  it('should support seconds in the future', () => {
+    const eightSecondsFromNow = new Date(Date.now() + 8000);
+    const rt = relativeTime(eightSecondsFromNow);
+    expect(rt[0]).toBe('8 seconds from now');
+    expect(rt[1]).toBe(1000);
+  });
+
+  it('should support minutes in the past', () => {
+    const oneMinuteAgo = new Date(Date.now() - 60 * 1000);
+    const rt = relativeTime(oneMinuteAgo);
+    expect(rt[0]).toBe('1 minute ago');
+    expect(rt[1]).toBe(60 * 1000);
+  });
+
+  it('should support minutes in the past (plural)', () => {
+    const eightMinutesAgo = new Date(Date.now() - 8 * 60 * 1000);
+    const rt = relativeTime(eightMinutesAgo);
+    expect(rt[0]).toBe('8 minutes ago');
+    expect(rt[1]).toBe(60 * 1000);
+  });
+
+  it('should support partial minutes in the past', () => {
+    // 3m 20s ago -- 40s until 4 minutes ago
+    const twoHundredSecondsAgo = new Date(Date.now() - 200 * 1000);
+    const rt = relativeTime(twoHundredSecondsAgo);
+    expect(rt[0]).toBe('3 minutes ago');
+    expect(rt[1]).toBe(40 * 1000);
   });
 });
