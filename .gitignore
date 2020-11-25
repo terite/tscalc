@@ -1,6 +1,7 @@
 /node_modules
 /build
 /coverage
+/.eslintcache
 
 npm-debug.log*
 yarn-debug.log

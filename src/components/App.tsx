@@ -25,9 +25,17 @@ interface State {
 }
 
 class RawApp extends React.PureComponent<Props, State> {
-  state: State = {
-    activePage: 'settings',
-  };
+  constructor(props: Props) {
+    super(props);
+
+    let activePage: State['activePage'] = 'settings';
+    for (const x of this.props.groups) {
+      activePage = x[1];
+      break;
+    }
+
+    this.state = { activePage };
+  }
 
   componentDidMount(): void {
     document.addEventListener('keydown', this.handleKeyDown);
@@ -67,12 +75,20 @@ class RawApp extends React.PureComponent<Props, State> {
 
   handleRemoveGroupAtom = (groupAtom: GroupAtom): void => {
     if (this.state.activePage === groupAtom) {
+      let changed = false;
       for (const xy of this.props.groups) {
         if (xy[1] !== groupAtom) {
           this.setState({
             activePage: xy[1],
           });
+          changed = true;
+          break;
         }
+      }
+      if (!changed) {
+        this.setState({
+          activePage: 'settings',
+        });
       }
     }
     this.props.onRemoveGroupAtom(groupAtom);
