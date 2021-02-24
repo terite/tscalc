@@ -13,7 +13,9 @@ interface MachinePickerProps {
 }
 
 const renderSelected = (machine: AssemblingMachine): React.ReactNode => {
-  return <Icon obj={machine} tooltip={() => <MachineCard machine={machine} />} />;
+  return (
+    <Icon obj={machine} tooltip={() => <MachineCard machine={machine} />} />
+  );
 };
 
 const renderOption = (machine: AssemblingMachine): React.ReactNode => {
