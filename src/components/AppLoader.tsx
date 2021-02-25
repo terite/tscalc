@@ -31,8 +31,7 @@ class RawAppLoader extends React.PureComponent<RawAppLoaderProps, State> {
     this._mounted = true;
     this.load().then(
       () => {
-        if (this._mounted)
-          this.setState({ loaded: true });
+        if (this._mounted) this.setState({ loaded: true });
       },
       (err) => {
         if (this._mounted)
@@ -46,7 +45,6 @@ class RawAppLoader extends React.PureComponent<RawAppLoaderProps, State> {
   componentWillUnmount(): void {
     this._mounted = false;
   }
-
 
   getPreviousState(): CompleteState | undefined {
     let urlState: CompleteState | null = null;
@@ -76,8 +74,7 @@ class RawAppLoader extends React.PureComponent<RawAppLoaderProps, State> {
 
   async load(): Promise<void> {
     const previousState = this.getPreviousState();
-    if (previousState)
-      this.props.onSetPreviousState(previousState);
+    if (previousState) this.props.onSetPreviousState(previousState);
   }
 
   render(): React.ReactNode {
