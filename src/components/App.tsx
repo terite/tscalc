@@ -70,7 +70,9 @@ class RawApp extends React.PureComponent<Props, State> {
     if (!name || !name.trim()) {
       return;
     }
-    this.props.onAddGroup({ name, rows: [] });
+
+    const newAtom = this.props.onAddGroup({ name, rows: [] });
+    this.setState({ activePage: newAtom });
   };
 
   handleRemoveGroupAtom = (groupAtom: GroupAtom): void => {
