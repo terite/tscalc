@@ -98,6 +98,30 @@ class RawRecipeGroup extends React.PureComponent<Props, never> {
     this.props.onRemoveGroup();
   };
 
+  renderHeader(): React.ReactNode {
+    return <div className="row align-items-end">
+      <div className="col">
+        <h3 className="mb-0">🏭 {this.props.group.name}</h3>
+      </div>
+      <div className="col text-right">
+        <div className="btn-group btn-group-sm">
+          <button className="btn btn-primary" onClick={this.handleClickRename}>
+            Rename
+              </button>
+          <button className="btn btn-primary" onClick={this.handleClickClone}>
+            Clone
+              </button>
+          <button
+            className="btn btn-danger"
+            onClick={this.handleClickDelete}
+          >
+            Delete
+              </button>
+        </div>
+      </div>
+    </div>
+  }
+
   render(): React.ReactNode {
     const gd = this.props.gameData;
     const availableRecipes = gd.recipes.filter((recipe) => {
@@ -106,30 +130,15 @@ class RawRecipeGroup extends React.PureComponent<Props, never> {
 
     return (
       <div className={styles.RecipeGroup}>
-        <div className="clearfix">
-          <h3 className="float-left">{this.props.group.name}</h3>
-          <div className="float-right">
-            <div className="button-group">
-              <button className="btn btn-info" onClick={this.handleClickRename}>
-                Rename
-              </button>
-              <button className="btn btn-info" onClick={this.handleClickClone}>
-                Clone
-              </button>
-              <button
-                className="btn btn-danger"
-                onClick={this.handleClickDelete}
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
+        {this.renderHeader()}
+
+        <hr />
+
         <RecipePicker
+          className="mb-3"
           recipes={availableRecipes}
           onPickRecipe={this.props.onAddRow}
         />
-        <hr />
 
         <DragDropContext onDragEnd={this.handleDragEnd}>
           <Droppable droppableId={'eyy'}>

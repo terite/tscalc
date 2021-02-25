@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Fuse from 'fuse.js';
+import classNames from 'classnames';
 
 import { debounce } from '../util';
 
@@ -32,6 +33,7 @@ const getFn: Fuse.FuseGetFunction<game.Recipe> = (obj, path) => {
 const RE_ADVANCED = /((?:produces)|(?:consumes)):([a-z0-9-]+)/g;
 
 interface Props {
+  className?: string,
   recipes: game.Recipe[];
   onPickRecipe(r: game.Recipe): void;
 }
@@ -200,7 +202,7 @@ export class RecipePicker extends React.PureComponent<Props, State> {
 
   render(): React.ReactNode {
     return (
-      <div className={styles.RecipePicker}>
+      <div className={classNames(styles.RecipePicker, this.props.className)}>
         <div>
           <input
             type="search"
