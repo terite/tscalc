@@ -99,27 +99,29 @@ class RawRecipeGroup extends React.PureComponent<Props, never> {
   };
 
   renderHeader(): React.ReactNode {
-    return <div className="row align-items-end">
-      <div className="col">
-        <h3 className="mb-0">🏭 {this.props.group.name}</h3>
-      </div>
-      <div className="col text-right">
-        <div className="btn-group btn-group-sm">
-          <button className="btn btn-primary" onClick={this.handleClickRename}>
-            Rename
-              </button>
-          <button className="btn btn-primary" onClick={this.handleClickClone}>
-            Clone
-              </button>
-          <button
-            className="btn btn-danger"
-            onClick={this.handleClickDelete}
-          >
-            Delete
-              </button>
+    return (
+      <div className="row align-items-end">
+        <div className="col">
+          <h3 className="mb-0">🏭 {this.props.group.name}</h3>
+        </div>
+        <div className="col text-right">
+          <div className="btn-group btn-group-sm">
+            <button
+              className="btn btn-primary"
+              onClick={this.handleClickRename}
+            >
+              Rename
+            </button>
+            <button className="btn btn-primary" onClick={this.handleClickClone}>
+              Clone
+            </button>
+            <button className="btn btn-danger" onClick={this.handleClickDelete}>
+              Delete
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    );
   }
 
   render(): React.ReactNode {

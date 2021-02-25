@@ -33,7 +33,7 @@ const getFn: Fuse.FuseGetFunction<game.Recipe> = (obj, path) => {
 const RE_ADVANCED = /((?:produces)|(?:consumes)):([a-z0-9-]+)/g;
 
 interface Props {
-  className?: string,
+  className?: string;
   recipes: game.Recipe[];
   onPickRecipe(r: game.Recipe): void;
 }
