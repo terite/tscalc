@@ -36,17 +36,25 @@ export const Settings: React.FC<{}> = () => {
   }, [gameData]);
 
   return (
-    <div>
-      <h3>Default Assemblers</h3>
-      {categoryNames.map((name) => (
-        <CategoryRow
-          gameData={gameData}
-          settings={settings}
-          key={name}
-          category={name}
-          onSetDefaultMachine={handleSetDefaultMachine}
-        />
-      ))}
+    <div className="container">
+      <div className="row">
+        <div className="col">
+          <h3>Default Assemblers</h3>
+          {categoryNames.map((name) => (
+            <CategoryRow
+              gameData={gameData}
+              settings={settings}
+              key={name}
+              category={name}
+              onSetDefaultMachine={handleSetDefaultMachine}
+            />
+          ))}
+        </div>
+        <div className="col">
+          <h3>Active mods</h3>
+          <SettingsActiveMods gameData={gameData} />
+        </div>
+      </div>
     </div>
   );
 };
@@ -88,3 +96,24 @@ class CategoryRow extends React.PureComponent<CategoryRowProps, never> {
     );
   }
 }
+
+const MOD_INFO: Record<string, string> = {
+  'base': 'Data for the base "factorio" game',
+  'factorio-data-dumper': 'A mod that exports data about other installed mods.'
+};
+
+const SettingsActiveMods: React.FC<{ gameData: game.GameData }> = ({ gameData }) => {
+  const children: React.ReactNode[] = [];
+  for (const [name, version] of Object.entries(gameData.activeMods)) {
+    const url = "https://mods.factorio.com/mod/" + name;
+    let infoNode: React.ReactNode;
+    if (MOD_INFO[name] !== undefined)
+      infoNode = <span title={MOD_INFO[name]}> 🛈</span>
+    children.push(<li key={name}>
+      <a href={url} target="_blank" rel="noopener noreferrer"><b>{name}</b></a>{infoNode} &ndash; version {version}
+    </li>);
+  }
+  return <ul>
+    {children}
+  </ul>
+};

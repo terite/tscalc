@@ -332,7 +332,10 @@ export class GameData {
 
   readonly spriteHash: string;
 
+  readonly activeMods: Record<string, string>;
+
   constructor(raw: schema.Root) {
+    this.activeMods = raw.active_mods;
     this.spriteHash = raw.sprites.hash;
 
     for (const edata of Object.values(raw['assembling-machine'])) {
