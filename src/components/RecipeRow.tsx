@@ -149,7 +149,15 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
       );
     }
 
-    return slots;
+    if (slots.length > 0) {
+      return (
+        <div className="mb-3 btn-group btn-icon-wrapper" role="group">
+          {slots}
+        </div>
+      );
+    } else {
+      return undefined;
+    }
   }
 
   renderBeacons(): React.ReactNode {
@@ -240,9 +248,7 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
             <div className="card-body clearfix">
               <div className="float-left">
                 {this.renderMachines()}
-                <div className="mb-3 btn-group btn-icon-wrapper" role="group">
-                  {this.renderModules()}
-                </div>
+                {this.renderModules()}
                 {this.renderBeacons()}
               </div>
 
