@@ -1,8 +1,8 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
-import usePromise from 'react-use-promise';
 
 import { gameDataAtom } from '../atoms';
+import { usePromise } from '../usePromise';
 
 import { GameData } from '../game';
 
