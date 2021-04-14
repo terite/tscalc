@@ -99,7 +99,8 @@ class CategoryRow extends React.PureComponent<CategoryRowProps, never> {
 
 const MOD_INFO: Record<string, string> = {
   base: 'Data for the base "factorio" game',
-  'factorio-data-dumper': 'A mod that exports data about other installed mods.',
+  'factorio-data-dumper':
+    'A fake mod that exports data about other installed mods.',
 };
 
 const SettingsActiveMods: React.FC<{ gameData: game.GameData }> = ({
@@ -108,15 +109,24 @@ const SettingsActiveMods: React.FC<{ gameData: game.GameData }> = ({
   const children: React.ReactNode[] = [];
   for (const [name, version] of Object.entries(gameData.activeMods)) {
     const url = 'https://mods.factorio.com/mod/' + name;
-    let infoNode: React.ReactNode;
-    if (MOD_INFO[name] !== undefined)
-      infoNode = <span title={MOD_INFO[name]}> 🛈</span>;
-    children.push(
-      <li key={name}>
+    let nameNode: React.ReactNode;
+    if (MOD_INFO[name] !== undefined) {
+      nameNode = (
+        <>
+          <b>{name}</b>
+          <span title={MOD_INFO[name]}> 🛈</span>
+        </>
+      );
+    } else {
+      nameNode = (
         <a href={url} target="_blank" rel="noopener noreferrer">
           <b>{name}</b>
         </a>
-        {infoNode} &ndash; version {version}
+      );
+    }
+    children.push(
+      <li key={name}>
+        {nameNode} &ndash; version {version}
       </li>
     );
   }
