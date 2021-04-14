@@ -1,3 +1,4 @@
+/// <reference path="./types/pako.d.ts" />
 import * as game from './game';
 import { Rational } from './rational';
 import { CompleteState, AppSettingsData } from './state';
@@ -5,6 +6,8 @@ import { getDefaultMachine } from './stateutil';
 import { mapValues } from './util';
 
 import { inflate, deflate } from 'pako';
+
+import { base64ToBytes, bytesToBase64 } from './base64';
 
 type SerializedRowV1 = [
   string, // recipe name, required
@@ -184,7 +187,7 @@ export function setUrlState(
   const version = serialized.version;
   let str = JSON.stringify(serialized.data);
   // compress
-  str = btoa(deflate(str, { to: 'string' }));
+  str = bytesToBase64(deflate(str));
 
   window.history.replaceState('', '', `#${version}-${str}`);
 }
@@ -245,7 +248,7 @@ export function getUrlState(gameData: game.GameData): CompleteState | null {
 
   let str = decodeURIComponent(matches[2]!);
   if (version > 2) {
-    str = inflate(atob(str), { to: 'string' });
+    str = inflate(base64ToBytes(str), { to: 'string' });
   }
 
   let data = JSON.parse(str);

@@ -2,3 +2,4 @@
 node_modules
 dist
 coverage
+src/base64.ts
