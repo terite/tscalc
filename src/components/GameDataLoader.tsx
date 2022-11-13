@@ -13,6 +13,7 @@ interface Props {
 const datasets = {
   'kras-18': 'Krastorio2 for 1.0.0',
   'seablock-17': 'Seablock for 0.17',
+  'space-ex': 'Space Exploration',
 } as const;
 
 async function loadGameData(
@@ -42,7 +43,7 @@ export const GameDataLoader: React.FC<Props> = ({ child }) => {
   const setGameState = useRecoilState(gameDataAtom)[1];
 
   const [gameData, error, status] = usePromise<GameData | null>(async () => {
-    const gameData = await loadGameData('kras-18');
+    const gameData = await loadGameData('space-ex');
     setGameState(gameData);
     return gameData;
   }, []);
