@@ -12734,7 +12734,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "electronic",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 1,
+      "icon_row": 0
     },
     "se-big-turbine-internal": {
       "category": "big-turbine",
@@ -13266,7 +13268,9 @@
       ],
       "group": "resources",
       "subgroup": "copper",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 0,
+      "icon_row": 0
     },
     "iron-plate": {
       "category": "smelting",
@@ -13292,7 +13296,9 @@
       ],
       "group": "resources",
       "subgroup": "iron",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 4,
+      "icon_row": 0
     },
     "se-energy-transmitter-emitter-fixed": {
       "category": "fixed-recipe",
@@ -13426,7 +13432,9 @@
       ],
       "group": "production",
       "subgroup": "assembling",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 11,
+      "icon_row": 0
     },
     "automation-science-pack": {
       "category": "basic-crafting",
@@ -13457,7 +13465,9 @@
       ],
       "group": "science",
       "subgroup": "science-pack",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 13,
+      "icon_row": 0
     },
     "firearm-magazine": {
       "category": "crafting",
@@ -13483,7 +13493,9 @@
       ],
       "group": "combat",
       "subgroup": "ammo",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 14,
+      "icon_row": 0
     },
     "pistol": {
       "category": "crafting",
@@ -13514,7 +13526,9 @@
       ],
       "group": "combat",
       "subgroup": "gun",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 15,
+      "icon_row": 0
     },
     "burner-inserter": {
       "category": "crafting",
@@ -13545,7 +13559,9 @@
       ],
       "group": "logistics",
       "subgroup": "inserter",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 17,
+      "icon_row": 0
     },
     "burner-mining-drill": {
       "category": "crafting",
@@ -13581,7 +13597,9 @@
       ],
       "group": "production",
       "subgroup": "extraction-machine",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 18,
+      "icon_row": 0
     },
     "light-armor": {
       "category": "crafting",
@@ -13607,7 +13625,9 @@
       ],
       "group": "combat",
       "subgroup": "armor",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 19,
+      "icon_row": 0
     },
     "stone-brick": {
       "category": "kiln",
@@ -13633,7 +13653,9 @@
       ],
       "group": "logistics",
       "subgroup": "terrain",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 6,
+      "icon_row": 0
     },
     "stone-furnace": {
       "category": "crafting",
@@ -13659,7 +13681,9 @@
       ],
       "group": "production",
       "subgroup": "smelting-machine",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 21,
+      "icon_row": 0
     },
     "stone-tablet": {
       "category": "crafting",
@@ -13685,7 +13709,9 @@
       ],
       "group": "resources",
       "subgroup": "stone",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 22,
+      "icon_row": 0
     },
     "iron-stick": {
       "category": "crafting",
@@ -13711,7 +13737,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "basic-assembling",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 16,
+      "icon_row": 0
     },
     "repair-pack": {
       "category": "crafting",
@@ -13747,7 +13775,9 @@
       ],
       "group": "combat",
       "subgroup": "tool",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 23,
+      "icon_row": 0
     },
     "se-delivery-cannon-pack-se-water-ice": {
       "category": "delivery-cannon",
@@ -16281,7 +16311,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "basic-assembling",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 12,
+      "icon_row": 0
     },
     "se-delivery-cannon-weapon-pack-se-iridium-piledriver": {
       "category": "delivery-cannon-weapon",
@@ -16355,7 +16387,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "basic-assembling",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 10,
+      "icon_row": 0
     },
     "burner-lab": {
       "category": "crafting",
@@ -16391,7 +16425,9 @@
       ],
       "group": "production",
       "subgroup": "lab",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 23,
+      "icon_row": 4
     },
     "iron-chest": {
       "category": "crafting",
@@ -16417,7 +16453,9 @@
       ],
       "group": "logistics",
       "subgroup": "container-1",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 24,
+      "icon_row": 4
     },
     "se-gate-platform": {
       "category": "fixed-recipe",
@@ -16480,7 +16518,9 @@
       ],
       "group": "logistics",
       "subgroup": "container-1",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 29,
+      "icon_row": 4
     },
     "transport-belt": {
       "category": "crafting",
@@ -16511,7 +16551,9 @@
       ],
       "group": "logistics",
       "subgroup": "transport-belt",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 30,
+      "icon_row": 4
     },
     "fuel-processing": {
       "category": "fuel-processing",
@@ -16531,7 +16573,9 @@
       ],
       "group": "resources",
       "subgroup": "fuel",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 6,
+      "icon_row": 1
     },
     "fuel-processor": {
       "category": "crafting",
@@ -16567,7 +16611,9 @@
       ],
       "group": "production",
       "subgroup": "chemistry",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 31,
+      "icon_row": 4
     },
     "sand-from-stone": {
       "category": "crafting",
@@ -16593,7 +16639,9 @@
       ],
       "group": "resources",
       "subgroup": "stone",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 15,
+      "icon_row": 1
     },
     "se-medpack": {
       "category": "crafting",
@@ -16663,7 +16711,9 @@
       ],
       "group": "logistics",
       "subgroup": "underground-belt",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 34,
+      "icon_row": 4
     },
     "splitter": {
       "category": "crafting",
@@ -16699,7 +16749,9 @@
       ],
       "group": "logistics",
       "subgroup": "splitter",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 35,
+      "icon_row": 4
     },
     "stone-wall": {
       "category": "crafting",
@@ -16725,7 +16777,9 @@
       ],
       "group": "combat",
       "subgroup": "defensive-structure",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 36,
+      "icon_row": 4
     },
     "steel-plate": {
       "category": "smelting",
@@ -16751,7 +16805,9 @@
       ],
       "group": "resources",
       "subgroup": "iron",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 29,
+      "icon_row": 1
     },
     "steel-chest": {
       "category": "crafting",
@@ -16777,7 +16833,9 @@
       ],
       "group": "logistics",
       "subgroup": "container-1",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 37,
+      "icon_row": 4
     },
     "submachine-gun": {
       "category": "crafting",
@@ -16813,7 +16871,9 @@
       ],
       "group": "combat",
       "subgroup": "gun",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 0,
+      "icon_row": 5
     },
     "shotgun": {
       "category": "crafting",
@@ -16854,7 +16914,9 @@
       ],
       "group": "combat",
       "subgroup": "gun",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 1,
+      "icon_row": 5
     },
     "shotgun-shell": {
       "category": "crafting",
@@ -16885,7 +16947,9 @@
       ],
       "group": "combat",
       "subgroup": "ammo",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 2,
+      "icon_row": 5
     },
     "heavy-armor": {
       "category": "crafting",
@@ -16921,7 +16985,9 @@
       ],
       "group": "combat",
       "subgroup": "armor",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 3,
+      "icon_row": 5
     },
     "aai-strongbox": {
       "category": "crafting",
@@ -16947,7 +17013,9 @@
       ],
       "group": "logistics",
       "subgroup": "container-2",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 4,
+      "icon_row": 5
     },
     "electric-motor": {
       "category": "crafting",
@@ -16983,7 +17051,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "basic-assembling",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 5,
+      "icon_row": 5
     },
     "burner-turbine": {
       "category": "crafting",
@@ -17019,7 +17089,9 @@
       ],
       "group": "production",
       "subgroup": "energy",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 6,
+      "icon_row": 5
     },
     "inserter": {
       "category": "crafting",
@@ -17050,7 +17122,9 @@
       ],
       "group": "logistics",
       "subgroup": "inserter",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 7,
+      "icon_row": 5
     },
     "small-electric-pole": {
       "category": "crafting",
@@ -17081,7 +17155,9 @@
       ],
       "group": "logistics",
       "subgroup": "energy-pipe-distribution",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 8,
+      "icon_row": 5
     },
     "small-iron-electric-pole": {
       "category": "crafting",
@@ -17112,7 +17188,9 @@
       ],
       "group": "logistics",
       "subgroup": "energy-pipe-distribution",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 9,
+      "icon_row": 5
     },
     "glass-from-sand": {
       "category": "smelting",
@@ -17138,7 +17216,9 @@
       ],
       "group": "resources",
       "subgroup": "stone",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 17,
+      "icon_row": 1
     },
     "assembling-machine-1": {
       "category": "crafting",
@@ -17174,7 +17254,9 @@
       ],
       "group": "production",
       "subgroup": "assembling",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 10,
+      "icon_row": 5
     },
     "long-handed-inserter": {
       "category": "crafting",
@@ -17210,7 +17292,9 @@
       ],
       "group": "logistics",
       "subgroup": "inserter",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 11,
+      "icon_row": 5
     },
     "electronic-circuit": {
       "category": "crafting",
@@ -17274,7 +17358,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "processor",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 12,
+      "icon_row": 5
     },
     "fast-inserter": {
       "category": "crafting",
@@ -17310,7 +17396,9 @@
       ],
       "group": "logistics",
       "subgroup": "inserter",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 13,
+      "icon_row": 5
     },
     "small-lamp": {
       "category": "crafting",
@@ -17346,7 +17434,9 @@
       ],
       "group": "logistics",
       "subgroup": "circuit-network",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 14,
+      "icon_row": 5
     },
     "gun-turret": {
       "category": "crafting",
@@ -17382,7 +17472,9 @@
       ],
       "group": "combat",
       "subgroup": "defensive-structure",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 15,
+      "icon_row": 5
     },
     "logistic-science-pack": {
       "category": "advanced-crafting",
@@ -17413,7 +17505,9 @@
       ],
       "group": "science",
       "subgroup": "science-pack",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 16,
+      "icon_row": 5
     },
     "steel-furnace": {
       "category": "crafting",
@@ -17449,7 +17543,9 @@
       ],
       "group": "production",
       "subgroup": "smelting-machine",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 17,
+      "icon_row": 5
     },
     "piercing-rounds-magazine": {
       "category": "crafting",
@@ -17485,7 +17581,9 @@
       ],
       "group": "combat",
       "subgroup": "ammo",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 18,
+      "icon_row": 5
     },
     "grenade": {
       "category": "crafting",
@@ -17516,7 +17614,9 @@
       ],
       "group": "combat",
       "subgroup": "capsule",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 19,
+      "icon_row": 5
     },
     "pipe": {
       "category": "crafting",
@@ -17542,7 +17642,9 @@
       ],
       "group": "logistics",
       "subgroup": "pipe",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 20,
+      "icon_row": 5
     },
     "pipe-to-ground": {
       "category": "crafting",
@@ -17573,7 +17675,9 @@
       ],
       "group": "logistics",
       "subgroup": "pipe",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 21,
+      "icon_row": 5
     },
     "offshore-pump": {
       "category": "crafting",
@@ -17604,7 +17708,9 @@
       ],
       "group": "production",
       "subgroup": "extraction-machine",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 22,
+      "icon_row": 5
     },
     "lab": {
       "category": "crafting",
@@ -17645,7 +17751,9 @@
       ],
       "group": "production",
       "subgroup": "lab",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 23,
+      "icon_row": 5
     },
     "electric-mining-drill": {
       "category": "crafting",
@@ -17681,7 +17789,9 @@
       ],
       "group": "production",
       "subgroup": "extraction-machine",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 24,
+      "icon_row": 5
     },
     "medium-electric-pole": {
       "category": "crafting",
@@ -17722,7 +17832,9 @@
       ],
       "group": "logistics",
       "subgroup": "energy-pipe-distribution",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 25,
+      "icon_row": 5
     },
     "radar": {
       "category": "crafting",
@@ -17763,7 +17875,9 @@
       ],
       "group": "combat",
       "subgroup": "defensive-structure",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 26,
+      "icon_row": 5
     },
     "assembling-machine-2": {
       "category": "crafting",
@@ -17804,7 +17918,9 @@
       ],
       "group": "production",
       "subgroup": "assembling",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 27,
+      "icon_row": 5
     },
     "red-wire": {
       "category": "crafting",
@@ -17835,7 +17951,9 @@
       ],
       "group": "logistics",
       "subgroup": "circuit-network",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 28,
+      "icon_row": 5
     },
     "green-wire": {
       "category": "crafting",
@@ -17866,7 +17984,9 @@
       ],
       "group": "logistics",
       "subgroup": "circuit-network",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 29,
+      "icon_row": 5
     },
     "arithmetic-combinator": {
       "category": "crafting",
@@ -17897,7 +18017,9 @@
       ],
       "group": "logistics",
       "subgroup": "circuit-network",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 30,
+      "icon_row": 5
     },
     "decider-combinator": {
       "category": "crafting",
@@ -17928,7 +18050,9 @@
       ],
       "group": "logistics",
       "subgroup": "circuit-network",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 31,
+      "icon_row": 5
     },
     "constant-combinator": {
       "category": "crafting",
@@ -17959,7 +18083,9 @@
       ],
       "group": "logistics",
       "subgroup": "circuit-network",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 32,
+      "icon_row": 5
     },
     "power-switch": {
       "category": "crafting",
@@ -17995,7 +18121,9 @@
       ],
       "group": "logistics",
       "subgroup": "circuit-network",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 33,
+      "icon_row": 5
     },
     "programmable-speaker": {
       "category": "crafting",
@@ -18036,7 +18164,9 @@
       ],
       "group": "logistics",
       "subgroup": "circuit-network",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 34,
+      "icon_row": 5
     },
     "fast-transport-belt": {
       "category": "crafting",
@@ -18067,7 +18197,9 @@
       ],
       "group": "logistics",
       "subgroup": "transport-belt",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 35,
+      "icon_row": 5
     },
     "fast-underground-belt": {
       "category": "crafting",
@@ -18098,7 +18230,9 @@
       ],
       "group": "logistics",
       "subgroup": "underground-belt",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 36,
+      "icon_row": 5
     },
     "fast-splitter": {
       "category": "crafting",
@@ -18134,7 +18268,9 @@
       ],
       "group": "logistics",
       "subgroup": "splitter",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 37,
+      "icon_row": 5
     },
     "solar-panel": {
       "category": "crafting",
@@ -18175,7 +18311,9 @@
       ],
       "group": "production",
       "subgroup": "solar",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 0,
+      "icon_row": 6
     },
     "gate": {
       "category": "crafting",
@@ -18216,7 +18354,9 @@
       ],
       "group": "combat",
       "subgroup": "defensive-structure",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 1,
+      "icon_row": 6
     },
     "engine-unit": {
       "category": "crafting",
@@ -18252,7 +18392,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "basic-assembling",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 2,
+      "icon_row": 6
     },
     "landfill": {
       "category": "crafting",
@@ -18278,7 +18420,9 @@
       ],
       "group": "logistics",
       "subgroup": "terrain",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 3,
+      "icon_row": 6
     },
     "landfill-sand": {
       "category": "crafting",
@@ -18342,7 +18486,9 @@
       ],
       "group": "science",
       "subgroup": "science-pack",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 4,
+      "icon_row": 6
     },
     "concrete": {
       "category": "crafting-with-fluid",
@@ -18383,7 +18529,9 @@
       ],
       "group": "logistics",
       "subgroup": "terrain",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 8,
+      "icon_row": 0
     },
     "hazard-concrete": {
       "category": "crafting",
@@ -18409,7 +18557,9 @@
       ],
       "group": "logistics",
       "subgroup": "terrain",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 5,
+      "icon_row": 6
     },
     "refined-concrete": {
       "category": "crafting-with-fluid",
@@ -18450,7 +18600,9 @@
       ],
       "group": "logistics",
       "subgroup": "terrain",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 6,
+      "icon_row": 6
     },
     "refined-hazard-concrete": {
       "category": "crafting",
@@ -18476,7 +18628,9 @@
       ],
       "group": "logistics",
       "subgroup": "terrain",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 7,
+      "icon_row": 6
     },
     "big-electric-pole": {
       "category": "crafting",
@@ -18517,7 +18671,9 @@
       ],
       "group": "logistics",
       "subgroup": "energy-pipe-distribution",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 8,
+      "icon_row": 6
     },
     "rail": {
       "category": "crafting",
@@ -18553,7 +18709,9 @@
       ],
       "group": "logistics",
       "subgroup": "rail",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 9,
+      "icon_row": 6
     },
     "locomotive": {
       "category": "crafting",
@@ -18594,7 +18752,9 @@
       ],
       "group": "logistics",
       "subgroup": "rail",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 10,
+      "icon_row": 6
     },
     "cargo-wagon": {
       "category": "crafting",
@@ -18630,7 +18790,9 @@
       ],
       "group": "logistics",
       "subgroup": "rail",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 11,
+      "icon_row": 6
     },
     "train-stop": {
       "category": "crafting",
@@ -18671,7 +18833,9 @@
       ],
       "group": "logistics",
       "subgroup": "rail",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 12,
+      "icon_row": 6
     },
     "rail-signal": {
       "category": "crafting",
@@ -18702,7 +18866,9 @@
       ],
       "group": "logistics",
       "subgroup": "rail",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 13,
+      "icon_row": 6
     },
     "rail-chain-signal": {
       "category": "crafting",
@@ -18733,7 +18899,9 @@
       ],
       "group": "logistics",
       "subgroup": "rail",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 14,
+      "icon_row": 6
     },
     "storage-tank": {
       "category": "crafting",
@@ -18764,7 +18932,9 @@
       ],
       "group": "logistics",
       "subgroup": "pipe",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 15,
+      "icon_row": 6
     },
     "empty-barrel": {
       "category": "crafting",
@@ -18790,7 +18960,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "basic-assembling",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 16,
+      "icon_row": 6
     },
     "fill-water-barrel": {
       "category": "crafting-with-fluid",
@@ -20410,7 +20582,9 @@
       ],
       "group": "logistics",
       "subgroup": "pipe",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 30,
+      "icon_row": 6
     },
     "car": {
       "category": "crafting",
@@ -20446,7 +20620,9 @@
       ],
       "group": "logistics",
       "subgroup": "transport",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 31,
+      "icon_row": 6
     },
     "se-pulveriser": {
       "category": "crafting",
@@ -20515,7 +20691,9 @@
       ],
       "group": "resources",
       "subgroup": "stone",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 15,
+      "icon_row": 1
     },
     "defender-capsule": {
       "category": "crafting",
@@ -20551,7 +20729,9 @@
       ],
       "group": "combat",
       "subgroup": "capsule",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 33,
+      "icon_row": 6
     },
     "se-meteor-point-defence": {
       "category": "crafting",
@@ -20597,7 +20777,9 @@
       ],
       "group": "combat",
       "subgroup": "surface-defense",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 34,
+      "icon_row": 6
     },
     "se-meteor-point-defence-ammo": {
       "category": "crafting",
@@ -20628,7 +20810,9 @@
       ],
       "group": "combat",
       "subgroup": "surface-defense",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 35,
+      "icon_row": 6
     },
     "productivity-module": {
       "category": "crafting",
@@ -20659,7 +20843,9 @@
       ],
       "group": "production",
       "subgroup": "module-productivity",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 36,
+      "icon_row": 6
     },
     "effectivity-module": {
       "category": "crafting",
@@ -20690,7 +20876,9 @@
       ],
       "group": "production",
       "subgroup": "module-effectivity",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 37,
+      "icon_row": 6
     },
     "aai-storehouse": {
       "category": "crafting",
@@ -20721,7 +20909,9 @@
       ],
       "group": "logistics",
       "subgroup": "container-4",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 0,
+      "icon_row": 7
     },
     "aai-warehouse": {
       "category": "crafting",
@@ -20752,7 +20942,9 @@
       ],
       "group": "logistics",
       "subgroup": "container-6",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 1,
+      "icon_row": 7
     },
     "concrete-wall": {
       "category": "crafting",
@@ -20783,7 +20975,9 @@
       ],
       "group": "combat",
       "subgroup": "defensive-structure",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 2,
+      "icon_row": 7
     },
     "filter-inserter": {
       "category": "crafting",
@@ -20814,7 +21008,9 @@
       ],
       "group": "logistics",
       "subgroup": "inserter",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 3,
+      "icon_row": 7
     },
     "boiler": {
       "category": "crafting",
@@ -20845,7 +21041,9 @@
       ],
       "group": "production",
       "subgroup": "energy",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 4,
+      "icon_row": 7
     },
     "steam-engine": {
       "category": "crafting",
@@ -20881,7 +21079,9 @@
       ],
       "group": "production",
       "subgroup": "energy",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 5,
+      "icon_row": 7
     },
     "steel-wall": {
       "category": "crafting",
@@ -20912,7 +21112,9 @@
       ],
       "group": "combat",
       "subgroup": "defensive-structure",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 6,
+      "icon_row": 7
     },
     "fluid-wagon": {
       "category": "crafting",
@@ -20953,7 +21155,9 @@
       ],
       "group": "logistics",
       "subgroup": "rail",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 7,
+      "icon_row": 7
     },
     "pumpjack": {
       "category": "crafting",
@@ -20994,7 +21198,9 @@
       ],
       "group": "production",
       "subgroup": "extraction-machine",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 8,
+      "icon_row": 7
     },
     "oil-refinery": {
       "category": "crafting",
@@ -21040,7 +21246,9 @@
       ],
       "group": "production",
       "subgroup": "chemistry",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 9,
+      "icon_row": 7
     },
     "chemical-plant": {
       "category": "crafting",
@@ -21086,7 +21294,9 @@
       ],
       "group": "production",
       "subgroup": "chemistry",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 10,
+      "icon_row": 7
     },
     "basic-oil-processing": {
       "category": "oil-processing",
@@ -21157,7 +21367,9 @@
       ],
       "group": "resources",
       "subgroup": "chemical",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 29,
+      "icon_row": 20
     },
     "sulfur": {
       "category": "chemistry",
@@ -21188,7 +21400,9 @@
       ],
       "group": "resources",
       "subgroup": "chemical",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 0,
+      "icon_row": 1
     },
     "plastic-bar": {
       "category": "chemistry",
@@ -21219,7 +21433,9 @@
       ],
       "group": "resources",
       "subgroup": "chemical",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 36,
+      "icon_row": 0
     },
     "flamethrower": {
       "category": "crafting",
@@ -21250,7 +21466,9 @@
       ],
       "group": "combat",
       "subgroup": "gun",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 11,
+      "icon_row": 7
     },
     "flamethrower-ammo": {
       "category": "chemistry",
@@ -21281,7 +21499,9 @@
       ],
       "group": "combat",
       "subgroup": "ammo",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 12,
+      "icon_row": 7
     },
     "flamethrower-turret": {
       "category": "crafting",
@@ -21322,7 +21542,9 @@
       ],
       "group": "combat",
       "subgroup": "defensive-structure",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 13,
+      "icon_row": 7
     },
     "se-core-miner": {
       "category": "crafting",
@@ -22006,7 +22228,9 @@
       ],
       "group": "production",
       "subgroup": "chemistry",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 15,
+      "icon_row": 7
     },
     "solid-fuel-from-heavy-oil": {
       "category": "fuel-refining",
@@ -22121,7 +22345,9 @@
       ],
       "group": "production",
       "subgroup": "module-speed",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 16,
+      "icon_row": 7
     },
     "advanced-circuit": {
       "category": "crafting",
@@ -22157,7 +22383,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "processor",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 17,
+      "icon_row": 7
     },
     "explosives": {
       "category": "chemistry",
@@ -22193,7 +22421,9 @@
       ],
       "group": "resources",
       "subgroup": "chemical",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 2,
+      "icon_row": 1
     },
     "battery": {
       "category": "chemistry",
@@ -22229,7 +22459,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "electronic",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 26,
+      "icon_row": 4
     },
     "chemical-science-pack": {
       "category": "basic-crafting",
@@ -22265,7 +22497,9 @@
       ],
       "group": "science",
       "subgroup": "science-pack",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 18,
+      "icon_row": 7
     },
     "accumulator": {
       "category": "crafting",
@@ -22296,7 +22530,9 @@
       ],
       "group": "production",
       "subgroup": "solar",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 19,
+      "icon_row": 7
     },
     "substation": {
       "category": "crafting",
@@ -22337,7 +22573,9 @@
       ],
       "group": "logistics",
       "subgroup": "energy-pipe-distribution",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 20,
+      "icon_row": 7
     },
     "stack-inserter": {
       "category": "crafting",
@@ -22378,7 +22616,9 @@
       ],
       "group": "logistics",
       "subgroup": "inserter",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 21,
+      "icon_row": 7
     },
     "advanced-oil-processing": {
       "category": "oil-processing",
@@ -22568,7 +22808,9 @@
       ],
       "group": "combat",
       "subgroup": "capsule",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 22,
+      "icon_row": 7
     },
     "slowdown-capsule": {
       "category": "crafting",
@@ -22604,7 +22846,9 @@
       ],
       "group": "combat",
       "subgroup": "capsule",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 23,
+      "icon_row": 7
     },
     "combat-shotgun": {
       "category": "crafting",
@@ -22645,7 +22889,9 @@
       ],
       "group": "combat",
       "subgroup": "gun",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 24,
+      "icon_row": 7
     },
     "piercing-shotgun-shell": {
       "category": "crafting",
@@ -22681,7 +22927,9 @@
       ],
       "group": "combat",
       "subgroup": "ammo",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 25,
+      "icon_row": 7
     },
     "cluster-grenade": {
       "category": "crafting",
@@ -22717,7 +22965,9 @@
       ],
       "group": "combat",
       "subgroup": "capsule",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 26,
+      "icon_row": 7
     },
     "tank": {
       "category": "crafting",
@@ -22758,7 +23008,9 @@
       ],
       "group": "logistics",
       "subgroup": "transport",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 27,
+      "icon_row": 7
     },
     "cannon-shell": {
       "category": "crafting",
@@ -22794,7 +23046,9 @@
       ],
       "group": "combat",
       "subgroup": "ammo",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 28,
+      "icon_row": 7
     },
     "explosive-cannon-shell": {
       "category": "crafting",
@@ -22830,7 +23084,9 @@
       ],
       "group": "combat",
       "subgroup": "ammo",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 29,
+      "icon_row": 7
     },
     "land-mine": {
       "category": "crafting",
@@ -22861,7 +23117,9 @@
       ],
       "group": "combat",
       "subgroup": "gun",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 30,
+      "icon_row": 7
     },
     "rocket-launcher": {
       "category": "crafting",
@@ -22897,7 +23155,9 @@
       ],
       "group": "combat",
       "subgroup": "gun",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 31,
+      "icon_row": 7
     },
     "rocket": {
       "category": "crafting",
@@ -22933,7 +23193,9 @@
       ],
       "group": "combat",
       "subgroup": "ammo",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 32,
+      "icon_row": 7
     },
     "se-heat-shielding": {
       "category": "crafting",
@@ -22969,7 +23231,9 @@
       ],
       "group": "resources",
       "subgroup": "stone",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 19,
+      "icon_row": 1
     },
     "explosive-rocket": {
       "category": "crafting",
@@ -23000,7 +23264,9 @@
       ],
       "group": "combat",
       "subgroup": "ammo",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 33,
+      "icon_row": 7
     },
     "modular-armor": {
       "category": "crafting",
@@ -23036,7 +23302,9 @@
       ],
       "group": "combat",
       "subgroup": "armor",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 34,
+      "icon_row": 7
     },
     "solar-panel-equipment": {
       "category": "crafting",
@@ -23072,7 +23340,9 @@
       ],
       "group": "combat",
       "subgroup": "equipment",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 35,
+      "icon_row": 7
     },
     "low-density-structure": {
       "category": "crafting",
@@ -23113,7 +23383,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "advanced-assembling",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 31,
+      "icon_row": 3
     },
     "rocket-control-unit": {
       "category": "crafting",
@@ -23154,7 +23426,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "rocket-part",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 20,
+      "icon_row": 4
     },
     "rocket-fuel": {
       "category": "fuel-refining",
@@ -23185,7 +23459,9 @@
       ],
       "group": "resources",
       "subgroup": "fuel",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 10,
+      "icon_row": 1
     },
     "se-liquid-rocket-fuel": {
       "category": "fuel-refining",
@@ -23211,7 +23487,9 @@
       ],
       "group": "resources",
       "subgroup": "fuel",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 28,
+      "icon_row": 20
     },
     "cliff-explosives": {
       "category": "crafting",
@@ -23247,7 +23525,9 @@
       ],
       "group": "combat",
       "subgroup": "capsule",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 36,
+      "icon_row": 7
     },
     "stack-filter-inserter": {
       "category": "crafting",
@@ -23278,7 +23558,9 @@
       ],
       "group": "logistics",
       "subgroup": "inserter",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 37,
+      "icon_row": 7
     },
     "laser-turret": {
       "category": "crafting",
@@ -23324,7 +23606,9 @@
       ],
       "group": "combat",
       "subgroup": "defensive-structure",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 0,
+      "icon_row": 8
     },
     "lubricant": {
       "category": "chemistry",
@@ -23350,7 +23634,9 @@
       ],
       "group": "resources",
       "subgroup": "oil",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 34,
+      "icon_row": 20
     },
     "electric-furnace": {
       "category": "crafting",
@@ -23391,7 +23677,9 @@
       ],
       "group": "production",
       "subgroup": "smelting-machine",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 1,
+      "icon_row": 8
     },
     "jetpack-1": {
       "category": "crafting",
@@ -23428,7 +23716,9 @@
       "group": "combat",
       "subgroup": "equipment",
       "type": "recipe",
-      "icon_size": 32
+      "icon_size": 32,
+      "icon_col": 2,
+      "icon_row": 8
     },
     "se-adaptive-armour-equipment-1": {
       "category": "crafting",
@@ -23464,7 +23754,9 @@
       ],
       "group": "combat",
       "subgroup": "equipment",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 3,
+      "icon_row": 8
     },
     "se-electric-boiler": {
       "category": "crafting",
@@ -23505,7 +23797,9 @@
       ],
       "group": "production",
       "subgroup": "energy",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 4,
+      "icon_row": 8
     },
     "se-electric-boiling-void": {
       "category": "se-electric-boiling",
@@ -23554,7 +23848,9 @@
       ],
       "group": "resources",
       "subgroup": "water",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 23,
+      "icon_row": 20
     },
     "se-electric-boiling-steam-165": {
       "category": "se-electric-boiling",
@@ -23581,7 +23877,9 @@
       ],
       "group": "resources",
       "subgroup": "water",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 23,
+      "icon_row": 20
     },
     "se-electric-boiling-steam-500": {
       "category": "se-electric-boiling",
@@ -23608,7 +23906,9 @@
       ],
       "group": "resources",
       "subgroup": "water",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 23,
+      "icon_row": 20
     },
     "se-electric-boiling-steam-5000": {
       "category": "se-electric-boiling",
@@ -23635,7 +23935,9 @@
       ],
       "group": "resources",
       "subgroup": "water",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 23,
+      "icon_row": 20
     },
     "se-steam-to-water": {
       "category": "chemistry",
@@ -23661,7 +23963,9 @@
       ],
       "group": "resources",
       "subgroup": "water",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 24,
+      "icon_row": 20
     },
     "se-rocket-fuel-from-water-copper": {
       "category": "fuel-refining",
@@ -23731,7 +24035,9 @@
       ],
       "group": "combat",
       "subgroup": "capsule",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 5,
+      "icon_row": 8
     },
     "steam-turbine": {
       "category": "crafting",
@@ -23772,7 +24078,9 @@
       ],
       "group": "production",
       "subgroup": "energy",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 6,
+      "icon_row": 8
     },
     "night-vision-equipment": {
       "category": "crafting",
@@ -23803,7 +24111,9 @@
       ],
       "group": "combat",
       "subgroup": "equipment",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 7,
+      "icon_row": 8
     },
     "belt-immunity-equipment": {
       "category": "crafting",
@@ -23834,7 +24144,9 @@
       ],
       "group": "combat",
       "subgroup": "equipment",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 8,
+      "icon_row": 8
     },
     "battery-equipment": {
       "category": "crafting",
@@ -23865,7 +24177,9 @@
       ],
       "group": "combat",
       "subgroup": "equipment",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 9,
+      "icon_row": 8
     },
     "electric-engine-unit": {
       "category": "crafting-with-fluid",
@@ -23906,7 +24220,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "basic-assembling",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 10,
+      "icon_row": 8
     },
     "flying-robot-frame": {
       "category": "crafting",
@@ -23947,7 +24263,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "basic-assembling",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 11,
+      "icon_row": 8
     },
     "roboport": {
       "category": "crafting",
@@ -23988,7 +24306,9 @@
       ],
       "group": "logistics",
       "subgroup": "logistic-network",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 12,
+      "icon_row": 8
     },
     "logistic-chest-passive-provider": {
       "category": "crafting",
@@ -24024,7 +24344,9 @@
       ],
       "group": "logistics",
       "subgroup": "container-1",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 13,
+      "icon_row": 8
     },
     "logistic-chest-storage": {
       "category": "crafting",
@@ -24060,7 +24382,9 @@
       ],
       "group": "logistics",
       "subgroup": "container-1",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 14,
+      "icon_row": 8
     },
     "construction-robot": {
       "category": "crafting",
@@ -24091,7 +24415,9 @@
       ],
       "group": "logistics",
       "subgroup": "logistic-network",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 15,
+      "icon_row": 8
     },
     "logistic-robot": {
       "category": "crafting",
@@ -24122,7 +24448,9 @@
       ],
       "group": "logistics",
       "subgroup": "logistic-network",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 16,
+      "icon_row": 8
     },
     "personal-roboport-equipment": {
       "category": "crafting",
@@ -24163,7 +24491,9 @@
       ],
       "group": "combat",
       "subgroup": "equipment",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 17,
+      "icon_row": 8
     },
     "se-recycling-facility": {
       "category": "crafting",
@@ -24906,7 +25236,9 @@
       ],
       "group": "logistics",
       "subgroup": "rocket-logistics",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 23,
+      "icon_row": 8
     },
     "rocket-part": {
       "category": "rocket-building",
@@ -24947,7 +25279,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "intermediate-product",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 24,
+      "icon_row": 8
     },
     "satellite": {
       "category": "crafting",
@@ -25003,7 +25337,9 @@
       ],
       "group": "logistics",
       "subgroup": "rocket-logistics",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 25,
+      "icon_row": 8
     },
     "aai-strongbox-storage": {
       "category": "crafting",
@@ -25039,7 +25375,9 @@
       ],
       "group": "logistics",
       "subgroup": "container-2",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 27,
+      "icon_row": 8
     },
     "aai-strongbox-passive-provider": {
       "category": "crafting",
@@ -25075,7 +25413,9 @@
       ],
       "group": "logistics",
       "subgroup": "container-2",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 28,
+      "icon_row": 8
     },
     "se-lifesupport-facility": {
       "category": "crafting",
@@ -25403,7 +25743,9 @@
       ],
       "group": "production",
       "subgroup": "module-speed",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 36,
+      "icon_row": 8
     },
     "productivity-module-2": {
       "category": "crafting",
@@ -25439,7 +25781,9 @@
       ],
       "group": "production",
       "subgroup": "module-productivity",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 37,
+      "icon_row": 8
     },
     "effectivity-module-2": {
       "category": "crafting",
@@ -25475,7 +25819,9 @@
       ],
       "group": "production",
       "subgroup": "module-effectivity",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 0,
+      "icon_row": 9
     },
     "aai-storehouse-storage": {
       "category": "crafting",
@@ -25511,7 +25857,9 @@
       ],
       "group": "logistics",
       "subgroup": "container-4",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 1,
+      "icon_row": 9
     },
     "aai-storehouse-passive-provider": {
       "category": "crafting",
@@ -25547,7 +25895,9 @@
       ],
       "group": "logistics",
       "subgroup": "container-4",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 2,
+      "icon_row": 9
     },
     "aai-warehouse-storage": {
       "category": "crafting",
@@ -25583,7 +25933,9 @@
       ],
       "group": "logistics",
       "subgroup": "container-6",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 3,
+      "icon_row": 9
     },
     "aai-warehouse-passive-provider": {
       "category": "crafting",
@@ -25619,7 +25971,9 @@
       ],
       "group": "logistics",
       "subgroup": "container-6",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 4,
+      "icon_row": 9
     },
     "se-medpack-plastic": {
       "category": "lifesupport",
@@ -25738,7 +26092,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "processor",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 31,
+      "icon_row": 8
     },
     "aai-signal-sender": {
       "category": "crafting",
@@ -25779,7 +26135,9 @@
       ],
       "group": "logistics",
       "subgroup": "circuit-network",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 6,
+      "icon_row": 9
     },
     "aai-signal-receiver": {
       "category": "crafting",
@@ -25820,7 +26178,9 @@
       ],
       "group": "logistics",
       "subgroup": "circuit-network",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 7,
+      "icon_row": 9
     },
     "se-adaptive-armour-equipment-2": {
       "category": "crafting",
@@ -25861,7 +26221,9 @@
       ],
       "group": "combat",
       "subgroup": "equipment",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 8,
+      "icon_row": 9
     },
     "se-lifesupport-equipment-1": {
       "category": "lifesupport",
@@ -25904,7 +26266,9 @@
       "subgroup": "equipment",
       "type": "recipe",
       "icon_size": 64,
-      "icon_mipmaps": 1
+      "icon_mipmaps": 1,
+      "icon_col": 9,
+      "icon_row": 9
     },
     "centrifuge": {
       "category": "crafting",
@@ -25950,7 +26314,9 @@
       ],
       "group": "production",
       "subgroup": "radiation",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 10,
+      "icon_row": 9
     },
     "uranium-processing": {
       "category": "centrifuging",
@@ -26021,7 +26387,9 @@
       ],
       "group": "resources",
       "subgroup": "uranium",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 11,
+      "icon_row": 9
     },
     "se-meteor-defence": {
       "category": "crafting",
@@ -26072,7 +26440,9 @@
       ],
       "group": "combat",
       "subgroup": "surface-defense",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 13,
+      "icon_row": 9
     },
     "se-meteor-defence-ammo": {
       "category": "crafting",
@@ -26108,7 +26478,9 @@
       ],
       "group": "combat",
       "subgroup": "surface-defense",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 14,
+      "icon_row": 9
     },
     "se-rtg-equipment": {
       "category": "crafting",
@@ -26144,7 +26516,9 @@
       ],
       "group": "combat",
       "subgroup": "equipment",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 15,
+      "icon_row": 9
     },
     "se-thruster-suit": {
       "category": "crafting",
@@ -26195,7 +26569,9 @@
       ],
       "group": "combat",
       "subgroup": "armor",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 16,
+      "icon_row": 9
     },
     "power-armor": {
       "category": "crafting",
@@ -26236,7 +26612,9 @@
       ],
       "group": "combat",
       "subgroup": "armor",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 17,
+      "icon_row": 9
     },
     "exoskeleton-equipment": {
       "category": "crafting",
@@ -26272,7 +26650,9 @@
       ],
       "group": "combat",
       "subgroup": "equipment",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 18,
+      "icon_row": 9
     },
     "personal-laser-defense-equipment": {
       "category": "crafting",
@@ -26313,7 +26693,9 @@
       ],
       "group": "combat",
       "subgroup": "military-equipment",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 19,
+      "icon_row": 9
     },
     "discharge-defense-equipment": {
       "category": "crafting",
@@ -26349,7 +26731,9 @@
       ],
       "group": "combat",
       "subgroup": "military-equipment",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 20,
+      "icon_row": 9
     },
     "discharge-defense-remote": {
       "category": "crafting",
@@ -26375,7 +26759,9 @@
       ],
       "group": "combat",
       "subgroup": "military-equipment",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 21,
+      "icon_row": 9
     },
     "se-energy-beam-defence": {
       "category": "crafting",
@@ -26426,7 +26812,9 @@
       ],
       "group": "combat",
       "subgroup": "surface-defense",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 22,
+      "icon_row": 9
     },
     "se-delivery-cannon": {
       "category": "crafting",
@@ -26472,7 +26860,9 @@
       ],
       "group": "logistics",
       "subgroup": "rocket-logistics",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 23,
+      "icon_row": 9
     },
     "se-delivery-cannon-chest": {
       "category": "crafting",
@@ -26513,7 +26903,9 @@
       ],
       "group": "logistics",
       "subgroup": "rocket-logistics",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 24,
+      "icon_row": 9
     },
     "se-delivery-cannon-capsule": {
       "category": "crafting",
@@ -26554,7 +26946,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "intersurface-part",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 5,
+      "icon_row": 0
     },
     "se-space-capsule": {
       "category": "crafting",
@@ -26610,7 +27004,9 @@
       ],
       "group": "logistics",
       "subgroup": "rocket-logistics",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 20,
+      "icon_row": 8
     },
     "se-space-capsule-refurbish": {
       "category": "crafting",
@@ -26699,7 +27095,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "rocket-part",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 26,
+      "icon_row": 9
     },
     "se-cargo-rocket-cargo-pod": {
       "category": "crafting",
@@ -26740,7 +27138,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "rocket-part",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 22,
+      "icon_row": 8
     },
     "se-cargo-rocket-fuel-tank": {
       "category": "crafting",
@@ -26781,7 +27181,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "rocket-part",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 25,
+      "icon_row": 9
     },
     "se-rocket-launch-pad": {
       "category": "crafting",
@@ -26842,7 +27244,9 @@
       ],
       "group": "logistics",
       "subgroup": "rocket-logistics",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 27,
+      "icon_row": 9
     },
     "se-space-assembling-machine": {
       "category": "crafting",
@@ -26926,7 +27330,9 @@
       ],
       "group": "logistics",
       "subgroup": "transport-belt",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 29,
+      "icon_row": 9
     },
     "se-space-underground-belt": {
       "category": "space-crafting",
@@ -26962,7 +27368,9 @@
       ],
       "group": "logistics",
       "subgroup": "underground-belt",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 30,
+      "icon_row": 9
     },
     "se-space-splitter": {
       "category": "space-crafting",
@@ -27003,7 +27411,9 @@
       ],
       "group": "logistics",
       "subgroup": "splitter",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 31,
+      "icon_row": 9
     },
     "se-space-pipe": {
       "category": "space-crafting",
@@ -27044,7 +27454,9 @@
       ],
       "group": "logistics",
       "subgroup": "pipe",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 28,
+      "icon_row": 4
     },
     "se-space-pipe-to-ground": {
       "category": "crafting",
@@ -27070,7 +27482,9 @@
       ],
       "group": "logistics",
       "subgroup": "pipe",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 32,
+      "icon_row": 9
     },
     "se-space-pipe-long-j-3": {
       "category": "crafting",
@@ -27096,7 +27510,9 @@
       ],
       "group": "logistics",
       "subgroup": "pipe",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 33,
+      "icon_row": 9
     },
     "se-space-pipe-long-j-5": {
       "category": "crafting",
@@ -27122,7 +27538,9 @@
       ],
       "group": "logistics",
       "subgroup": "pipe",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 34,
+      "icon_row": 9
     },
     "se-space-pipe-long-j-7": {
       "category": "crafting",
@@ -27148,7 +27566,9 @@
       ],
       "group": "logistics",
       "subgroup": "pipe",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 35,
+      "icon_row": 9
     },
     "se-space-pipe-long-s-9": {
       "category": "crafting",
@@ -27174,7 +27594,9 @@
       ],
       "group": "logistics",
       "subgroup": "pipe",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 36,
+      "icon_row": 9
     },
     "se-space-pipe-long-s-15": {
       "category": "crafting",
@@ -27200,7 +27622,9 @@
       ],
       "group": "logistics",
       "subgroup": "pipe",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 37,
+      "icon_row": 9
     },
     "se-space-science-lab": {
       "category": "space-crafting",
@@ -27289,7 +27713,9 @@
       ],
       "group": "production",
       "subgroup": "energy",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 1,
+      "icon_row": 10
     },
     "heat-exchanger": {
       "category": "crafting",
@@ -27325,7 +27751,9 @@
       ],
       "group": "production",
       "subgroup": "energy",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 2,
+      "icon_row": 10
     },
     "heat-pipe": {
       "category": "crafting",
@@ -27356,7 +27784,9 @@
       ],
       "group": "production",
       "subgroup": "energy",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 3,
+      "icon_row": 10
     },
     "se-rocket-landing-pad": {
       "category": "crafting",
@@ -27397,7 +27827,9 @@
       ],
       "group": "logistics",
       "subgroup": "rocket-logistics",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 4,
+      "icon_row": 10
     },
     "se-cargo-rocket-section-pack": {
       "category": "crafting",
@@ -27424,7 +27856,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "rocket-part",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 5,
+      "icon_row": 10
     },
     "se-cargo-rocket-section-unpack": {
       "category": "crafting",
@@ -27451,7 +27885,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "rocket-part",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 26,
+      "icon_row": 9
     },
     "se-space-decontamination-facility": {
       "category": "space-crafting",
@@ -27526,7 +27962,9 @@
       "group": "resources",
       "subgroup": "water",
       "type": "recipe",
-      "icon_size": 64
+      "icon_size": 64,
+      "icon_col": 37,
+      "icon_row": 20
     },
     "se-bio-sludge-decontamination": {
       "category": "space-decontamination",
@@ -27777,7 +28215,9 @@
       ],
       "group": "production",
       "subgroup": "module-speed",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 8,
+      "icon_row": 10
     },
     "industrial-furnace": {
       "category": "crafting",
@@ -27823,7 +28263,9 @@
       ],
       "group": "production",
       "subgroup": "smelting-machine",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 9,
+      "icon_row": 10
     },
     "assembling-machine-3": {
       "category": "crafting",
@@ -27869,7 +28311,9 @@
       ],
       "group": "production",
       "subgroup": "assembling",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 10,
+      "icon_row": 10
     },
     "express-transport-belt": {
       "category": "crafting-with-fluid",
@@ -27905,7 +28349,9 @@
       ],
       "group": "logistics",
       "subgroup": "transport-belt",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 11,
+      "icon_row": 10
     },
     "express-underground-belt": {
       "category": "crafting-with-fluid",
@@ -27941,7 +28387,9 @@
       ],
       "group": "logistics",
       "subgroup": "underground-belt",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 12,
+      "icon_row": 10
     },
     "express-splitter": {
       "category": "crafting-with-fluid",
@@ -27982,7 +28430,9 @@
       ],
       "group": "logistics",
       "subgroup": "splitter",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 13,
+      "icon_row": 10
     },
     "artillery-wagon": {
       "category": "crafting",
@@ -28028,7 +28478,9 @@
       ],
       "group": "logistics",
       "subgroup": "rail",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 14,
+      "icon_row": 10
     },
     "artillery-turret": {
       "category": "crafting",
@@ -28069,7 +28521,9 @@
       ],
       "group": "combat",
       "subgroup": "defensive-structure",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 15,
+      "icon_row": 10
     },
     "artillery-shell": {
       "category": "crafting",
@@ -28105,7 +28559,9 @@
       ],
       "group": "combat",
       "subgroup": "ammo",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 16,
+      "icon_row": 10
     },
     "artillery-targeting-remote": {
       "category": "crafting",
@@ -28136,7 +28592,9 @@
       ],
       "group": "combat",
       "subgroup": "defensive-structure",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 17,
+      "icon_row": 10
     },
     "uranium-rounds-magazine": {
       "category": "crafting",
@@ -28167,7 +28625,9 @@
       ],
       "group": "combat",
       "subgroup": "ammo",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 18,
+      "icon_row": 10
     },
     "uranium-cannon-shell": {
       "category": "crafting",
@@ -28198,7 +28658,9 @@
       ],
       "group": "combat",
       "subgroup": "ammo",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 19,
+      "icon_row": 10
     },
     "explosive-uranium-cannon-shell": {
       "category": "crafting",
@@ -28229,7 +28691,9 @@
       ],
       "group": "combat",
       "subgroup": "ammo",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 20,
+      "icon_row": 10
     },
     "jetpack-2": {
       "category": "crafting",
@@ -28271,7 +28735,9 @@
       "group": "combat",
       "subgroup": "equipment",
       "type": "recipe",
-      "icon_size": 32
+      "icon_size": 32,
+      "icon_col": 21,
+      "icon_row": 10
     },
     "se-adaptive-armour-equipment-3": {
       "category": "crafting",
@@ -28312,7 +28778,9 @@
       ],
       "group": "combat",
       "subgroup": "equipment",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 22,
+      "icon_row": 10
     },
     "se-condenser-turbine": {
       "category": "crafting",
@@ -28395,7 +28863,9 @@
       "main_product": "se-cryonite-powder",
       "group": "resources",
       "subgroup": "cryonite",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 24,
+      "icon_row": 10
     },
     "se-cryonite-crystal": {
       "category": "chemistry",
@@ -28434,7 +28904,9 @@
       "main_product": "se-cryonite-crystal",
       "group": "resources",
       "subgroup": "cryonite",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 25,
+      "icon_row": 10
     },
     "se-cryonite-rod": {
       "category": "smelting",
@@ -28470,7 +28942,9 @@
       ],
       "group": "resources",
       "subgroup": "cryonite",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 23,
+      "icon_row": 2
     },
     "se-cryonite-ion-exchange-beads": {
       "category": "chemistry",
@@ -28511,7 +28985,9 @@
       ],
       "group": "resources",
       "subgroup": "cryonite",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 25,
+      "icon_row": 2
     },
     "se-cryonite-slush": {
       "category": "chemistry",
@@ -28542,7 +29018,9 @@
       ],
       "group": "resources",
       "subgroup": "cryonite",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 8,
+      "icon_row": 21
     },
     "se-holmium-ore-crushed": {
       "category": "pulverising",
@@ -28575,7 +29053,9 @@
       "main_product": "se-holmium-ore-crushed",
       "group": "resources",
       "subgroup": "holmium",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 26,
+      "icon_row": 10
     },
     "se-holmium-powder": {
       "category": "centrifuging",
@@ -28607,7 +29087,9 @@
       "main_product": "se-holmium-powder",
       "group": "resources",
       "subgroup": "holmium",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 27,
+      "icon_row": 10
     },
     "se-holmium-chloride": {
       "category": "chemistry",
@@ -28669,7 +29151,9 @@
       "main_product": "se-holmium-chloride",
       "group": "resources",
       "subgroup": "holmium",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 37,
+      "icon_row": 2
     },
     "se-holmium-ingot-no-vulcanite": {
       "category": "smelting",
@@ -28733,7 +29217,9 @@
       ],
       "group": "resources",
       "subgroup": "holmium",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 28,
+      "icon_row": 10
     },
     "se-cryonite-to-methane-ice": {
       "category": "chemistry",
@@ -28764,7 +29250,9 @@
       ],
       "group": "resources",
       "subgroup": "chemical",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 34,
+      "icon_row": 0
     },
     "se-melting-methane-ice": {
       "category": "melting",
@@ -28865,7 +29353,9 @@
       "main_product": "se-vulcanite-crushed",
       "group": "resources",
       "subgroup": "vulcanite",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 11,
+      "icon_row": 2
     },
     "se-vulcanite-enriched": {
       "category": "centrifuging",
@@ -28918,7 +29408,9 @@
       "main_product": "se-vulcanite-enriched",
       "group": "resources",
       "subgroup": "vulcanite",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 13,
+      "icon_row": 2
     },
     "se-vulcanite-block": {
       "category": "smelting",
@@ -28968,7 +29460,9 @@
       "main_product": "se-vulcanite-block",
       "group": "resources",
       "subgroup": "vulcanite",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 15,
+      "icon_row": 2
     },
     "se-pyroflux": {
       "category": "chemistry",
@@ -29000,7 +29494,9 @@
       "main_product": "se-pyroflux",
       "group": "resources",
       "subgroup": "vulcanite",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 9,
+      "icon_row": 21
     },
     "se-vulcanite-ion-exchange-beads": {
       "category": "chemistry",
@@ -29041,7 +29537,9 @@
       ],
       "group": "resources",
       "subgroup": "vulcanite",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 17,
+      "icon_row": 2
     },
     "se-cryonite-to-water-ice": {
       "category": "chemistry",
@@ -29072,7 +29570,9 @@
       ],
       "group": "resources",
       "subgroup": "water",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 24,
+      "icon_row": 0
     },
     "se-melting-water-ice": {
       "category": "melting",
@@ -29142,7 +29642,9 @@
       ],
       "group": "production",
       "subgroup": "smelting-machine",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 29,
+      "icon_row": 10
     },
     "se-molten-iron": {
       "category": "smelting",
@@ -29173,7 +29675,9 @@
       ],
       "group": "resources",
       "subgroup": "iron",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 11,
+      "icon_row": 21
     },
     "se-iron-ingot": {
       "category": "casting",
@@ -29321,7 +29825,9 @@
       ],
       "group": "resources",
       "subgroup": "copper",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 12,
+      "icon_row": 21
     },
     "se-copper-ingot": {
       "category": "casting",
@@ -29441,7 +29947,9 @@
       ],
       "group": "resources",
       "subgroup": "holmium",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 13,
+      "icon_row": 21
     },
     "se-holmium-ingot": {
       "category": "casting",
@@ -29472,7 +29980,9 @@
       ],
       "group": "resources",
       "subgroup": "holmium",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 1,
+      "icon_row": 3
     },
     "se-space-manufactory": {
       "category": "space-crafting",
@@ -29605,7 +30115,9 @@
       ],
       "group": "logistics",
       "subgroup": "terrain",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 32,
+      "icon_row": 10
     },
     "se-space-thermodynamics-laboratory": {
       "category": "space-manufacturing",
@@ -29717,7 +30229,9 @@
       ],
       "group": "combat",
       "subgroup": "capsule",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 34,
+      "icon_row": 10
     },
     "nuclear-fuel-reprocessing": {
       "category": "centrifuging",
@@ -29782,7 +30296,9 @@
       ],
       "group": "production",
       "subgroup": "module-productivity",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 35,
+      "icon_row": 10
     },
     "effectivity-module-3": {
       "category": "crafting",
@@ -29818,7 +30334,9 @@
       ],
       "group": "production",
       "subgroup": "module-effectivity",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 36,
+      "icon_row": 10
     },
     "se-cryonite-lubricant": {
       "category": "chemistry",
@@ -29895,7 +30413,9 @@
       "main_product": "se-beryllium-sulfate",
       "group": "resources",
       "subgroup": "beryllium",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 37,
+      "icon_row": 10
     },
     "se-beryllium-hydroxide": {
       "category": "chemistry",
@@ -29932,7 +30452,9 @@
       "main_product": "se-beryllium-hydroxide",
       "group": "resources",
       "subgroup": "beryllium",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 35,
+      "icon_row": 20
     },
     "se-beryllium-powder": {
       "category": "chemistry",
@@ -29965,7 +30487,9 @@
       "main_product": "se-beryllium-powder",
       "group": "resources",
       "subgroup": "beryllium",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 0,
+      "icon_row": 11
     },
     "se-beryllium-ingot-no-vulcanite": {
       "category": "smelting",
@@ -30029,7 +30553,9 @@
       ],
       "group": "resources",
       "subgroup": "beryllium",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 1,
+      "icon_row": 11
     },
     "se-vitamelange-nugget": {
       "category": "pulverising",
@@ -30069,7 +30595,9 @@
       "main_product": "se-vitamelange-nugget",
       "group": "resources",
       "subgroup": "vitamelange",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 17,
+      "icon_row": 3
     },
     "se-vitamelange-bloom": {
       "category": "chemistry",
@@ -30105,7 +30633,9 @@
       ],
       "group": "resources",
       "subgroup": "vitamelange",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 19,
+      "icon_row": 3
     },
     "se-vitamelange-spice": {
       "category": "smelting",
@@ -30148,7 +30678,9 @@
       "main_product": "se-vitamelange-spice",
       "group": "resources",
       "subgroup": "vitamelange",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 21,
+      "icon_row": 3
     },
     "se-vitamelange-extract": {
       "category": "chemistry",
@@ -30194,7 +30726,9 @@
       "main_product": "se-vitamelange-extract",
       "group": "resources",
       "subgroup": "vitamelange",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 2,
+      "icon_row": 11
     },
     "se-molten-beryllium": {
       "category": "smelting",
@@ -30225,7 +30759,9 @@
       ],
       "group": "resources",
       "subgroup": "beryllium",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 14,
+      "icon_row": 21
     },
     "se-beryllium-ingot": {
       "category": "casting",
@@ -30256,7 +30792,9 @@
       ],
       "group": "resources",
       "subgroup": "beryllium",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 31,
+      "icon_row": 2
     },
     "se-space-biochemical-laboratory": {
       "category": "space-manufacturing",
@@ -31073,7 +31611,9 @@
       ],
       "group": "production",
       "subgroup": "module-effectivity",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 16,
+      "icon_row": 11
     },
     "production-science-pack": {
       "category": "space-manufacturing",
@@ -31163,7 +31703,9 @@
       ],
       "group": "logistics",
       "subgroup": "container-1",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 18,
+      "icon_row": 11
     },
     "logistic-chest-requester": {
       "category": "crafting",
@@ -31199,7 +31741,9 @@
       ],
       "group": "logistics",
       "subgroup": "container-1",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 19,
+      "icon_row": 11
     },
     "logistic-chest-buffer": {
       "category": "crafting",
@@ -31235,7 +31779,9 @@
       ],
       "group": "logistics",
       "subgroup": "container-1",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 20,
+      "icon_row": 11
     },
     "personal-roboport-mk2-equipment": {
       "category": "crafting",
@@ -31271,7 +31817,9 @@
       ],
       "group": "combat",
       "subgroup": "equipment",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 21,
+      "icon_row": 11
     },
     "coal-liquefaction": {
       "category": "oil-processing",
@@ -31415,7 +31963,9 @@
       ],
       "group": "production",
       "subgroup": "energy",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 22,
+      "icon_row": 11
     },
     "se-space-electromagnetics-laboratory": {
       "category": "space-manufacturing",
@@ -32383,7 +32933,9 @@
       ],
       "group": "combat",
       "subgroup": "armor",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 37,
+      "icon_row": 11
     },
     "productivity-module-4": {
       "category": "crafting",
@@ -32419,7 +32971,9 @@
       ],
       "group": "production",
       "subgroup": "module-productivity",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 0,
+      "icon_row": 12
     },
     "beacon": {
       "category": "crafting",
@@ -32460,7 +33014,9 @@
       ],
       "group": "production",
       "subgroup": "module",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 1,
+      "icon_row": 12
     },
     "aai-strongbox-buffer": {
       "category": "crafting",
@@ -32496,7 +33052,9 @@
       ],
       "group": "logistics",
       "subgroup": "container-2",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 2,
+      "icon_row": 12
     },
     "aai-strongbox-requester": {
       "category": "crafting",
@@ -32532,7 +33090,9 @@
       ],
       "group": "logistics",
       "subgroup": "container-2",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 3,
+      "icon_row": 12
     },
     "aai-strongbox-active-provider": {
       "category": "crafting",
@@ -32568,7 +33128,9 @@
       ],
       "group": "logistics",
       "subgroup": "container-2",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 4,
+      "icon_row": 12
     },
     "area-mining-drill": {
       "category": "crafting",
@@ -32609,7 +33171,9 @@
       ],
       "group": "production",
       "subgroup": "extraction-machine",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 5,
+      "icon_row": 12
     },
     "atomic-bomb": {
       "category": "crafting",
@@ -32650,7 +33214,9 @@
       ],
       "group": "combat",
       "subgroup": "ammo",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 6,
+      "icon_row": 12
     },
     "se-delivery-cannon-weapon-pack-atomic-bomb": {
       "category": "delivery-cannon-weapon",
@@ -32724,7 +33290,9 @@
       "main_product": "se-iridium-ore-crushed",
       "group": "resources",
       "subgroup": "iridium",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 7,
+      "icon_row": 3
     },
     "se-iridium-powder": {
       "category": "chemistry",
@@ -32786,7 +33354,9 @@
       "main_product": "se-iridium-powder",
       "group": "resources",
       "subgroup": "iridium",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 8,
+      "icon_row": 12
     },
     "se-iridium-blastcake": {
       "category": "centrifuging",
@@ -32817,7 +33387,9 @@
       ],
       "group": "resources",
       "subgroup": "iridium",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 9,
+      "icon_row": 3
     },
     "se-iridium-ingot": {
       "category": "smelting",
@@ -32856,7 +33428,9 @@
       "main_product": "se-iridium-ingot",
       "group": "resources",
       "subgroup": "iridium",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 11,
+      "icon_row": 3
     },
     "se-iridium-ingot-to-plate": {
       "category": "crafting",
@@ -32882,7 +33456,9 @@
       ],
       "group": "resources",
       "subgroup": "iridium",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 5,
+      "icon_row": 11
     },
     "se-space-astrometrics-laboratory": {
       "category": "space-manufacturing",
@@ -34529,7 +35105,9 @@
       ],
       "group": "production",
       "subgroup": "module-speed",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 35,
+      "icon_row": 12
     },
     "aai-storehouse-buffer": {
       "category": "crafting",
@@ -34565,7 +35143,9 @@
       ],
       "group": "logistics",
       "subgroup": "container-4",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 36,
+      "icon_row": 12
     },
     "aai-storehouse-requester": {
       "category": "crafting",
@@ -34601,7 +35181,9 @@
       ],
       "group": "logistics",
       "subgroup": "container-4",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 37,
+      "icon_row": 12
     },
     "aai-storehouse-active-provider": {
       "category": "crafting",
@@ -34637,7 +35219,9 @@
       ],
       "group": "logistics",
       "subgroup": "container-4",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 0,
+      "icon_row": 13
     },
     "aai-warehouse-buffer": {
       "category": "crafting",
@@ -34673,7 +35257,9 @@
       ],
       "group": "logistics",
       "subgroup": "container-6",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 1,
+      "icon_row": 13
     },
     "aai-warehouse-requester": {
       "category": "crafting",
@@ -34709,7 +35295,9 @@
       ],
       "group": "logistics",
       "subgroup": "container-6",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 2,
+      "icon_row": 13
     },
     "aai-warehouse-active-provider": {
       "category": "crafting",
@@ -34745,7 +35333,9 @@
       ],
       "group": "logistics",
       "subgroup": "container-6",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 3,
+      "icon_row": 13
     },
     "se-astronomic-science-pack-1": {
       "category": "space-manufacturing",
@@ -34803,7 +35393,9 @@
       "group": "science",
       "subgroup": "astronomic-science-pack",
       "type": "recipe",
-      "icon_size": 64
+      "icon_size": 64,
+      "icon_col": 4,
+      "icon_row": 13
     },
     "se-energy-science-pack-1": {
       "category": "space-manufacturing",
@@ -34861,7 +35453,9 @@
       "group": "science",
       "subgroup": "energy-science-pack",
       "type": "recipe",
-      "icon_size": 64
+      "icon_size": 64,
+      "icon_col": 5,
+      "icon_row": 13
     },
     "se-heat-shielding-iridium": {
       "category": "crafting",
@@ -34930,7 +35524,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "electronic",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 6,
+      "icon_row": 13
     },
     "se-material-science-pack-1": {
       "category": "space-manufacturing",
@@ -34988,7 +35584,9 @@
       "group": "science",
       "subgroup": "material-science-pack",
       "type": "recipe",
-      "icon_size": 64
+      "icon_size": 64,
+      "icon_col": 7,
+      "icon_row": 13
     },
     "se-processing-unit-holmium": {
       "category": "crafting-with-fluid",
@@ -35676,7 +36274,9 @@
       "group": "logistics",
       "subgroup": "rail",
       "type": "recipe",
-      "icon_size": 64
+      "icon_size": 64,
+      "icon_col": 14,
+      "icon_row": 13
     },
     "se-simulation-am": {
       "category": "space-supercomputing-1",
@@ -35906,7 +36506,9 @@
       "group": "combat",
       "subgroup": "gun",
       "type": "recipe",
-      "icon_size": 64
+      "icon_size": 64,
+      "icon_col": 16,
+      "icon_row": 13
     },
     "se-tesla-ammo": {
       "category": "space-electromagnetics",
@@ -35938,7 +36540,9 @@
       "group": "combat",
       "subgroup": "ammo",
       "type": "recipe",
-      "icon_size": 64
+      "icon_size": 64,
+      "icon_col": 17,
+      "icon_row": 13
     },
     "se-thruster-suit-2": {
       "category": "crafting",
@@ -35985,7 +36589,9 @@
       "main_product": "se-thruster-suit-2",
       "group": "combat",
       "subgroup": "armor",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 18,
+      "icon_row": 13
     },
     "energy-shield-equipment": {
       "category": "crafting",
@@ -36026,7 +36632,9 @@
       ],
       "group": "combat",
       "subgroup": "equipment",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 19,
+      "icon_row": 13
     },
     "effectivity-module-5": {
       "category": "crafting",
@@ -36062,7 +36670,9 @@
       ],
       "group": "production",
       "subgroup": "module-effectivity",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 20,
+      "icon_row": 13
     },
     "se-adaptive-armour-equipment-4": {
       "category": "crafting",
@@ -36103,7 +36713,9 @@
       ],
       "group": "combat",
       "subgroup": "equipment",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 21,
+      "icon_row": 13
     },
     "se-aeroframe-pole": {
       "category": "crafting",
@@ -36134,7 +36746,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "specialist-assembling",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 22,
+      "icon_row": 13
     },
     "se-biological-science-pack-1": {
       "category": "space-manufacturing",
@@ -36192,7 +36806,9 @@
       "group": "science",
       "subgroup": "biological-science-pack",
       "type": "recipe",
-      "icon_size": 64
+      "icon_size": 64,
+      "icon_col": 23,
+      "icon_row": 13
     },
     "se-delivery-cannon-capsule-iridium": {
       "category": "crafting",
@@ -36256,7 +36872,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "specialist-assembling",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 19,
+      "icon_row": 4
     },
     "se-pylon": {
       "category": "crafting",
@@ -37031,7 +37649,9 @@
       ],
       "group": "logistics",
       "subgroup": "terrain",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 36,
+      "icon_row": 13
     },
     "se-simulation-ab": {
       "category": "space-supercomputing-1",
@@ -37497,7 +38117,9 @@
       ],
       "group": "resources",
       "subgroup": "vitamelange",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 10,
+      "icon_row": 21
     },
     "se-bio-sludge-from-vitamelange": {
       "category": "space-biochemical",
@@ -37573,7 +38195,9 @@
       "group": "combat",
       "subgroup": "gun",
       "type": "recipe",
-      "icon_size": 64
+      "icon_size": 64,
+      "icon_col": 3,
+      "icon_row": 14
     },
     "se-cryogun-ammo": {
       "category": "space-thermodynamics",
@@ -37610,7 +38234,9 @@
       "group": "combat",
       "subgroup": "ammo",
       "type": "recipe",
-      "icon_size": 64
+      "icon_size": 64,
+      "icon_col": 4,
+      "icon_row": 14
     },
     "se-railgun": {
       "category": "space-electromagnetics",
@@ -37647,7 +38273,9 @@
       "group": "combat",
       "subgroup": "gun",
       "type": "recipe",
-      "icon_size": 64
+      "icon_size": 64,
+      "icon_col": 5,
+      "icon_row": 14
     },
     "se-railgun-ammo": {
       "category": "space-electromagnetics",
@@ -37679,7 +38307,9 @@
       "group": "combat",
       "subgroup": "ammo",
       "type": "recipe",
-      "icon_size": 64
+      "icon_size": 64,
+      "icon_col": 6,
+      "icon_row": 14
     },
     "speed-module-5": {
       "category": "crafting",
@@ -37715,7 +38345,9 @@
       ],
       "group": "production",
       "subgroup": "module-speed",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 7,
+      "icon_row": 14
     },
     "se-medpack-3": {
       "category": "lifesupport",
@@ -37815,7 +38447,9 @@
       ],
       "group": "logistics",
       "subgroup": "transport",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 9,
+      "icon_row": 14
     },
     "spidertron-remote": {
       "category": "crafting",
@@ -37846,7 +38480,9 @@
       ],
       "group": "logistics",
       "subgroup": "transport",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 10,
+      "icon_row": 14
     },
     "jetpack-3": {
       "category": "crafting",
@@ -37888,7 +38524,9 @@
       "group": "combat",
       "subgroup": "equipment",
       "type": "recipe",
-      "icon_size": 32
+      "icon_size": 32,
+      "icon_col": 11,
+      "icon_row": 14
     },
     "se-addon-power-pole": {
       "category": "crafting",
@@ -37957,7 +38595,9 @@
       ],
       "group": "combat",
       "subgroup": "gun",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 13,
+      "icon_row": 14
     },
     "se-bloater-ammo": {
       "category": "chemistry",
@@ -37993,7 +38633,9 @@
       ],
       "group": "combat",
       "subgroup": "ammo",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 14,
+      "icon_row": 14
     },
     "se-pheromone-ammo": {
       "category": "chemistry",
@@ -38029,7 +38671,9 @@
       ],
       "group": "combat",
       "subgroup": "ammo",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 15,
+      "icon_row": 14
     },
     "se-bioscrubber": {
       "category": "chemistry",
@@ -38070,7 +38714,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "specialist-assembling",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 16,
+      "icon_row": 14
     },
     "se-capsule-small-biter": {
       "category": "space-growth",
@@ -38106,7 +38752,9 @@
       ],
       "group": "combat",
       "subgroup": "capsule",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 17,
+      "icon_row": 14
     },
     "se-capsule-small-spitter": {
       "category": "space-growth",
@@ -38142,7 +38790,9 @@
       ],
       "group": "combat",
       "subgroup": "capsule",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 18,
+      "icon_row": 14
     },
     "se-delivery-cannon-weapon": {
       "category": "crafting",
@@ -38193,7 +38843,9 @@
       ],
       "group": "combat",
       "subgroup": "surface-defense",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 19,
+      "icon_row": 14
     },
     "se-delivery-cannon-weapon-capsule": {
       "category": "crafting",
@@ -38239,7 +38891,9 @@
       ],
       "group": "combat",
       "subgroup": "surface-defense",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 21,
+      "icon_row": 4
     },
     "se-energy-science-pack-2": {
       "category": "space-manufacturing",
@@ -38302,7 +38956,9 @@
       "group": "science",
       "subgroup": "energy-science-pack",
       "type": "recipe",
-      "icon_size": 64
+      "icon_size": 64,
+      "icon_col": 20,
+      "icon_row": 14
     },
     "se-holmium-solenoid": {
       "category": "crafting-or-electromagnetics",
@@ -38338,7 +38994,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "electronic",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 21,
+      "icon_row": 14
     },
     "se-lifesupport-equipment-2": {
       "category": "lifesupport",
@@ -38381,7 +39039,9 @@
       "subgroup": "equipment",
       "type": "recipe",
       "icon_size": 64,
-      "icon_mipmaps": 1
+      "icon_mipmaps": 1,
+      "icon_col": 22,
+      "icon_row": 14
     },
     "se-material-science-pack-2": {
       "category": "space-manufacturing",
@@ -38444,7 +39104,9 @@
       "group": "science",
       "subgroup": "material-science-pack",
       "type": "recipe",
-      "icon_size": 64
+      "icon_size": 64,
+      "icon_col": 23,
+      "icon_row": 14
     },
     "se-pylon-substation": {
       "category": "crafting",
@@ -39799,7 +40461,9 @@
       ],
       "group": "combat",
       "subgroup": "equipment",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 3,
+      "icon_row": 15
     },
     "se-space-accumulator": {
       "category": "space-manufacturing",
@@ -39889,7 +40553,9 @@
       ],
       "group": "combat",
       "subgroup": "equipment",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 5,
+      "icon_row": 15
     },
     "battery-mk2-equipment": {
       "category": "crafting",
@@ -39925,7 +40591,9 @@
       ],
       "group": "combat",
       "subgroup": "equipment",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 6,
+      "icon_row": 15
     },
     "productivity-module-5": {
       "category": "crafting",
@@ -39961,7 +40629,9 @@
       ],
       "group": "production",
       "subgroup": "module-productivity",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 7,
+      "icon_row": 15
     },
     "effectivity-module-6": {
       "category": "crafting",
@@ -39997,7 +40667,9 @@
       ],
       "group": "production",
       "subgroup": "module-effectivity",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 8,
+      "icon_row": 15
     },
     "se-astronomic-science-pack-2": {
       "category": "space-manufacturing",
@@ -40060,7 +40732,9 @@
       "group": "science",
       "subgroup": "astronomic-science-pack",
       "type": "recipe",
-      "icon_size": 64
+      "icon_size": 64,
+      "icon_col": 9,
+      "icon_row": 15
     },
     "se-biological-science-pack-2": {
       "category": "space-manufacturing",
@@ -40123,7 +40797,9 @@
       "group": "science",
       "subgroup": "biological-science-pack",
       "type": "recipe",
-      "icon_size": 64
+      "icon_size": 64,
+      "icon_col": 10,
+      "icon_row": 15
     },
     "se-compact-beacon": {
       "category": "crafting",
@@ -40239,7 +40915,9 @@
       "group": "science",
       "subgroup": "energy-science-pack",
       "type": "recipe",
-      "icon_size": 64
+      "icon_size": 64,
+      "icon_col": 12,
+      "icon_row": 15
     },
     "se-heavy-bearing": {
       "category": "crafting-with-fluid",
@@ -40275,7 +40953,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "specialist-assembling",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 13,
+      "icon_row": 15
     },
     "se-quantum-processor": {
       "category": "space-electromagnetics",
@@ -40316,7 +40996,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "processor",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 14,
+      "icon_row": 15
     },
     "se-material-insight-3": {
       "category": "space-supercomputing-1",
@@ -40737,7 +41419,9 @@
       ],
       "group": "logistics",
       "subgroup": "rocket-logistics",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 20,
+      "icon_row": 15
     },
     "se-space-elevator-cable": {
       "category": "crafting",
@@ -40778,7 +41462,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "intersurface-part",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 33,
+      "icon_row": 3
     },
     "se-space-elevator-maintenance": {
       "category": "space-elevator",
@@ -40919,7 +41605,9 @@
       ],
       "group": "resources",
       "subgroup": "vitamelange",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 22,
+      "icon_row": 15
     },
     "se-vitalic-hydrocarbon-extraction": {
       "category": "oil-processing",
@@ -41008,7 +41696,9 @@
       ],
       "group": "combat",
       "subgroup": "equipment",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 23,
+      "icon_row": 15
     },
     "speed-module-6": {
       "category": "crafting",
@@ -41044,7 +41734,9 @@
       ],
       "group": "production",
       "subgroup": "module-speed",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 24,
+      "icon_row": 15
     },
     "productivity-module-6": {
       "category": "crafting",
@@ -41080,7 +41772,9 @@
       ],
       "group": "production",
       "subgroup": "module-productivity",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 25,
+      "icon_row": 15
     },
     "effectivity-module-7": {
       "category": "crafting",
@@ -41116,7 +41810,9 @@
       ],
       "group": "production",
       "subgroup": "module-effectivity",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 26,
+      "icon_row": 15
     },
     "se-aeroframe-scaffold": {
       "category": "crafting",
@@ -41147,7 +41843,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "specialist-assembling",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 27,
+      "icon_row": 15
     },
     "se-capsule-medium-biter": {
       "category": "space-growth",
@@ -41183,7 +41881,9 @@
       ],
       "group": "combat",
       "subgroup": "capsule",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 28,
+      "icon_row": 15
     },
     "se-capsule-medium-spitter": {
       "category": "space-growth",
@@ -41219,7 +41919,9 @@
       ],
       "group": "combat",
       "subgroup": "capsule",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 29,
+      "icon_row": 15
     },
     "se-low-density-structure-beryllium": {
       "category": "crafting",
@@ -41325,7 +42027,9 @@
       "group": "science",
       "subgroup": "material-science-pack",
       "type": "recipe",
-      "icon_size": 64
+      "icon_size": 64,
+      "icon_col": 30,
+      "icon_row": 15
     },
     "se-pylon-construction": {
       "category": "crafting",
@@ -41834,7 +42538,9 @@
       ],
       "group": "logistics",
       "subgroup": "rocket-logistics",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 0,
+      "icon_row": 16
     },
     "se-space-probe-rocket": {
       "category": "crafting",
@@ -41880,7 +42586,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "intersurface-part",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 1,
+      "icon_row": 16
     },
     "se-simulation-asbm": {
       "category": "space-supercomputing-2",
@@ -42497,7 +43205,9 @@
       "group": "science",
       "subgroup": "biological-science-pack",
       "type": "recipe",
-      "icon_size": 64
+      "icon_size": 64,
+      "icon_col": 11,
+      "icon_row": 16
     },
     "se-heavy-composite": {
       "category": "crafting",
@@ -42533,7 +43243,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "specialist-assembling",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 12,
+      "icon_row": 16
     },
     "se-astronomic-insight-3": {
       "category": "space-supercomputing-1",
@@ -43676,7 +44388,9 @@
       ],
       "group": "resources",
       "subgroup": "vitamelange",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 30,
+      "icon_row": 16
     },
     "speed-module-7": {
       "category": "crafting",
@@ -43712,7 +44426,9 @@
       ],
       "group": "production",
       "subgroup": "module-speed",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 31,
+      "icon_row": 16
     },
     "productivity-module-7": {
       "category": "crafting",
@@ -43748,7 +44464,9 @@
       ],
       "group": "production",
       "subgroup": "module-productivity",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 32,
+      "icon_row": 16
     },
     "se-astronomic-science-pack-3": {
       "category": "space-manufacturing",
@@ -43811,7 +44529,9 @@
       "group": "science",
       "subgroup": "astronomic-science-pack",
       "type": "recipe",
-      "icon_size": 64
+      "icon_size": 64,
+      "icon_col": 33,
+      "icon_row": 16
     },
     "se-capsule-big-biter": {
       "category": "space-growth",
@@ -43847,7 +44567,9 @@
       ],
       "group": "combat",
       "subgroup": "capsule",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 34,
+      "icon_row": 16
     },
     "se-capsule-big-spitter": {
       "category": "space-growth",
@@ -43883,7 +44605,9 @@
       ],
       "group": "combat",
       "subgroup": "capsule",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 35,
+      "icon_row": 16
     },
     "se-energy-science-pack-4": {
       "category": "space-manufacturing",
@@ -43946,7 +44670,9 @@
       "group": "science",
       "subgroup": "energy-science-pack",
       "type": "recipe",
-      "icon_size": 64
+      "icon_size": 64,
+      "icon_col": 36,
+      "icon_row": 16
     },
     "se-material-science-pack-4": {
       "category": "space-manufacturing",
@@ -44009,7 +44735,9 @@
       "group": "science",
       "subgroup": "material-science-pack",
       "type": "recipe",
-      "icon_size": 64
+      "icon_size": 64,
+      "icon_col": 37,
+      "icon_row": 16
     },
     "se-biological-insight-4": {
       "category": "space-supercomputing-2",
@@ -45034,7 +45762,9 @@
       ],
       "group": "combat",
       "subgroup": "equipment",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 6,
+      "icon_row": 17
     },
     "se-aeroframe-bulkhead": {
       "category": "crafting",
@@ -45070,7 +45800,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "specialist-assembling",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 7,
+      "icon_row": 17
     },
     "se-biological-science-pack-4": {
       "category": "space-manufacturing",
@@ -45138,7 +45870,9 @@
       "group": "science",
       "subgroup": "biological-science-pack",
       "type": "recipe",
-      "icon_size": 64
+      "icon_size": 64,
+      "icon_col": 8,
+      "icon_row": 17
     },
     "se-dynamic-emitter": {
       "category": "space-electromagnetics",
@@ -45179,7 +45913,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "electronic",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 9,
+      "icon_row": 17
     },
     "se-energy-transmitter-emitter": {
       "category": "crafting",
@@ -45225,7 +45961,9 @@
       ],
       "group": "production",
       "subgroup": "beaming",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 10,
+      "icon_row": 17
     },
     "se-energy-transmitter-chamber": {
       "category": "crafting",
@@ -45266,7 +46004,9 @@
       ],
       "group": "production",
       "subgroup": "beaming",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 11,
+      "icon_row": 17
     },
     "se-energy-transmitter-injector": {
       "category": "crafting",
@@ -45312,7 +46052,9 @@
       ],
       "group": "production",
       "subgroup": "beaming",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 12,
+      "icon_row": 17
     },
     "se-energy-receiver": {
       "category": "crafting",
@@ -45368,7 +46110,9 @@
       ],
       "group": "production",
       "subgroup": "beaming",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 13,
+      "icon_row": 17
     },
     "se-heavy-assembly": {
       "category": "crafting-with-fluid",
@@ -45409,7 +46153,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "specialist-assembling",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 14,
+      "icon_row": 17
     },
     "se-lifesupport-equipment-3": {
       "category": "lifesupport",
@@ -45447,7 +46193,9 @@
       "subgroup": "equipment",
       "type": "recipe",
       "icon_size": 64,
-      "icon_mipmaps": 1
+      "icon_mipmaps": 1,
+      "icon_col": 15,
+      "icon_row": 17
     },
     "se-pylon-construction-radar": {
       "category": "crafting",
@@ -45541,7 +46289,9 @@
       ],
       "group": "resources",
       "subgroup": "vitamelange",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 17,
+      "icon_row": 17
     },
     "se-astronomic-insight-4": {
       "category": "space-supercomputing-2",
@@ -45912,7 +46662,9 @@
       ],
       "group": "combat",
       "subgroup": "defensive-structure",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 24,
+      "icon_row": 17
     },
     "se-plague-bomb": {
       "category": "space-biochemical",
@@ -45960,7 +46712,9 @@
       "group": "combat",
       "subgroup": "ammo",
       "type": "recipe",
-      "icon_size": 64
+      "icon_size": 64,
+      "icon_col": 25,
+      "icon_row": 17
     },
     "se-delivery-cannon-weapon-pack-se-plague-bomb": {
       "category": "delivery-cannon-weapon",
@@ -46039,7 +46793,9 @@
       ],
       "group": "logistics",
       "subgroup": "spaceship-structure",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 27,
+      "icon_row": 17
     },
     "se-spaceship-floor": {
       "category": "crafting",
@@ -46070,7 +46826,9 @@
       ],
       "group": "logistics",
       "subgroup": "spaceship-structure",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 28,
+      "icon_row": 17
     },
     "se-spaceship-wall": {
       "category": "crafting",
@@ -46111,7 +46869,9 @@
       ],
       "group": "logistics",
       "subgroup": "spaceship-structure",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 29,
+      "icon_row": 17
     },
     "se-spaceship-gate": {
       "category": "crafting",
@@ -46152,7 +46912,9 @@
       ],
       "group": "logistics",
       "subgroup": "spaceship-structure",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 30,
+      "icon_row": 17
     },
     "se-spaceship-rocket-engine": {
       "category": "crafting",
@@ -46198,7 +46960,9 @@
       ],
       "group": "logistics",
       "subgroup": "spaceship-structure",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 31,
+      "icon_row": 17
     },
     "se-spaceship-rocket-booster-tank": {
       "category": "crafting",
@@ -46249,7 +47013,9 @@
       ],
       "group": "logistics",
       "subgroup": "spaceship-structure",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 32,
+      "icon_row": 17
     },
     "se-thruster-suit-3": {
       "category": "crafting",
@@ -46316,7 +47082,9 @@
       "main_product": "se-thruster-suit-3",
       "group": "combat",
       "subgroup": "armor",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 33,
+      "icon_row": 17
     },
     "speed-module-8": {
       "category": "crafting-with-fluid",
@@ -46357,7 +47125,9 @@
       ],
       "group": "production",
       "subgroup": "module-speed",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 34,
+      "icon_row": 17
     },
     "productivity-module-8": {
       "category": "crafting-with-fluid",
@@ -46398,7 +47168,9 @@
       ],
       "group": "production",
       "subgroup": "module-productivity",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 35,
+      "icon_row": 17
     },
     "effectivity-module-8": {
       "category": "crafting-with-fluid",
@@ -46439,7 +47211,9 @@
       ],
       "group": "production",
       "subgroup": "module-effectivity",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 36,
+      "icon_row": 17
     },
     "se-medpack-4": {
       "category": "lifesupport",
@@ -46546,7 +47320,9 @@
       "group": "science",
       "subgroup": "astronomic-science-pack",
       "type": "recipe",
-      "icon_size": 64
+      "icon_size": 64,
+      "icon_col": 0,
+      "icon_row": 18
     },
     "se-capsule-behemoth-biter": {
       "category": "space-growth",
@@ -46582,7 +47358,9 @@
       ],
       "group": "combat",
       "subgroup": "capsule",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 1,
+      "icon_row": 18
     },
     "se-capsule-behemoth-spitter": {
       "category": "space-growth",
@@ -46618,7 +47396,9 @@
       ],
       "group": "combat",
       "subgroup": "capsule",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 2,
+      "icon_row": 18
     },
     "se-spaceship-ion-engine": {
       "category": "crafting",
@@ -46659,7 +47439,9 @@
       ],
       "group": "logistics",
       "subgroup": "spaceship-structure",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 3,
+      "icon_row": 18
     },
     "se-spaceship-ion-booster-tank": {
       "category": "crafting",
@@ -46705,7 +47487,9 @@
       ],
       "group": "logistics",
       "subgroup": "spaceship-structure",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 4,
+      "icon_row": 18
     },
     "se-lattice-pressure-vessel": {
       "category": "space-manufacturing",
@@ -46746,7 +47530,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "specialist-assembling",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 5,
+      "icon_row": 18
     },
     "se-nanomaterial": {
       "category": "space-manufacturing",
@@ -46862,7 +47648,9 @@
       "main_product": "se-naquium-ore-crushed",
       "group": "resources",
       "subgroup": "naquium",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 25,
+      "icon_row": 3
     },
     "se-naquium-refined": {
       "category": "chemistry",
@@ -46931,7 +47719,9 @@
       "main_product": "se-naquium-refined",
       "group": "resources",
       "subgroup": "naquium",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 27,
+      "icon_row": 3
     },
     "se-naquium-powder": {
       "category": "chemistry",
@@ -47000,7 +47790,9 @@
       "main_product": "se-naquium-powder",
       "group": "resources",
       "subgroup": "naquium",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 7,
+      "icon_row": 18
     },
     "se-naquium-crystal": {
       "category": "centrifuging",
@@ -47062,7 +47854,9 @@
       "main_product": "se-naquium-crystal",
       "group": "resources",
       "subgroup": "naquium",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 8,
+      "icon_row": 18
     },
     "se-naquium-ingot": {
       "category": "smelting",
@@ -47108,7 +47902,9 @@
       ],
       "group": "resources",
       "subgroup": "naquium",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 29,
+      "icon_row": 3
     },
     "se-naquium-ingot-to-plate": {
       "category": "crafting",
@@ -47148,7 +47944,9 @@
       "main_product": "se-naquium-plate",
       "group": "resources",
       "subgroup": "naquium",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 9,
+      "icon_row": 18
     },
     "se-naquium-heat-pipe": {
       "category": "crafting",
@@ -47179,7 +47977,9 @@
       ],
       "group": "production",
       "subgroup": "energy",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 10,
+      "icon_row": 18
     },
     "se-naquium-heat-pipe-long--\u002B--": {
       "category": "crafting",
@@ -47205,7 +48005,9 @@
       ],
       "group": "production",
       "subgroup": "energy",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 11,
+      "icon_row": 18
     },
     "se-naquium-heat-pipe-long--\u002B-----\u002B--": {
       "category": "crafting",
@@ -47231,7 +48033,9 @@
       ],
       "group": "production",
       "subgroup": "energy",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 12,
+      "icon_row": 18
     },
     "se-space-elevator-cable-nano": {
       "category": "crafting",
@@ -47353,7 +48157,9 @@
       ],
       "group": "logistics",
       "subgroup": "spaceship-structure",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 14,
+      "icon_row": 18
     },
     "se-adaptive-armour-equipment-5": {
       "category": "crafting",
@@ -47394,7 +48200,9 @@
       ],
       "group": "combat",
       "subgroup": "equipment",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 15,
+      "icon_row": 18
     },
     "se-big-heat-exchanger": {
       "category": "crafting",
@@ -47440,7 +48248,9 @@
       ],
       "group": "production",
       "subgroup": "energy",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 16,
+      "icon_row": 18
     },
     "se-big-turbine": {
       "category": "crafting",
@@ -47496,7 +48306,9 @@
       ],
       "group": "production",
       "subgroup": "energy",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 17,
+      "icon_row": 18
     },
     "se-deep-catalogue-1": {
       "category": "space-supercomputing-3",
@@ -47553,7 +48365,9 @@
       "main_product": "se-deep-catalogue-1",
       "group": "science",
       "subgroup": "data-catalogue-deep",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 22,
+      "icon_row": 18
     },
     "se-nano-engineering-data": {
       "category": "space-manufacturing",
@@ -47881,7 +48695,9 @@
       ],
       "group": "intermediate-products",
       "subgroup": "advanced-assembling",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 25,
+      "icon_row": 18
     },
     "se-space-solar-panel-3": {
       "category": "space-manufacturing",
@@ -48000,7 +48816,9 @@
       ],
       "group": "combat",
       "subgroup": "equipment",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 28,
+      "icon_row": 18
     },
     "fusion-reactor-equipment": {
       "category": "crafting",
@@ -48046,7 +48864,9 @@
       ],
       "group": "combat",
       "subgroup": "equipment",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 29,
+      "icon_row": 18
     },
     "speed-module-9": {
       "category": "crafting-with-fluid",
@@ -48087,7 +48907,9 @@
       ],
       "group": "production",
       "subgroup": "module-speed",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 30,
+      "icon_row": 18
     },
     "productivity-module-9": {
       "category": "crafting-with-fluid",
@@ -48128,7 +48950,9 @@
       ],
       "group": "production",
       "subgroup": "module-productivity",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 31,
+      "icon_row": 18
     },
     "jetpack-4": {
       "category": "crafting",
@@ -48170,7 +48994,9 @@
       "group": "combat",
       "subgroup": "equipment",
       "type": "recipe",
-      "icon_size": 32
+      "icon_size": 32,
+      "icon_col": 32,
+      "icon_row": 18
     },
     "se-antimatter-stream": {
       "category": "space-materialisation",
@@ -48348,7 +49174,9 @@
       ],
       "group": "production",
       "subgroup": "energy",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 34,
+      "icon_row": 18
     },
     "se-deep-catalogue-2": {
       "category": "space-supercomputing-3",
@@ -48405,7 +49233,9 @@
       "main_product": "se-deep-catalogue-2",
       "group": "science",
       "subgroup": "data-catalogue-deep",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 1,
+      "icon_row": 19
     },
     "se-singularity-data": {
       "category": "space-collider",
@@ -48772,7 +49602,9 @@
       ],
       "group": "logistics",
       "subgroup": "transport-belt",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 3,
+      "icon_row": 19
     },
     "se-deep-space-splitter": {
       "category": "space-manufacturing",
@@ -48828,7 +49660,9 @@
       ],
       "group": "logistics",
       "subgroup": "splitter",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 4,
+      "icon_row": 19
     },
     "se-deep-space-underground-belt": {
       "category": "space-manufacturing",
@@ -48884,7 +49718,9 @@
       ],
       "group": "logistics",
       "subgroup": "underground-belt",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 5,
+      "icon_row": 19
     },
     "se-deep-space-transport-belt-white": {
       "category": "crafting",
@@ -48915,7 +49751,9 @@
       ],
       "group": "logistics",
       "subgroup": "transport-belt",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 6,
+      "icon_row": 19
     },
     "se-deep-space-splitter-white": {
       "category": "crafting",
@@ -48946,7 +49784,9 @@
       ],
       "group": "logistics",
       "subgroup": "splitter",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 7,
+      "icon_row": 19
     },
     "se-deep-space-underground-belt-white": {
       "category": "crafting",
@@ -48977,7 +49817,9 @@
       ],
       "group": "logistics",
       "subgroup": "underground-belt",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 8,
+      "icon_row": 19
     },
     "se-deep-space-transport-belt-red": {
       "category": "crafting",
@@ -49008,7 +49850,9 @@
       ],
       "group": "logistics",
       "subgroup": "transport-belt",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 9,
+      "icon_row": 19
     },
     "se-deep-space-splitter-red": {
       "category": "crafting",
@@ -49039,7 +49883,9 @@
       ],
       "group": "logistics",
       "subgroup": "splitter",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 10,
+      "icon_row": 19
     },
     "se-deep-space-underground-belt-red": {
       "category": "crafting",
@@ -49070,7 +49916,9 @@
       ],
       "group": "logistics",
       "subgroup": "underground-belt",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 11,
+      "icon_row": 19
     },
     "se-deep-space-transport-belt-magenta": {
       "category": "crafting",
@@ -49101,7 +49949,9 @@
       ],
       "group": "logistics",
       "subgroup": "transport-belt",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 12,
+      "icon_row": 19
     },
     "se-deep-space-splitter-magenta": {
       "category": "crafting",
@@ -49132,7 +49982,9 @@
       ],
       "group": "logistics",
       "subgroup": "splitter",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 13,
+      "icon_row": 19
     },
     "se-deep-space-underground-belt-magenta": {
       "category": "crafting",
@@ -49163,7 +50015,9 @@
       ],
       "group": "logistics",
       "subgroup": "underground-belt",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 14,
+      "icon_row": 19
     },
     "se-deep-space-transport-belt-blue": {
       "category": "crafting",
@@ -49194,7 +50048,9 @@
       ],
       "group": "logistics",
       "subgroup": "transport-belt",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 15,
+      "icon_row": 19
     },
     "se-deep-space-splitter-blue": {
       "category": "crafting",
@@ -49225,7 +50081,9 @@
       ],
       "group": "logistics",
       "subgroup": "splitter",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 16,
+      "icon_row": 19
     },
     "se-deep-space-underground-belt-blue": {
       "category": "crafting",
@@ -49256,7 +50114,9 @@
       ],
       "group": "logistics",
       "subgroup": "underground-belt",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 17,
+      "icon_row": 19
     },
     "se-deep-space-transport-belt-cyan": {
       "category": "crafting",
@@ -49287,7 +50147,9 @@
       ],
       "group": "logistics",
       "subgroup": "transport-belt",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 18,
+      "icon_row": 19
     },
     "se-deep-space-splitter-cyan": {
       "category": "crafting",
@@ -49318,7 +50180,9 @@
       ],
       "group": "logistics",
       "subgroup": "splitter",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 19,
+      "icon_row": 19
     },
     "se-deep-space-underground-belt-cyan": {
       "category": "crafting",
@@ -49349,7 +50213,9 @@
       ],
       "group": "logistics",
       "subgroup": "underground-belt",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 20,
+      "icon_row": 19
     },
     "se-deep-space-transport-belt-green": {
       "category": "crafting",
@@ -49380,7 +50246,9 @@
       ],
       "group": "logistics",
       "subgroup": "transport-belt",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 21,
+      "icon_row": 19
     },
     "se-deep-space-splitter-green": {
       "category": "crafting",
@@ -49411,7 +50279,9 @@
       ],
       "group": "logistics",
       "subgroup": "splitter",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 22,
+      "icon_row": 19
     },
     "se-deep-space-underground-belt-green": {
       "category": "crafting",
@@ -49442,7 +50312,9 @@
       ],
       "group": "logistics",
       "subgroup": "underground-belt",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 23,
+      "icon_row": 19
     },
     "se-deep-space-transport-belt-yellow": {
       "category": "crafting",
@@ -49473,7 +50345,9 @@
       ],
       "group": "logistics",
       "subgroup": "transport-belt",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 24,
+      "icon_row": 19
     },
     "se-deep-space-splitter-yellow": {
       "category": "crafting",
@@ -49504,7 +50378,9 @@
       ],
       "group": "logistics",
       "subgroup": "splitter",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 25,
+      "icon_row": 19
     },
     "se-deep-space-underground-belt-yellow": {
       "category": "crafting",
@@ -49535,7 +50411,9 @@
       ],
       "group": "logistics",
       "subgroup": "underground-belt",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 26,
+      "icon_row": 19
     },
     "effectivity-module-9": {
       "category": "crafting-with-fluid",
@@ -49576,7 +50454,9 @@
       ],
       "group": "production",
       "subgroup": "module-effectivity",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 27,
+      "icon_row": 19
     },
     "se-spaceship-antimatter-engine": {
       "category": "crafting",
@@ -49632,7 +50512,9 @@
       ],
       "group": "logistics",
       "subgroup": "spaceship-structure",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 28,
+      "icon_row": 19
     },
     "se-spaceship-antimatter-booster-tank": {
       "category": "crafting",
@@ -49688,7 +50570,9 @@
       ],
       "group": "logistics",
       "subgroup": "spaceship-structure",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 29,
+      "icon_row": 19
     },
     "se-arcosphere-collector": {
       "category": "space-manufacturing",
@@ -49748,7 +50632,9 @@
       "group": "intermediate-products",
       "subgroup": "arcosphere",
       "type": "recipe",
-      "icon_size": 64
+      "icon_size": 64,
+      "icon_col": 30,
+      "icon_row": 19
     },
     "se-arcosphere-fracture": {
       "category": "arcosphere",
@@ -50371,7 +51257,9 @@
       "main_product": "se-naquium-tessaract",
       "group": "intermediate-products",
       "subgroup": "advanced-assembling",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 2,
+      "icon_row": 20
     },
     "se-naquium-tessaract-alt": {
       "category": "arcosphere",
@@ -50448,7 +51336,9 @@
       "main_product": "se-naquium-tessaract",
       "group": "intermediate-products",
       "subgroup": "advanced-assembling",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 2,
+      "icon_row": 20
     },
     "se-wide-beacon-2": {
       "category": "crafting",
@@ -50601,7 +51491,9 @@
       "main_product": "se-deep-catalogue-3",
       "group": "science",
       "subgroup": "data-catalogue-deep",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 9,
+      "icon_row": 20
     },
     "se-space-fold-data": {
       "category": "arcosphere",
@@ -51265,7 +52157,9 @@
       "subgroup": "equipment",
       "type": "recipe",
       "icon_size": 64,
-      "icon_mipmaps": 1
+      "icon_mipmaps": 1,
+      "icon_col": 11,
+      "icon_row": 20
     },
     "se-naquium-processor": {
       "category": "arcosphere",
@@ -51342,7 +52236,9 @@
       "main_product": "se-naquium-processor",
       "group": "intermediate-products",
       "subgroup": "processor",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 27,
+      "icon_row": 4
     },
     "se-naquium-processor-alt": {
       "category": "arcosphere",
@@ -51419,7 +52315,9 @@
       "main_product": "se-naquium-processor",
       "group": "intermediate-products",
       "subgroup": "processor",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 27,
+      "icon_row": 4
     },
     "se-nexus": {
       "category": "crafting",
@@ -51465,7 +52363,9 @@
       ],
       "group": "production",
       "subgroup": "computation",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 12,
+      "icon_row": 20
     },
     "se-space-supercomputer-4": {
       "category": "space-manufacturing",
@@ -51631,7 +52531,9 @@
       "main_product": "se-thruster-suit-4",
       "group": "combat",
       "subgroup": "armor",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 14,
+      "icon_row": 20
     },
     "energy-shield-mk6-equipment": {
       "category": "crafting",
@@ -51672,7 +52574,9 @@
       ],
       "group": "combat",
       "subgroup": "equipment",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 15,
+      "icon_row": 20
     },
     "se-deep-catalogue-4": {
       "category": "space-supercomputing-4",
@@ -51729,7 +52633,9 @@
       "main_product": "se-deep-catalogue-4",
       "group": "science",
       "subgroup": "data-catalogue-deep",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 20,
+      "icon_row": 20
     },
     "se-interstellar-data": {
       "category": "nexus",
@@ -51755,7 +52661,9 @@
       ],
       "group": "science",
       "subgroup": "data-deep",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 16,
+      "icon_row": 20
     },
     "se-teleportation-data": {
       "category": "space-laser",
@@ -51950,7 +52858,9 @@
       "main_product": "se-rhga-data",
       "group": "science",
       "subgroup": "data-deep",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 17,
+      "icon_row": 20
     },
     "se-deep-space-science-pack-4": {
       "category": "space-manufacturing",
@@ -52108,7 +53018,9 @@
       ],
       "group": "logistics",
       "subgroup": "container-2",
-      "type": "recipe"
+      "type": "recipe",
+      "icon_col": 22,
+      "icon_row": 20
     }
   },
   "transport-belt": {
@@ -54818,14 +55730,14 @@
     "hash": "space-ex",
     "extra": {
       "clock": {
-        "icon_row": 25,
-        "icon_col": 19,
-        "name": "time"
+        "name": "time",
+        "icon_row": 38,
+        "icon_col": 30
       },
       "slot_icon_module": {
-        "icon_row": 25,
-        "icon_col": 21,
-        "name": "no module"
+        "name": "no module",
+        "icon_row": 38,
+        "icon_col": 31
       }
     }
   }
