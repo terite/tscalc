@@ -66,6 +66,18 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
     this.applyChange({ beaconModule: module });
   };
 
+  handleClickAmount(thing: game.Ingredient | game.Product): void {
+    const newTargetStr = window.prompt(`Set new target`, thing.amount.toString());
+    if (newTargetStr == null)
+      return;
+    const newTarget = Rational.fromString(newTargetStr);
+    const targetRatio = newTarget.div(thing.amount);
+    const newNumMachines = this.props.data.numMachines.mul(targetRatio);
+    this.applyChange({
+      numMachines: newNumMachines,
+    });
+  }
+
   handleInputGroupClick: React.MouseEventHandler<any> = (event): void => {
     const { recipeTarget } = this.props;
     if (!event.shiftKey || !recipeTarget) {
@@ -212,12 +224,12 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
 
     const ingredients = output.ingredients.map((ingredient) => (
       <div className="mb-1" key={ingredient.name}>
-        <RecipePart obj={ingredient} />
+        <RecipePart obj={ingredient} onClickAmount={this.handleClickAmount.bind(this, ingredient)} />
       </div>
     ));
     const products = output.products.map((product) => (
       <div className="mb-1" key={product.name}>
-        <RecipePart obj={product} />
+        <RecipePart obj={product} onClickAmount={this.handleClickAmount.bind(this, product)} />
       </div>
     ));
     return (

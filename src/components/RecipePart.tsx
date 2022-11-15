@@ -15,12 +15,13 @@ import styles from './RecipePart.module.css';
 interface Props {
   obj: game.Ingredient | game.Product;
   showName?: boolean;
+  onClickAmount?: () => void;
 }
 
-export const RecipePart: React.FC<Props> = ({ obj, showName }) => {
+export const RecipePart: React.FC<Props> = ({ obj, showName, onClickAmount }) => {
   const [recipeTarget, setRecipeTarget] = useRecoilState(recipeTargetAtom);
 
-  const handleClick = useCallback(
+  const handleClickIcon = useCallback(
     (event: React.MouseEvent): void => {
       if (event.shiftKey) {
         event.preventDefault();
@@ -58,6 +59,10 @@ export const RecipePart: React.FC<Props> = ({ obj, showName }) => {
     );
   }
 
+  if (onClickAmount) {
+    text = <span className="clickable" onClick={onClickAmount}>{text}</span>
+  }
+
   const isTarget =
     recipeTarget &&
     recipeTarget.item === obj.item &&
@@ -67,7 +72,7 @@ export const RecipePart: React.FC<Props> = ({ obj, showName }) => {
   return (
     <Icon
       className={`${styles.RecipePart} ${copySource}`}
-      onClick={handleClick}
+      onClick={handleClickIcon}
       tooltip={() => <IngredientCard obj={obj} />}
       obj={obj.item}
       text={text}
