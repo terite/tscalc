@@ -6,6 +6,7 @@ interface Props {
   title: string;
   when: Date;
   onClose(): void;
+  children: React.ReactNode;
 }
 
 const AUTOHIDE_DELAY = 5000;

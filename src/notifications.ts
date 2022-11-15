@@ -13,9 +13,11 @@ export function notify(notification: Notification): void {
 }
 
 export function error(body: Error | React.ReactNode): void {
-  let bodyText = body;
-  if (body instanceof Error && body.stack) {
-    bodyText = body.stack;
+  let bodyText: React.ReactNode;
+  if (body instanceof Error) {
+    bodyText = String(body.stack);
+  } else {
+    bodyText = body;
   }
 
   newNotification.dispatch({

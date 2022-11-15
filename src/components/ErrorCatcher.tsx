@@ -2,7 +2,9 @@ import React from 'react';
 
 import styles from './ErrorCatcher.module.css';
 
-interface Props {}
+interface Props {
+  children: React.ReactNode;
+}
 
 interface State {
   crashMsg: string | undefined;

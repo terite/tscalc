@@ -49,7 +49,8 @@ export class RationalInput extends React.PureComponent<Props, State> {
     try {
       parsed = stringToRational(str);
     } catch (err) {
-      errmsg = err.message;
+      if (err instanceof Error) errmsg = err.message;
+      else errmsg = String(err);
     }
 
     if (parsed && this.props.positiveOnly && parsed.isNegative()) {
