@@ -125,12 +125,6 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
     });
   }
 
-  getOutput(): Totals {
-    const t = new Totals();
-    t.addRow(this.props.data);
-    return t;
-  }
-
   renderModules(): React.ReactNode {
     const numSlots = this.props.data.machine.moduleSlots;
 
@@ -220,14 +214,13 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
 
   render(): React.ReactNode {
     const recipe = this.props.data.recipe;
-    const output = this.getOutput();
 
-    const ingredients = output.ingredients.map((ingredient) => (
+    const ingredients = recipe.ingredients.map((ingredient) => (
       <div className="mb-1" key={ingredient.name}>
         <RecipePart obj={ingredient} onClickAmount={this.handleClickAmount.bind(this, ingredient)} />
       </div>
     ));
-    const products = output.products.map((product) => (
+    const products = recipe.products.map((product) => (
       <div className="mb-1" key={product.name}>
         <RecipePart obj={product} onClickAmount={this.handleClickAmount.bind(this, product)} />
       </div>
