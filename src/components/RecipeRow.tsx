@@ -4,7 +4,7 @@ import { Draggable } from 'react-beautiful-dnd';
 
 import * as game from '../game';
 import { Rational } from '../rational';
-import { Totals } from '../totals';
+import { calculateRates, Totals } from '../totals';
 import { RecipeRowData } from '../state';
 import { recipeTargetAtom, RecipeTarget } from '../atoms';
 
@@ -125,12 +125,6 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
     });
   }
 
-  getOutput(): Totals {
-    const t = new Totals();
-    t.addRow(this.props.data);
-    return t;
-  }
-
   renderModules(): React.ReactNode {
     const numSlots = this.props.data.machine.moduleSlots;
 
@@ -220,14 +214,14 @@ class RawRecipeRow extends React.PureComponent<Props, never> {
 
   render(): React.ReactNode {
     const recipe = this.props.data.recipe;
-    const output = this.getOutput();
+    const [rowIngredients, rowProducts] = calculateRates(this.props.data);
 
-    const ingredients = output.ingredients.map((ingredient) => (
+    const ingredients = rowIngredients.map((ingredient) => (
       <div className="mb-1" key={ingredient.name}>
         <RecipePart obj={ingredient} onClickAmount={this.handleClickAmount.bind(this, ingredient)} />
       </div>
     ));
-    const products = output.products.map((product) => (
+    const products = rowProducts.map((product) => (
       <div className="mb-1" key={product.name}>
         <RecipePart obj={product} onClickAmount={this.handleClickAmount.bind(this, product)} />
       </div>
